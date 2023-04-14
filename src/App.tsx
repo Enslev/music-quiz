@@ -3,6 +3,12 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
+  const clickButton = () => {
+    window.location.href = 'http://localhost:9001/api/spotify/auth'
+  }
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,7 +24,9 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={clickButton}>Click me</button>
       </header>
+
     </div>
   );
 }
