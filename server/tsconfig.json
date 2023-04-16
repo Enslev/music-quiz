@@ -1,0 +1,25 @@
+{
+  "ts-node": {
+    "files": true
+  },
+  "files": [
+    "./environment.d.ts"
+  ],
+  "include": [
+    "./src/*"
+  ],
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "ESNext",
+    "moduleResolution": "nodenext",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+  }
+}
