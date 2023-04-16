@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from 'express';
 import HealthRoute from './controllers/health/index.js';
 import SpotifyRoute from './controllers/spotify/index.js';
 

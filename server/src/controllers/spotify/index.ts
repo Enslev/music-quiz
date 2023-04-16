@@ -1,5 +1,5 @@
-import { Router } from "express"
-import { redirect, exchangeCode } from "./controller.js"
+import { Router } from 'express';
+import { redirect, exchangeCode } from './controller.js';
 
 const router = Router();
 
