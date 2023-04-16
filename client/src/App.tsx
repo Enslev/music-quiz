@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { useAppState } from './overmind';
+import { play } from './services/spotify';
 
 function App() {
 
