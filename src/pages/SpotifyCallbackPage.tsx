@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useActions } from '../overmind';
 
 function SpotifyCallbackPage() {
+    const navigate = useNavigate();
+    const login = useActions().login;
+
     const [searchParams] = useSearchParams();
     const code = searchParams.get('code');
 
@@ -14,13 +18,14 @@ function SpotifyCallbackPage() {
                 },
                 body: JSON.stringify({ code }),
             });
-            const body = await response.json() as { access_token: string };
-            console.log(body)
-            play(body.access_token);
+            const body = await response.json() as { access_token: string, refresh_token: string };
+            console.log(body);
+            login({accessToken: body.access_token, refreshToken: body.refresh_token});
+            navigate('/');
         }
 
         exchangeCode(code ?? '');
-    }, [code]);
+    }, [code, login, navigate]);
 
     const play = (token: string) => {
         console.log('CALLING', token)

@@ -5,7 +5,7 @@ import { useAppState } from './overmind';
 
 function App() {
 
-  const name = useAppState().name;
+  const state = useAppState();
 
   const clickButton = () => {
     window.location.href = 'http://localhost:9001/api/spotify/auth'
@@ -16,7 +16,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Hello {name}
+          Hello {state.name}
         </p>
         <a
           className="App-link"
