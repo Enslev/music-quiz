@@ -3,22 +3,28 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from 'react-router-dom';
-import SpotifyCallbackComponent from './components/SpotifyCallbackComponent';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import { createOvermind } from 'overmind'
+import { Provider } from 'overmind-react'
+import { config } from './overmind'
+
+import SpotifyCallbackPage from './pages/SpotifyCallbackPage';
+
+const overmind = createOvermind(config)
 
 const router = createBrowserRouter([
   { path: '/', Component: App, },
-  { path: '/auth/callback', Component: SpotifyCallbackComponent }
+  { path: '/auth/callback', Component: SpotifyCallbackPage }
 ]);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <RouterProvider router={router} />
+  <Provider value={overmind}>
+    <RouterProvider router={router} />
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

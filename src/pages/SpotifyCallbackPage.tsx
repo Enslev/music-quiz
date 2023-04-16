@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-function SpotifyCallbackComponent() {
+function SpotifyCallbackPage() {
     const [searchParams] = useSearchParams();
     const code = searchParams.get('code');
 
@@ -36,4 +36,4 @@ function SpotifyCallbackComponent() {
 
 }
 
-export default SpotifyCallbackComponent;
+export default SpotifyCallbackPage;

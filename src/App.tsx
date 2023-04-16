@@ -1,20 +1,22 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useAppState } from './overmind';
 
 function App() {
+
+  const name = useAppState().name;
 
   const clickButton = () => {
     window.location.href = 'http://localhost:9001/api/spotify/auth'
   }
-
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          Hello {name}
         </p>
         <a
           className="App-link"
