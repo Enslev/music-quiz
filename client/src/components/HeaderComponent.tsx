@@ -1,22 +1,16 @@
 import React from 'react';
-import { Button } from '@mui/material';
 import styled from 'styled-components';
-import { useActions, useAppState } from '../overmind';
+import SpotifySignInButton from './SpotifySignInButton';
 
 function HeaderComponent() {
 
-    const login = () => {
-        window.location.href = 'http://localhost:9001/api/spotify/auth';
-    };
-    const {logout} = useActions().auth;
-    const isLoggedIn = useAppState().isLoggedIn;
-
     return <Header>
-        <span>Header</span>
-        {isLoggedIn ? 
+        <span>Music Quiz</span>
+        {/* {isLoggedIn ? 
             <Button variant='contained' onClick={logout}>Logout</Button> :
             <Button variant='contained' onClick={login}>Login</Button>
-        }
+        } */}
+        <SpotifySignInButton/>
     </Header>;
 }
 
