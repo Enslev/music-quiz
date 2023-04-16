@@ -1,6 +1,7 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAppState } from "../overmind";
+import React from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppState } from '../overmind';
 
 function LandingPage() {
 
@@ -12,7 +13,7 @@ function LandingPage() {
       if (state.spotifyAccessToken == null) {
         navigate('/login');
       }
-    }, [navigate, state.spotifyAccessToken])
+    }, [navigate, state.spotifyAccessToken]);
     return <>
         Landing
     </>;

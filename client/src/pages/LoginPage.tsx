@@ -1,11 +1,11 @@
-
-import { Button } from "@mui/material";
+import React from 'react';
+import { Button } from '@mui/material';
 
 function LoginPage() {
 
     const login = () => {
         window.location.href = 'http://localhost:9001/api/spotify/auth';
-    }
+    };
 
     return <>
         Login

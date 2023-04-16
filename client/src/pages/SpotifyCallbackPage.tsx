@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useActions } from '../overmind';
@@ -11,9 +12,9 @@ function SpotifyCallbackPage() {
 
     useEffect(() => {
 
-        auth.loginWithCode(code ?? '' ).then(() => {
+        auth.loginWithCode(code ?? '').then(() => {
             navigate('/');
-        })
+        });
     }, [auth, code, navigate]);
 
     return <>Loading</>;

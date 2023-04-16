@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
@@ -11,7 +12,7 @@ function App() {
         <Route path="/">
           <Route index Component={LandingPage} />
           <Route path="login" Component={LoginPage} />
-          <Route path="auth/callback" Component={SpotifyCallbackPage}/>
+          <Route path="auth/callback" Component={SpotifyCallbackPage} />
         </Route>
       </Routes>
     </BrowserRouter>
