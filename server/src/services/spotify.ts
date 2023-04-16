@@ -1,4 +1,4 @@
-import got from 'got';
+import { request } from './request';
 
 interface SpotifyAccessTokenResponse {
     access_token: string;
@@ -15,31 +15,31 @@ interface UserInformationResponse {
     id: string;
 }
 
-export const exchangeCode = async (code: string) => {
-    const clientId = process.env.SPOTIFY_CLIENT_ID;
-    const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-    const redirectUri = process.env.SPOTIFY_REDIRECT_URI;
+export const exchangeCode = async (code: string): Promise<SpotifyAccessTokenResponse> => {
+    const clientId = process.env.SPOTIFY_CLIENT_ID ?? '';
+    const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? '';
+    const redirectUri = process.env.SPOTIFY_REDIRECT_URI ?? '';
 
-    const response = await got.post<SpotifyAccessTokenResponse>('https://accounts.spotify.com/api/token', {
-        form: {
-            'grant_type': 'authorization_code',
-            'code': code,
-            'redirect_uri': redirectUri,
-            'client_secret': clientSecret,
-            'client_id': clientId,
-        },
-        responseType: 'json',
+    const params = new URLSearchParams();
+    params.append('grant_type', 'authorization_code');
+    params.append('code', code);
+    params.append('redirect_uri', redirectUri);
+    params.append('client_secret', clientSecret);
+    params.append('client_id', clientId);
+
+    return await request<SpotifyAccessTokenResponse>('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        body: params,
     });
-
-    return response.body;
 };
 
 export const getUserInformation = async (accessToken: string) => {
-    const response = await got.get<UserInformationResponse>('https://api.spotify.com/v1/me', {
+
+    const response = request<UserInformationResponse>('https://api.spotify.com/v1/me', {
         headers: {
             authorization: `Bearer ${accessToken}`,
         },
-        responseType: 'json',
     });
+
     return response;
 };

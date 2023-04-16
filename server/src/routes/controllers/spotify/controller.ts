@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import querystring from 'querystring';
 import { v4 as uuid } from 'uuid';
 
-import { ExchangeCodeRequest, ExchangeCodeResponse } from '../../../../shared/api-models/spotify.js';
-import * as spotify from '../../services/spotify.js';
-import { User } from '../../services/db-models/user.js';
+// import { ExchangeCodeRequest, ExchangeCodeResponse } from '../../../../shared/api-models/spotify';
+import * as spotify from '../../../services/spotify';
+import { UserModel } from '../../../mongoose/User';
 
 export const redirect = (req: Request, res: Response) => {
     const clientId = process.env.SPOTIFY_CLIENT_ID;
@@ -22,14 +22,14 @@ export const redirect = (req: Request, res: Response) => {
         }));
 };
 
-export const exchangeCode = async (req: Request<object, object, ExchangeCodeRequest>, res: Response<ExchangeCodeResponse>) => {
+export const exchangeCode = async (req: Request, res: Response) => {
     const code = req.body.code;
     const exhangeResposnse = await spotify.exchangeCode(code);
     const userInfo = await spotify.getUserInformation(exhangeResposnse.access_token);
 
-    const newUser = new User({
-        spotifyId: userInfo.body.id,
-        name: userInfo.body.display_name,
+    const newUser = await UserModel.create({
+        name: userInfo.display_name,
+        spotifyKey: userInfo.id,
     });
 
     await newUser.save();

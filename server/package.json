@@ -1,49 +1,43 @@
 {
-  "name": "music-quiz-backend",
+  "name": "test-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc -p tsconfig.json",
+    "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon --exec \"ts-node --esm src/index.ts\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Enslev/music-quiz-backend.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Enslev/music-quiz-backend/issues"
   },
   "nodemonConfig": {
     "watch": "./src/**",
     "ext": "ts,json"
   },
-  "homepage": "https://github.com/Enslev/music-quiz-backend#readme",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@types/express": "^4.17.17",
+    "@typegoose/typegoose": "^11.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "got": "^12.6.0",
+    "express-joi-validation": "^5.0.1",
+    "joi-extract-type": "^15.0.8",
     "mongoose": "^7.0.3",
     "morgan": "^1.10.0",
+    "node-fetch": "^2.6.9",
+    "nodemon": "^2.0.22",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
     "@types/morgan": "^1.9.4",
     "@types/node": "^18.15.11",
+    "@types/node-fetch": "^2.6.3",
     "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "eslint": "^8.38.0",
-    "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }

@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { redirect, exchangeCode } from './controller.js';
+import { redirect, exchangeCode } from './controller';
 
-const router = Router();
+const router = Router({ mergeParams: true });
 
 router.get('/auth', redirect);
 router.post('/code', exchangeCode);
