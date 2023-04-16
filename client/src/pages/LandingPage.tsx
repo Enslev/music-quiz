@@ -10,9 +10,9 @@ function LandingPage() {
 
     // Send user to login if no accessToken is found
     useEffect(() => {
-      if (state.spotifyAccessToken == null) {
-        navigate('/login');
-      }
+        if (state.spotifyAccessToken == null) {
+            navigate('/login');
+        }
     }, [navigate, state.spotifyAccessToken]);
     return <>
         Landing

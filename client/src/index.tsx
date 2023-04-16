@@ -14,9 +14,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
 
-  <Provider value={overmind}>
-    <App />
-  </Provider>,
+    <Provider value={overmind}>
+        <App />
+    </Provider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

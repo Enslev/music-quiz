@@ -22,4 +22,6 @@ export const loginWithCode = async ({ state }: Context, code: string) => {
 export const logout = ({ state }: Context) => {
     state.spotifyAccessToken = null;
     state.spotifyRefreshToken = null;
+    localStorage.removeItem('spotifyAccessToken');
+    localStorage.removeItem('spotifyRefreshToken');
 };

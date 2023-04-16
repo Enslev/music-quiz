@@ -39,6 +39,14 @@
         "semi": [
             "error",
             "always"
+        ],
+        "indent": [
+            "error",
+            4
+        ],
+        "eol-last": [
+            "error",
+            "always"
         ]
     }
 }
