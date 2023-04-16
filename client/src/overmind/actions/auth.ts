@@ -1,6 +1,6 @@
-import { Context } from "../..";
-import { ExchangeCodeRequest, ExchangeCodeResponse } from "../../../../../shared/api-models/spotify";
-import { request } from "../../../services/api-service";
+import { Context } from "..";
+import { ExchangeCodeRequest, ExchangeCodeResponse } from "../../../../shared/api-models/spotify";
+import { request } from "../../services/api-service";
 
 export const loginWithCode = async ({ state }: Context, code: string) => {
     const requestBody: ExchangeCodeRequest = { code };
@@ -17,4 +17,9 @@ export const loginWithCode = async ({ state }: Context, code: string) => {
 
     localStorage.setItem('spotifyAccessToken', state.spotifyAccessToken);
     localStorage.setItem('spotifyRefreshToken', state.spotifyRefreshToken);
+}
+
+export const logout = ({ state }: Context) => {
+    state.spotifyAccessToken = null;
+    state.spotifyRefreshToken = null;
 }

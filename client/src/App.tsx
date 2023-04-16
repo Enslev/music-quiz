@@ -1,36 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { useAppState } from './overmind';
-import { play } from './services/spotify';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import SpotifyCallbackPage from './pages/SpotifyCallbackPage';
 
 function App() {
-
-  const state = useAppState();
-
-  const clickButton = () => {
-    window.location.href = 'http://localhost:9001/api/spotify/auth'
-  }
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hello {state.name}
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button onClick={clickButton}>Click me</button>
-      </header>
-
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/">
+          <Route index Component={LandingPage} />
+          <Route path="login" Component={LoginPage} />
+          <Route path="auth/callback" Component={SpotifyCallbackPage}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

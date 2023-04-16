@@ -11,4 +11,4 @@ export const onInitializeOvermind = async ({
     state.spotifyRefreshToken = localStorage.getItem('spotifyRefreshToken');
 }
 
-export * as auth from './api/auth'
+export * as auth from './auth'
