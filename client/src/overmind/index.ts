@@ -3,7 +3,7 @@ import {
     createStateHook,
     createActionsHook,
     createEffectsHook,
-    createReactionHook
+    createReactionHook,
 } from 'overmind-react';
 
 import { state } from './state';
@@ -14,7 +14,7 @@ export const config = {
     state,
     actions,
     effects,
-}
+};
 
 export type Context = IContext<typeof config>;
 
