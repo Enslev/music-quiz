@@ -4,7 +4,7 @@ import { CreateQuizSchema, GetQuizSchema, GetQuizzesSchema } from './schema';
 import { ValidatedRequest } from 'express-joi-validation';
 
 export const getQuizzes = async (req: ValidatedRequest<GetQuizzesSchema>, res: Response) => {
-    
+
     let quizzesPromise = QuizModel.find({ user: req.user._id });
 
     if (req.query.populate) {
@@ -19,7 +19,7 @@ export const getQuizzes = async (req: ValidatedRequest<GetQuizzesSchema>, res: R
 };
 
 export const getQuiz = async (req: ValidatedRequest<GetQuizSchema>, res: Response) => {
-    let quizzesPromise = QuizModel.findOne({ 
+    let quizzesPromise = QuizModel.findOne({
         user: req.user._id,
         _id: req.params.quizId,
     });

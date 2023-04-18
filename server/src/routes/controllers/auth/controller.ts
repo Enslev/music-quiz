@@ -45,7 +45,7 @@ export const exchangeCode = async (req: Request, res: Response) => {
             spotifyUri: userInfo.uri,
             country: userInfo.country,
         });
-    
+
         await user.save();
     }
 
