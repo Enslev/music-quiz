@@ -5,7 +5,7 @@ import { useActions, useAppState } from '../overmind';
 
 function SpotifySignInButton() {
     const login = () => {
-        window.location.href = 'http://localhost:9001/api/spotify/auth';
+        window.location.href = 'http://localhost:9001/api/auth/redirect';
     };
     const isLoggedIn = useAppState().isLoggedIn;
     const { logout } = useActions().auth;
@@ -21,7 +21,7 @@ function SpotifySignInButton() {
     return <SpotifyLogin onClick={onClick}>
         <span style={{ display: 'flex', alignItems: 'center' }}>
             <SpotifyLogo/>
-            {isLoggedIn ? 
+            {isLoggedIn ?
                 <span>Sign out</span> :
                 <span>Sign in with Spotify</span>
             }

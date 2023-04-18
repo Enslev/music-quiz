@@ -1,24 +1,32 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { QuizModel } from '../../../mongoose/Quiz';
+import { CreateQuizSchema, GetQuizzesSchema } from './schema';
 import { ValidatedRequest } from 'express-joi-validation';
-import { CreateQuizSchema } from './schema';
 
-export const getQuizzes = async (req: Request, res: Response) => {
-    res.status(200).send({ message: 'Ayye' });
+export const getQuizzes = async (req: ValidatedRequest<GetQuizzesSchema>, res: Response) => {
+    
+    let quizzesPromise = QuizModel.find({ user: req.user._id });
+
+    if (req.query.populate) {
+        req.query.populate.forEach((populateProp) => {
+            quizzesPromise = quizzesPromise.populate(populateProp);
+        });
+    }
+
+    const quizzes = await quizzesPromise;
+
+    res.status(200).send(quizzes);
 };
 
 export const createQuiz = async (req: ValidatedRequest<CreateQuizSchema>, res: Response) => {
+    const body = req.body;
+
+    
     const newQuiz = await QuizModel.create({
-        title: 'Wonderful quiz',
-        user: '643bfa81602e67bb786e4a0b',
-        categories: [{
-            title: 'Mystery',
-            tracks: [{
-                points: 500,
-                trackUrl: 'spotify:track:whatever',
-            }],
-        }],
+        title: body.title,
+        user: req.user._id,
+        categories: req.body.categories,
     });
 
-    res.status(200).send({ newQuiz });
+    res.status(200).send(newQuiz);
 };

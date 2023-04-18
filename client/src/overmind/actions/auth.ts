@@ -1,27 +1,22 @@
 import { Context } from '..';
-import { ExchangeCodeRequest, ExchangeCodeResponse } from '../../../../shared/api-models/spotify';
-import { request } from '../../services/api-service';
+import request from '../../services/api-service';
+
+interface ExchangeCodeResponse {
+    token: string;
+}
 
 export const loginWithCode = async ({ state }: Context, code: string) => {
-    const requestBody: ExchangeCodeRequest = { code };
-    const codeExhangeResponse = await request<ExchangeCodeResponse>('http://localhost:9001/api/spotify/code', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'Application/json',
-        },
-        body: JSON.stringify(requestBody),
-    });
+    const codeExhangeResponse = await request
+        .post<ExchangeCodeResponse>('http://localhost:9001/api/auth/code', {
+            body: { code },
+        });
 
-    state.spotifyAccessToken = codeExhangeResponse.access_token;
-    state.spotifyRefreshToken = codeExhangeResponse.refresh_token;
+    state.token = codeExhangeResponse.token;
 
-    localStorage.setItem('spotifyAccessToken', state.spotifyAccessToken);
-    localStorage.setItem('spotifyRefreshToken', state.spotifyRefreshToken);
+    localStorage.setItem('token', state.token);
 };
 
 export const logout = ({ state }: Context) => {
-    state.spotifyAccessToken = null;
-    state.spotifyRefreshToken = null;
-    localStorage.removeItem('spotifyAccessToken');
-    localStorage.removeItem('spotifyRefreshToken');
+    state.token = null;
+    localStorage.removeItem('token');
 };

@@ -1,11 +1,21 @@
 import { ContainerTypes, ValidatedRequestSchema } from 'express-joi-validation';
 import * as Joi from 'joi';
-import 'joi-extract-type';
 
+const validPopulationProps = ['user'] as const;
+export const getQuizzesJoiSchema = {
+    query: Joi.object({
+        populate: Joi.array().single().items(Joi.string().valid(...validPopulationProps)),
+    }),
+};
+
+export interface GetQuizzesSchema extends ValidatedRequestSchema {
+    [ContainerTypes.Query]: {
+        populate: typeof validPopulationProps[number][];
+    }
+}
 
 export const createQuizBodySchema = Joi.object({
     title: Joi.string().required(),
-    user: Joi.string().required(),
     categories: Joi.array().items(Joi.object({
         title: Joi.string().required(),
         tracks: Joi.array().items(Joi.object({
@@ -18,7 +28,6 @@ export const createQuizBodySchema = Joi.object({
 export interface CreateQuizSchema extends ValidatedRequestSchema {
     [ContainerTypes.Body]: {
         title: string;
-        user: string;
         categories: {
             title: string;
             tracks: {

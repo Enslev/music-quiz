@@ -12,6 +12,7 @@ const app: Express = express();
 const port = process.env.PORT;
 
 const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err);
     res.status(500).send({ message: 'Oh no' });
     next();
 };

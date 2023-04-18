@@ -13,6 +13,7 @@ interface UserInformationResponse {
     display_name: string;
     email: string;
     id: string;
+    uri: string;
 }
 
 export const exchangeCode = async (code: string): Promise<SpotifyAccessTokenResponse> => {

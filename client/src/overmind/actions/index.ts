@@ -9,8 +9,7 @@ export const onInitializeOvermind = async ({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     effects,
 }: Context) => {
-    state.spotifyAccessToken = localStorage.getItem('spotifyAccessToken');
-    state.spotifyRefreshToken = localStorage.getItem('spotifyRefreshToken');
+    state.token = localStorage.getItem('token');
 };
 
 export * as auth from './auth';

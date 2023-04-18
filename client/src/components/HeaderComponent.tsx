@@ -6,7 +6,7 @@ function HeaderComponent() {
 
     return <Header>
         <span>Music Quiz</span>
-        {/* {isLoggedIn ? 
+        {/* {isLoggedIn ?
             <Button variant='contained' onClick={logout}>Logout</Button> :
             <Button variant='contained' onClick={login}>Login</Button>
         } */}

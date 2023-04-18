@@ -23,7 +23,7 @@ export class Quiz {
     @prop({ required: true })
     public title!: string;
 
-    @prop({ required: true })
+    @prop({ required: true, ref: User })
     public user!: Ref<User>;
 
     @prop({ required: true })

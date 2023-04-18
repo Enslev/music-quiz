@@ -17,13 +17,13 @@ function LandingPage() {
 
     // Send user to login if no accessToken is found
     useEffect(() => {
-        if (state.spotifyAccessToken == null) {
+        if (!state.isLoggedIn) {
             navigate('/login');
         }
-    }, [navigate, state.spotifyAccessToken]);
+    }, [navigate]);
     return <>
-        <h1>Landing</h1>
-        <Button variant='contained' onClick={clickbutton}>Load quiz</Button>
+        <h1>Your quizzes</h1>
+        <Button variant='contained' onClick={clickbutton}>Get quizzes</Button>
     </>;
 }
 
