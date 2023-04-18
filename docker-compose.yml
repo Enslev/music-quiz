@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+    server:
+        build: ./server
+        expose:
+            - ${API_PORT}
+        environment:
+            - API_PORT=${API_PORT}
+        ports: 
+            - ${API_PORT}:${API_PORT}
+        volumes:
+            - ./server/src:/srv/app/music-quiz-server/src
+        command: npm run dev
+    client:
+        restart: always
+        build: ./client
+        expose:
+            - ${REACT_APP_PORT}
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+            - REACT_APP_PORT=${REACT_APP_PORT}
+            - API_BASE_URL=${API_URL}:${API_PORT}
+            - PORT=${REACT_APP_PORT}
+        ports:
+            - ${REACT_APP_PORT}:${REACT_APP_PORT}
+        volumes:
+            - ./client/src:/srv/app/music-quiz-client/src
+            - ./client/src/public:/srv/app/music-quiz-client/src/public
+        links:
+            - server
+        command: npm run start
