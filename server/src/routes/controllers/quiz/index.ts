@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { createQuiz, getQuizzes } from './controller';
-import { createValidator } from 'express-joi-validation';
-import { createQuizBodySchema, getQuizzesJoiSchema } from './schema';
+import { createQuiz, getQuiz, getQuizzes } from './controller';
+import { createQuizSchema, getQuizJoiSchema, getQuizzesJoiSchema } from './schema';
 import { authMiddleware } from '../../../services/auth';
+import { validator as customValidator } from '../../utils';
 
-const validator = createValidator();
 const router = Router({ mergeParams: true });
 
-router.get('/', validator.query(getQuizzesJoiSchema.query), authMiddleware, getQuizzes);
-router.post('/',  validator.body(createQuizBodySchema), authMiddleware, createQuiz);
+router.get('/', customValidator(getQuizzesJoiSchema), authMiddleware, getQuizzes);
+router.post('/',  customValidator(createQuizSchema), authMiddleware, createQuiz);
+router.get('/:quizId', customValidator(getQuizJoiSchema), authMiddleware, getQuiz);
 
 export default router;
