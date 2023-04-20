@@ -36,7 +36,7 @@ export const createQuizSchema = {
         categories: Joi.array().items(Joi.object({
             title: Joi.string().required(),
             tracks: Joi.array().items(Joi.object({
-                poins: Joi.number().positive(),
+                points: Joi.number().positive(),
                 trackUrl: Joi.string().required(),
             })),
         })),
