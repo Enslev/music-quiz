@@ -1,4 +1,4 @@
-import { Ref, Severity, getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
+import { Ref, Severity, getModelForClass, modelOptions, prop, DocumentType } from '@typegoose/typegoose';
 import { User } from './User';
 
 class Track {
@@ -31,3 +31,4 @@ export class Quiz {
 }
 
 export const QuizModel = getModelForClass(Quiz);
+export type QuizDocument = DocumentType<Quiz>;

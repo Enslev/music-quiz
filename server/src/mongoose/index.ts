@@ -5,3 +5,7 @@ export const init = async () => {
     const mongoPassword = process.env.MONGO_PASSWORD;
     await mongoose.connect(`mongodb+srv://${mongoUser}:${mongoPassword}@music-quiz.ptregv5.mongodb.net/?retryWrites=true&w=majority`);
 };
+
+
+export { QuizDocument } from './Quiz';
+export { UserDocument } from './User';
