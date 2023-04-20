@@ -38,6 +38,8 @@ export const createQuizSchema = {
             tracks: Joi.array().items(Joi.object({
                 points: Joi.number().positive(),
                 trackUrl: Joi.string().required(),
+                title: Joi.string().required(),
+                artist: Joi.string().required(),
             })),
         })),
     }),
@@ -51,6 +53,8 @@ export interface CreateQuizSchema extends ValidatedRequestSchema {
             tracks: {
                 points:number;
                 trackUrl: string;
+                title: string;
+                artist: string;
             }[]
         }[]
     }

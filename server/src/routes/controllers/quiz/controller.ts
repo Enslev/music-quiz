@@ -46,7 +46,7 @@ export const createQuiz = async (req: ValidatedRequest<CreateQuizSchema>, res: R
     const newQuiz = await QuizModel.create({
         title: body.title,
         user: req.user._id,
-        categories: req.body.categories,
+        categories: body.categories,
     });
 
     res.status(200).send(newQuiz);

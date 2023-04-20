@@ -6,6 +6,12 @@ class Track {
     public trackUrl!: string;
 
     @prop({ required: true })
+    public title!: string;
+
+    @prop({ required: true })
+    public artist!: string;
+
+    @prop({ required: true })
     public points!: number;
 }
 
