@@ -1,4 +1,7 @@
 {
+  "references": [
+    { "path": "../server/" }
+  ],
   "compilerOptions": {
     "target": "es5",
     "lib": [
