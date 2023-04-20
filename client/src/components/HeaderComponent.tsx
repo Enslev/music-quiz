@@ -5,11 +5,6 @@ import SpotifySignInButton from './SpotifySignInButton';
 function HeaderComponent() {
 
     return <Header>
-        <span>Music Quiz</span>
-        {/* {isLoggedIn ?
-            <Button variant='contained' onClick={logout}>Logout</Button> :
-            <Button variant='contained' onClick={login}>Login</Button>
-        } */}
         <SpotifySignInButton/>
     </Header>;
 }
@@ -17,9 +12,8 @@ function HeaderComponent() {
 export default HeaderComponent;
 
 const Header = styled.div`
-    background: LightSteelBlue;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row-reverse;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px 10px;
 `;

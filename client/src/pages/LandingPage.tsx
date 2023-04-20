@@ -1,29 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useActions, useAppState } from '../overmind';
-import { Button } from '@mui/material';
+import { Quiz } from '../overmind/actions/api/quiz';
 
 function LandingPage() {
 
     const state = useAppState();
     const navigate = useNavigate();
-
+    const [quizzes, setQuizzes] = useState<Quiz[] | null>(null);
     const { getQuizzes } = useActions().api.quiz;
 
-    const clickbutton = async () => {
-        await getQuizzes();
-    };
 
-    // Send user to login if no accessToken is found
+    // Send user to login if no login token is found
     useEffect(() => {
         if (!state.isLoggedIn) {
             navigate('/login');
         }
     }, [navigate]);
+
+    useEffect(() => {
+        (async () => {
+            if (!state.isLoggedIn) return;
+
+            const response = await getQuizzes();
+            setQuizzes(response);
+        })();
+    }, []);
     return <>
-        <h1>Your quizzes</h1>
-        <Button variant='contained' onClick={clickbutton}>Get quizzes</Button>
+        <h1>Landing</h1>
+        {quizzes && quizzes.map((quiz) => <Link key={quiz._id} to={`/quiz/${quiz._id}`}>{quiz.title}</Link>)}
     </>;
 }
 
