@@ -6,8 +6,10 @@ export interface Quiz {
     title: string;
     user: string;
     categories: {
+        _id: string;
         title: string;
         tracks: {
+            _id: string;
             title: string;
             artist: string;
             points:number;
