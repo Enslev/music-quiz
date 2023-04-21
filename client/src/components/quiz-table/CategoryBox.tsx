@@ -4,12 +4,13 @@ import { Quiz } from '../../overmind/actions/api/quiz';
 import JeopardyBox from './JeopardyBox';
 
 interface propsType {
-    category: Quiz['categories'][number],
+    revealed: string[];
+    category: Quiz['categories'][number];
 }
 
 function CategoryBox(props: propsType) {
 
-    const { category } = props;
+    const { category, revealed } = props;
 
     return <CategoryContainer key={category._id} className='container'>
         <CategoryHeader><h3>{category.title}</h3></CategoryHeader>
@@ -17,6 +18,7 @@ function CategoryBox(props: propsType) {
             <JeopardyBox
                 key={track._id}
                 track={track}
+                isRevealed={revealed.includes(track._id)}
             />
         ))}
     </CategoryContainer>;

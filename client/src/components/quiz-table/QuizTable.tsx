@@ -4,16 +4,20 @@ import { Quiz } from '../../overmind/actions/api/quiz';
 import CategoryBox from './CategoryBox';
 
 interface propsType {
-    isRevealed?: boolean,
+    revealed: string[],
     quiz: Quiz,
 }
 
 function QuizTable(props: propsType) {
 
-    const { quiz } = props;
+    const { quiz, revealed } = props;
 
     return <CategoryView>
-        {quiz.categories.map((category) => <CategoryBox category={category} key={category._id}/>)}
+        {quiz.categories.map((category) => <CategoryBox
+            key={category._id}
+            category={category}
+            revealed={revealed}
+        />)}
     </CategoryView>;
 }
 

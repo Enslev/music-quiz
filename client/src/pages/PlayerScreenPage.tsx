@@ -11,6 +11,8 @@ function PlayerScreenPage() {
     const { getQuiz } = useActions().api.quiz;
     const [quiz, setQuiz] = useState<Quiz | null>(null);
 
+    const revealed: string[] = ['644235feee86f710920cdd57', '644235feee86f710920cdd67'];
+
     useEffect(() => {
         (async () => {
             const response = await getQuiz(quizId ?? 'noid');
@@ -22,7 +24,10 @@ function PlayerScreenPage() {
     if (!quiz) return <div>loading</div>;
 
     return <div>
-        <QuizTable quiz={quiz}/>
+        <QuizTable
+            quiz={quiz}
+            revealed={revealed}
+        />
 
     </div>;
 }

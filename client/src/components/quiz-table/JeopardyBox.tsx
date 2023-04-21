@@ -11,16 +11,14 @@ function JeopardyBox(props: propsType) {
 
     const { track, isRevealed } = props;
 
-    if (isRevealed) {
-        return <BoxWrapperRevealed>
+    return <BoxWrapperHidden className={isRevealed ? '': 'hidden'}>
+        {isRevealed && (<div>
             <span className='artist'>{track.artist}</span>
             <h3>{track.title}</h3>
-        </BoxWrapperRevealed>;
-    }
-
-
-    return <BoxWrapperHidden>
-        <span className='points'>{track.points}</span>
+        </div>)}
+        {!isRevealed && (<div className='hidden-content'>
+            <span className='points'>{track.points}</span>
+        </div>)}
     </BoxWrapperHidden>;
 }
 
@@ -29,27 +27,20 @@ export default JeopardyBox;
 const BoxWrapperHidden = styled.div`
     height: 120px;
 
-    background: rgb(50,102,112);
-    background: linear-gradient(135deg, rgba(50,102,112,1) 0%, rgba(45,196,181,1) 100%);
-
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
     text-align : center;
+
+    &.hidden {
+        background: rgb(50,102,112);
+        background: linear-gradient(135deg, rgba(50,102,112,1) 0%, rgba(45,196,181,1) 100%);
+    }
 
     .points {
         font-size: 30px;
     }
-`;
-
-const BoxWrapperRevealed = styled.div`
-    height: 120px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align : center;
 
     .artist {
         font-size: 15px;
