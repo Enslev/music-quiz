@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { Quiz } from '../../overmind/actions/api/quiz';
 
-interface propsType {
+interface Props {
     isRevealed?: boolean,
     track: Quiz['categories'][number]['tracks'][number],
 }
 
-function JeopardyBox(props: propsType) {
+const JeopardyBox: React.FC<Props> = (props) => {
 
     const { track, isRevealed } = props;
 
@@ -20,7 +20,7 @@ function JeopardyBox(props: propsType) {
             <span className='points'>{track.points}</span>
         </div>)}
     </BoxWrapperHidden>;
-}
+};
 
 export default JeopardyBox;
 

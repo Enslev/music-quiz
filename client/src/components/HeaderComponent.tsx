@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import SpotifySignInButton from './SpotifySignInButton';
 
-function HeaderComponent() {
+const HeaderComponent: React.FC = () => {
 
     return <Header>
         <SpotifySignInButton/>
     </Header>;
-}
+};
 
 export default HeaderComponent;
 

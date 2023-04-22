@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useActions } from '../overmind';
 
-function SpotifyCallbackPage() {
+const SpotifyCallbackPage: React.FC = () => {
     const navigate = useNavigate();
     const { auth } = useActions();
 
@@ -19,6 +19,6 @@ function SpotifyCallbackPage() {
 
     return <>Loading</>;
 
-}
+};
 
 export default SpotifyCallbackPage;

@@ -5,7 +5,7 @@ import { Quiz } from '../overmind/actions/api/quiz';
 import { useParams } from 'react-router-dom';
 import QuizTable from '../components/quiz-table/QuizTable';
 
-function PlayerScreenPage() {
+const PlayerScreenPage: React.FC = () => {
 
     const { quizId } = useParams();
     const { getQuiz } = useActions().api.quiz;
@@ -30,7 +30,7 @@ function PlayerScreenPage() {
         />
 
     </div>;
-}
+};
 
 
 export default PlayerScreenPage;

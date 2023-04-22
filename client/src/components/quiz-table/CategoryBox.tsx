@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { Quiz } from '../../overmind/actions/api/quiz';
 import JeopardyBox from './JeopardyBox';
 
-interface propsType {
+interface Props {
     revealed: string[];
     category: Quiz['categories'][number];
 }
 
-function CategoryBox(props: propsType) {
+const CategoryBox: React.FC<Props> = (props)  => {
 
     const { category, revealed } = props;
 
@@ -22,7 +22,7 @@ function CategoryBox(props: propsType) {
             />
         ))}
     </CategoryContainer>;
-}
+};
 
 export default CategoryBox;
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ReactComponent as SpotifyLogoRaw } from '../assets/spotify-logo.svg';
 import { useActions, useAppState } from '../overmind';
 
-function SpotifySignInButton() {
+const SpotifySignInButton: React.FC = () => {
     const login = () => {
         window.location.href = 'http://localhost:9001/api/auth/redirect';
     };
@@ -27,7 +27,7 @@ function SpotifySignInButton() {
             }
         </span>
     </SpotifyLogin>;
-}
+};
 
 const SpotifyLogin = styled.button`
     background-color: #1DB954;

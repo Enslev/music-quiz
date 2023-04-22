@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@mui/material';
 
-function LoginPage() {
+const LoginPage: React.FC = () => {
 
     const login = () => {
         window.location.href = 'http://localhost:9001/api/spotify/auth';
@@ -11,6 +11,6 @@ function LoginPage() {
         Login
         <Button variant="contained" onClick={login}>Login</Button>
     </>;
-}
+};
 
 export default LoginPage;

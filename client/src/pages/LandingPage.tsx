@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useActions, useAppState } from '../overmind';
 import { Quiz } from '../overmind/actions/api/quiz';
 
-function LandingPage() {
+const LandingPage: React.FC = () => {
 
     const state = useAppState();
     const navigate = useNavigate();
@@ -31,6 +31,6 @@ function LandingPage() {
         <h1>Landing</h1>
         {quizzes && quizzes.map((quiz) => <Link key={quiz._id} to={`/quiz/${quiz._id}`}>{quiz.title}</Link>)}
     </>;
-}
+};
 
 export default LandingPage;

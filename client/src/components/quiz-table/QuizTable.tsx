@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { Quiz } from '../../overmind/actions/api/quiz';
 import CategoryBox from './CategoryBox';
 
-interface propsType {
+interface Props {
     revealed: string[],
     quiz: Quiz,
 }
 
-function QuizTable(props: propsType) {
+const QuizTable: React.FC<Props> = (props) => {
 
     const { quiz, revealed } = props;
 
@@ -19,7 +19,7 @@ function QuizTable(props: propsType) {
             revealed={revealed}
         />)}
     </CategoryView>;
-}
+};
 
 export default QuizTable;
 
