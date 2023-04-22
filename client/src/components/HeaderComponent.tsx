@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import SpotifySignInButton from './SpotifySignInButton';
+import { styled } from '@mui/material';
 
 const HeaderComponent: React.FC = () => {
 
@@ -11,7 +11,7 @@ const HeaderComponent: React.FC = () => {
 
 export default HeaderComponent;
 
-const Header = styled.div`
+const Header = styled('div')`
     display: flex;
     flex-direction: row-reverse;
     align-items: center;

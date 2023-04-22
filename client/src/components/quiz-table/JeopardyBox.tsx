@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Quiz } from '../../overmind/actions/api/quiz';
+import { styled } from '@mui/material';
 
 interface Props {
     isRevealed?: boolean,
@@ -24,7 +24,7 @@ const JeopardyBox: React.FC<Props> = (props) => {
 
 export default JeopardyBox;
 
-const BoxWrapperHidden = styled.div`
+const BoxWrapperHidden = styled('div')`
     height: 120px;
 
     display: flex;

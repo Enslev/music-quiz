@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Quiz } from '../../overmind/actions/api/quiz';
 import JeopardyBox from './JeopardyBox';
+import { styled } from '@mui/material';
 
 interface Props {
     revealed: string[];
@@ -26,7 +26,8 @@ const CategoryBox: React.FC<Props> = (props)  => {
 
 export default CategoryBox;
 
-const CategoryHeader = styled.div`
+
+const CategoryHeader = styled('div')`
     height: 100px;
 
     display: flex;
@@ -36,7 +37,7 @@ const CategoryHeader = styled.div`
     padding: 0px 30px;
     
 `;
-const CategoryContainer = styled.div`
+const CategoryContainer = styled('div')`
     width: 250px;
     color: white;
     border-top: 2px solid #2DC4B5;

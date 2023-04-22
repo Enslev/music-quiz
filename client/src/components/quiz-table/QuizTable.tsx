@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Quiz } from '../../overmind/actions/api/quiz';
 import CategoryBox from './CategoryBox';
+import { styled } from '@mui/material';
 
 interface Props {
     revealed: string[],
@@ -23,7 +23,7 @@ const QuizTable: React.FC<Props> = (props) => {
 
 export default QuizTable;
 
-const CategoryView = styled.div`
+const CategoryView = styled('div')`
     display: flex;
     justify-content: center;
 `;

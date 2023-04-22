@@ -1,6 +1,5 @@
 import React from 'react';
-import { Slide, Fade, Box } from '@mui/material';
-import styled from 'styled-components';
+import { Slide, Fade, Box, styled } from '@mui/material';
 
 interface Props {
     open: boolean,
@@ -38,7 +37,7 @@ const RightMenu: React.FC<Props> = (props) => {
     </>);
 };
 
-const ModalContainer = styled.div`
+const ModalContainer = styled('div')`
     position: absolute;
     height: 100vw;
     top: 0px;

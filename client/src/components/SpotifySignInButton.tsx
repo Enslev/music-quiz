@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import { ReactComponent as SpotifyLogoRaw } from '../assets/spotify-logo.svg';
 import { useActions, useAppState } from '../overmind';
+import { styled } from '@mui/material';
 
 const SpotifySignInButton: React.FC = () => {
     const login = () => {
@@ -29,7 +29,7 @@ const SpotifySignInButton: React.FC = () => {
     </SpotifyLogin>;
 };
 
-const SpotifyLogin = styled.button`
+const SpotifyLogin = styled('button')`
     background-color: #1DB954;
     border: none;
     padding: 5px 10px;

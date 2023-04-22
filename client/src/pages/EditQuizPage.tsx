@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useActions } from '../overmind';
 import { Quiz } from '../overmind/actions/api/quiz';
-import styled from 'styled-components';
+import { styled } from '@mui/material';
 
 const EditQuizPage: React.FC = () => {
     const { quizId } = useParams();
@@ -31,6 +31,6 @@ const EditQuizPage: React.FC = () => {
 
 export default EditQuizPage;
 
-const QuizGrid = styled.div`
+const QuizGrid = styled('div')`
     display: grid;
 `;

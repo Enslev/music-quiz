@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { useActions } from '../overmind';
 import { Quiz } from '../overmind/actions/api/quiz';
 import { useParams } from 'react-router-dom';
