@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 interface Props {
     open: boolean,
-    children: JSX.Element,
+    children: JSX.Element | JSX.Element[],
     handleClose?: () => void;
 }
 
@@ -38,8 +38,6 @@ const RightMenu: React.FC<Props> = (props) => {
     </>);
 };
 
-export default RightMenu;
-
 const ModalContainer = styled.div`
     position: absolute;
     height: 100vw;
@@ -52,3 +50,5 @@ const ModalContainer = styled.div`
     -webkit-box-shadow: 25px 0px 25px 20px #000000;
     box-shadow: 25px 0px 25px 20px #000000;
 `;
+
+export default RightMenu;
