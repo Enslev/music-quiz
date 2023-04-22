@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { QuizModel } from '../../../mongoose/Quiz';
 import { CreateQuizSchema, GetQuizSchema, GetQuizzesSchema } from './schema';
 import { ValidatedRequest } from 'express-joi-validation';
+import { initQuiz } from '../../../services/quiz';
 
 export const getQuizzes = async (req: ValidatedRequest<GetQuizzesSchema>, res: Response) => {
 
@@ -43,11 +44,10 @@ export const getQuiz = async (req: ValidatedRequest<GetQuizSchema>, res: Respons
 export const createQuiz = async (req: ValidatedRequest<CreateQuizSchema>, res: Response) => {
     const body = req.body;
 
-    const newQuiz = await QuizModel.create({
-        title: body.title,
-        user: req.user._id,
-        categories: body.categories,
-    });
+    const newQuiz = initQuiz(req.user._id, body.title);
+    // console.log(newQuiz);
+    const quizDoc = await QuizModel.create(newQuiz);
 
-    res.status(200).send(newQuiz);
+    res.status(200).send(quizDoc);
+    // res.status(200).send();
 };

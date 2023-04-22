@@ -32,30 +32,12 @@ export interface GetQuizzesSchema extends ValidatedRequestSchema {
 
 export const createQuizSchema = {
     body: Joi.object({
-        title: Joi.string().required(),
-        categories: Joi.array().items(Joi.object({
-            title: Joi.string().required(),
-            tracks: Joi.array().items(Joi.object({
-                points: Joi.number().positive(),
-                trackUrl: Joi.string().required(),
-                title: Joi.string().required(),
-                artist: Joi.string().required(),
-            })),
-        })),
+        title: Joi.string(),
     }),
 };
 
 export interface CreateQuizSchema extends ValidatedRequestSchema {
     [ContainerTypes.Body]: {
         title: string;
-        categories: {
-            title: string;
-            tracks: {
-                points:number;
-                trackUrl: string;
-                title: string;
-                artist: string;
-            }[]
-        }[]
     }
 }

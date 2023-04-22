@@ -10,6 +10,7 @@ const LandingPage: React.FC = () => {
 
     const state = useAppState();
     const navigate = useNavigate();
+    const { createQuiz } = useActions().api.quiz;
     const [quizzes, setQuizzes] = useState<Quiz[] | null>(null);
     const { getQuizzes } = useActions().api.quiz;
 
@@ -32,9 +33,14 @@ const LandingPage: React.FC = () => {
         })();
     }, []);
 
+
     const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(newQuizTitle);
+        const response = createQuiz({
+            title: newQuizTitle,
+        });
+        console.log(response);
+
     };
 
     return <>
@@ -55,6 +61,7 @@ const LandingPage: React.FC = () => {
                         onChange={(e) => setNewQuizTitle(e.target.value)}
                         value={newQuizTitle}
                         fullWidth
+                        style={{ 'marginBottom': '15px' }}
                     />
                     <Button type="submit" fullWidth variant="contained" color="primary">
                         {'Let\'s go!'}

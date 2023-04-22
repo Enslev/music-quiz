@@ -1,5 +1,6 @@
 import { Context } from '../..';
 import request from '../../../services/api-service';
+import { createQuizRequestBody } from './types';
 
 export interface Quiz {
     _id: string;
@@ -31,6 +32,15 @@ export const getQuizzes = async ({ state }: Context) => {
 export const getQuiz = async ({ state }: Context, quizId: string) => {
     const response = await request.get<Quiz>(`http://localhost:9001/api/quiz/${quizId}`, {
         headers: { authorization: `Bearer ${state.token}` },
+    });
+
+    return response;
+};
+
+export const createQuiz = async ({ state }: Context, body: createQuizRequestBody) => {
+    const response = await request.post<Quiz>('http://localhost:9001/api/quiz', {
+        headers: { authorization: `Bearer ${state.token}` },
+        body,
     });
 
     return response;
