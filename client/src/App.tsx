@@ -7,11 +7,14 @@ import SpotifyCallbackPage from './pages/SpotifyCallbackPage';
 import HeaderComponent from './components/HeaderComponent';
 import EditQuizPage from './pages/EditQuizPage';
 import PlayerScreenPage from './pages/PlayerScreenPage';
+import { useTheme } from '@mui/material';
 
-function App() {
+const App: React.FC = () => {
+    const theme = useTheme();
 
     return (
         <BrowserRouter>
+            <style>{`body { background-color: ${theme.palette.background.default} }`}</style>
             <HeaderComponent/>
             <Routes>
                 <Route path="/" Component={LandingPage} />
@@ -22,6 +25,6 @@ function App() {
             </Routes>
         </BrowserRouter>
     );
-}
+};
 
 export default App;

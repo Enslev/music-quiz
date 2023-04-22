@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'overmind-react';
 import { config } from './overmind';
 import { createOvermind } from 'overmind';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './utility/styled-forms';
 
 const overmind = createOvermind(config);
 
@@ -13,10 +15,11 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 root.render(
-
-    <Provider value={overmind}>
-        <App />
-    </Provider>,
+    <ThemeProvider theme={theme}>
+        <Provider value={overmind}>
+            <App />
+        </Provider>
+    </ThemeProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
