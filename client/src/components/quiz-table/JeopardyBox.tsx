@@ -1,17 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Quiz } from '../../overmind/actions/api/quiz';
+import { ReactComponent as PlusIconRaw } from '../../assets/plus-circle.svg';
 import { styled } from '@mui/material';
+import RightMenu from '../RightMenuComponent';
+import TrackSearchBar from '../TrackSearchBar';
 
 interface Props {
     isRevealed?: boolean,
     track: Quiz['categories'][number]['tracks'][number],
+    editMode: boolean,
 }
 
 const JeopardyBox: React.FC<Props> = (props) => {
 
-    const { track, isRevealed } = props;
+    const { track, isRevealed, editMode } = props;
 
-    return <BoxWrapperHidden className={isRevealed ? '': 'hidden'}>
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+    const onSearch = (searchValue: string) => {
+        console.log(searchValue);
+    };
+
+    if (editMode) {
+        return <>
+            <BoxWrapperEditable
+                className={'track-box'}
+                onClick={() => setModalIsOpen(true)}
+            >
+                <PlusIcon/>
+            </BoxWrapperEditable>
+
+            <RightMenu
+                open={modalIsOpen}
+                handleClose={() => setModalIsOpen(false)}
+            >
+                <TrackSearchBar
+                    onSearch={(value) => onSearch(value)}
+                />
+            </RightMenu>
+        </>;
+    }
+
+
+    return <BoxWrapperHidden
+        className={'track-box' + (isRevealed ? '': ' hidden')}
+    >
         {isRevealed && (<div>
             <span className='artist'>{track.artist}</span>
             <h3>{track.title}</h3>
@@ -22,7 +54,42 @@ const JeopardyBox: React.FC<Props> = (props) => {
     </BoxWrapperHidden>;
 };
 
-export default JeopardyBox;
+const PlusIcon = styled(PlusIconRaw)`
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+`;
+
+const BoxWrapperEditable = styled('div')`
+    height: 120px;
+
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align : center;
+    cursor: pointer;
+    transition: 500ms;
+
+    &:hover {
+        background-color: #2DC4B5;
+    }
+
+    &.hidden {
+        background: rgb(50,102,112);
+        background: linear-gradient(135deg, rgba(50,102,112,1) 0%, rgba(45,196,181,1) 100%);
+    }
+
+    .points {
+        font-size: 30px;
+    }
+
+    .artist {
+        font-size: 15px;
+    }
+`;
+
 
 const BoxWrapperHidden = styled('div')`
     height: 120px;
@@ -46,3 +113,5 @@ const BoxWrapperHidden = styled('div')`
         font-size: 15px;
     }
 `;
+
+export default JeopardyBox;

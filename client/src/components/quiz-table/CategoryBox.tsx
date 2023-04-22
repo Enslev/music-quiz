@@ -42,13 +42,16 @@ const CategoryBox: React.FC<Props> = (props)  => {
                 multiline={true}
             />
         </CategoryHeader>}
-        {!editMode && <CategoryHeader><h3>{category.title}</h3></CategoryHeader>}
+        {!editMode && <CategoryHeader>
+            <h3>{category.title}</h3>
+        </CategoryHeader>}
 
         {category.tracks.map((track) => (
             <JeopardyBox
                 key={track._id}
                 track={track}
                 isRevealed={revealed ? revealed.includes(track._id) : false}
+                editMode={editMode}
             />
         ))}
     </CategoryContainer>;
@@ -78,7 +81,7 @@ const CategoryContainer = styled('div')`
         border-left: 2px solid #2DC4B5;
     }
 
-    >:not(:nth-of-type(1)) {
+    >.track-box {
         border-top: 2px solid #2DC4B5;
     }
 `;

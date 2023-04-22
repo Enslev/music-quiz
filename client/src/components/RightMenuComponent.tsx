@@ -26,6 +26,7 @@ const RightMenu: React.FC<Props> = (props) => {
                     position: 'absolute',
                     top: 0,
                     left: 0,
+                    zIndex: 99,
                 }}
             />
         </Fade>
@@ -45,6 +46,7 @@ const ModalContainer = styled('div')`
     background: #326670;
     width: 500px;
     padding: 20px;
+    z-index: 100;
 
     -webkit-box-shadow: 25px 0px 25px 20px #000000;
     box-shadow: 25px 0px 25px 20px #000000;
