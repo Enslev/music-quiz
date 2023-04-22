@@ -41,3 +41,46 @@ export interface CreateQuizSchema extends ValidatedRequestSchema {
         title: string;
     }
 }
+
+export const putQuizSchema = {
+    body: Joi.object({
+        _id: Joi.string(),
+        title: Joi.string(),
+        user: Joi.string(),
+        __v: Joi.number(),
+        createdAt: Joi.string(),
+        updatedAt: Joi.string(),
+        categories: Joi.array().length(6).items(Joi.object({
+            _id: Joi.string(),
+            title: Joi.string().allow(''),
+            tracks: Joi.array().length(5).items(Joi.object({
+                _id: Joi.string(),
+                title: Joi.string().allow(''),
+                artist: Joi.string().allow(''),
+                trackUrl: Joi.string().allow(''),
+                points: Joi.number().allow(''),
+            })),
+        })),
+    }),
+};
+
+export interface PutQuizSchema extends ValidatedRequestSchema {
+    [ContainerTypes.Body]: {
+        _id: string;
+        title: string;
+        categories: {
+            _id: string;
+            title: string;
+            tracks: {
+                _id: string;
+                title: string;
+                artist: string;
+                trackUrl: string;
+                points: number;
+            }[]
+        }[]
+    },
+    [ContainerTypes.Params]: {
+        quizId: string;
+    }
+}

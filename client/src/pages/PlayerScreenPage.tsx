@@ -16,19 +16,17 @@ const PlayerScreenPage: React.FC = () => {
         (async () => {
             const response = await getQuiz(quizId ?? 'noid');
             setQuiz(response);
-            console.log(response);
         })();
     }, []);
 
     if (!quiz) return <div>loading</div>;
 
-    return <div>
+    return <>
         <QuizTable
             quiz={quiz}
             revealed={revealed}
         />
-
-    </div>;
+    </>;
 };
 
 

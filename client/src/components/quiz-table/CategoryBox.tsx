@@ -1,24 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Quiz } from '../../overmind/actions/api/quiz';
 import JeopardyBox from './JeopardyBox';
-import { styled } from '@mui/material';
+import { TextField, styled } from '@mui/material';
+import { useDebouncedCallback } from 'use-debounce';
 
 interface Props {
-    revealed: string[];
+    editMode?: boolean;
+    revealed?: string[];
     category: Quiz['categories'][number];
+    saveTrigger: () => void;
 }
 
 const CategoryBox: React.FC<Props> = (props)  => {
 
-    const { category, revealed } = props;
+    const {
+        category,
+        revealed,
+        saveTrigger,
+        editMode = false,
+    } = props;
+
+    const [categoryTitle, setCategoryTitle] = useState<string>(category.title);
+    const saveCategoryTitle = useDebouncedCallback((value: string) => {
+        category.title = value;
+        saveTrigger();
+    }, 500);
+    const handleCategoryTitleChange = (newValue: string) => {
+        setCategoryTitle(newValue);
+        saveCategoryTitle(newValue);
+    };
 
     return <CategoryContainer key={category._id} className='container'>
-        <CategoryHeader><h3>{category.title}</h3></CategoryHeader>
+        {editMode && <CategoryHeader>
+            <TextField
+                value={categoryTitle}
+                size='small'
+                variant='standard'
+                placeholder='Set Title'
+                inputProps={{ min: 0, style: { textAlign: 'center' } }}
+                onChange={(e) => handleCategoryTitleChange(e.target.value)}
+                multiline={true}
+            />
+        </CategoryHeader>}
+        {!editMode && <CategoryHeader><h3>{category.title}</h3></CategoryHeader>}
+
         {category.tracks.map((track) => (
             <JeopardyBox
                 key={track._id}
                 track={track}
-                isRevealed={revealed.includes(track._id)}
+                isRevealed={revealed ? revealed.includes(track._id) : false}
             />
         ))}
     </CategoryContainer>;
@@ -44,11 +74,11 @@ const CategoryContainer = styled('div')`
     border-right: 2px solid #2DC4B5;
     border-bottom: 2px solid #2DC4B5;
 
-    :nth-child(1) {
+    :nth-of-type(1) {
         border-left: 2px solid #2DC4B5;
     }
 
-    >:not(:nth-child(1)) {
+    >:not(:nth-of-type(1)) {
         border-top: 2px solid #2DC4B5;
     }
 `;

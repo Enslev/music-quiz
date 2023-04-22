@@ -2,35 +2,39 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useActions } from '../overmind';
 import { Quiz } from '../overmind/actions/api/quiz';
-import { styled } from '@mui/material';
+import QuizTable from '../components/quiz-table/QuizTable';
+import { useDebouncedCallback } from 'use-debounce';
 
 const EditQuizPage: React.FC = () => {
+
     const { quizId } = useParams();
     const { getQuiz } = useActions().api.quiz;
     const [quiz, setQuiz] = useState<Quiz | null>(null);
+    const { putQuiz } = useActions().api.quiz;
 
     useEffect(() => {
         (async () => {
             const response = await getQuiz(quizId ?? 'noid');
-            console.log(response);
             setQuiz(response);
+            console.log(response);
         })();
     }, []);
 
+    const debouncedSave = useDebouncedCallback(async() => {
+        if (!quiz) return;
+        await putQuiz(quiz);
+    }, 500);
+
+    if (!quiz) return <div>loading</div>;
+
     return <>
-        <QuizGrid>
-            <div>title</div>
-            <div>100</div>
-            <div>200</div>
-            <div>300</div>
-            <div>400</div>
-            <div>500</div>
-        </QuizGrid>
+        <QuizTable
+            quiz={quiz}
+            saveTrigger={debouncedSave}
+            editMode
+        />
     </>;
 };
 
 export default EditQuizPage;
 
-const QuizGrid = styled('div')`
-    display: grid;
-`;
