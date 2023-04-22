@@ -7,7 +7,7 @@ import { Provider } from 'overmind-react';
 import { config } from './overmind';
 import { createOvermind } from 'overmind';
 import { ThemeProvider } from '@mui/material';
-import { theme } from './utility/styled-forms';
+import { theme } from './styled-forms';
 
 const overmind = createOvermind(config);
 
