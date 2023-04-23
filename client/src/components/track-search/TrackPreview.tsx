@@ -7,14 +7,25 @@ import { useActions, useAppState } from '../../overmind';
 
 interface Props {
     spotifyTrack: TrackFromSpotify;
+    onSelect: (trackUri: string) => void;
 }
 
 const TrackPreview: React.FC<Props> = (props) => {
-    const { spotifyTrack } = props;
+    const { spotifyTrack, onSelect } = props;
     const { spotifyPlayer } = useAppState();
     const { play, pause } = useActions().api.spotify;
 
-    return <PreviewWrapper>
+    const handlePause = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        pause();
+    };
+
+    const handlePlay = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        play(spotifyTrack.uri);
+    };
+
+    return <PreviewWrapper onClick={() => onSelect(spotifyTrack.uri)}>
         <TrackWrapper>
             <img src={spotifyTrack.album.images[2].url}></img>
             <TrackDetails>
@@ -22,8 +33,8 @@ const TrackPreview: React.FC<Props> = (props) => {
                 <span className='artist'>{spotifyTrack.artists.map((artist) => artist.name).join(', ')}</span>
             </TrackDetails>
         </TrackWrapper>
-        { spotifyPlayer.currentlyPlaying == spotifyTrack.uri && <PauseIcon onClick={() => pause()}/>}
-        { spotifyPlayer.currentlyPlaying != spotifyTrack.uri && <PlayIcon onClick={() => play(spotifyTrack.uri)}/>}
+        { spotifyPlayer.currentlyPlaying == spotifyTrack.uri && <PauseIcon onClick={handlePause}/>}
+        { spotifyPlayer.currentlyPlaying != spotifyTrack.uri && <PlayIcon onClick={handlePlay}/>}
     </PreviewWrapper>;
 };
 

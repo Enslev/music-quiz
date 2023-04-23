@@ -54,7 +54,8 @@ interface spotifyWrapperOptions {
     query?: {[key: string]: string | number;};
     body?: object;
 }
-const spotifyWrapper = async <T>({ state, actions }: Context, path: string, options: spotifyWrapperOptions) => {
+const spotifyWrapper = async <T>(context: Context, path: string, options: spotifyWrapperOptions): Promise<T | null> => {
+    const { state, actions } = context;
     if (!state.token) return null;
 
     const { accessToken } = jwt<Token>(state.token);
@@ -80,11 +81,9 @@ const spotifyWrapper = async <T>({ state, actions }: Context, path: string, opti
             const httpError = err as ErrorResponse;
 
             if (httpError.status == 401 && httpError.message == 'The access token expired') {
-                console.log('Need to refresh!');
-                return null;
-                // !test all flow
-                // await actions.auth.refreshAccessToken();
-                // return await actions.api.spotify.search(searchTerm);
+                console.log('Need to refresh');
+                await actions.auth.refreshAccessToken();
+                return await spotifyWrapper<T>(context, path, options);
             }
         }
         console.log('Something went really wrong with request', err);

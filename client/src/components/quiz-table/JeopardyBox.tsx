@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Quiz } from '../../overmind/actions/api/quiz';
 import { ReactComponent as PlusIconRaw } from '../../assets/plus-circle.svg';
-import { styled } from '@mui/material';
+import { Button, Fade, Slide, styled } from '@mui/material';
 import RightMenu from '../RightMenuComponent';
 import TrackSearchBar from '../track-search/TrackSearchBar';
 import { useActions } from '../../overmind';
@@ -21,6 +21,7 @@ const JeopardyBox: React.FC<Props> = (props) => {
 
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [searchResult, setSearchResult] = useState<TrackFromSpotify[]>([]);
+    const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
 
     const onSearch = async (searchValue: string) => {
         const searchResponse = await search(searchValue);
@@ -45,13 +46,28 @@ const JeopardyBox: React.FC<Props> = (props) => {
                 open={modalIsOpen}
                 handleClose={() => setModalIsOpen(false)}
             >
-                <TrackSearchBar
-                    onSearch={(value) => onSearch(value)}
-                    onClear={() => setSearchResult([])}
-                />
-                <TrackWrapper>
-                    {searchResult.map((track) => <TrackPreview key={track.id} spotifyTrack={track}/>)}
-                </TrackWrapper>
+                <div style={{ overflowX: 'hidden' }}>
+                    <Slide direction='left' in={Boolean(selectedTrack)}>
+                        <div>
+                            <Button onClick={() => setSelectedTrack(null)}>Go back</Button>
+                        </div>
+                    </Slide>
+                    <Slide direction='right' in={Boolean(!selectedTrack)}>
+                        <div>
+                            <TrackSearchBar
+                                onSearch={(value) => onSearch(value)}
+                                onClear={() => setSearchResult([])}
+                            />
+                            <TrackWrapper>
+                                {searchResult.map((track) => <TrackPreview
+                                    key={track.id}
+                                    spotifyTrack={track}
+                                    onSelect={(trackUri) => setSelectedTrack(trackUri)}
+                                />)}
+                            </TrackWrapper>
+                        </div>
+                    </Slide>
+                </div>
             </RightMenu>
         </>;
     }
