@@ -37,6 +37,7 @@ export const play = async (context: Context, trackUri: string) => {
 export const pause = async (context: Context) => {
     // Update state
     context.state.spotifyPlayer.currentlyPlaying = null;
+    localStorage.removeItem('currentlyPlaying');
 
     // Trigger spotify API
     const options: spotifyWrapperOptions = {

@@ -7,7 +7,7 @@ import { useActions, useAppState } from '../../overmind';
 
 interface Props {
     spotifyTrack: TrackFromSpotify;
-    onSelect: (trackUri: string) => void;
+    onSelect: (trackUri: TrackFromSpotify) => void;
 }
 
 const TrackPreview: React.FC<Props> = (props) => {
@@ -25,7 +25,7 @@ const TrackPreview: React.FC<Props> = (props) => {
         play(spotifyTrack.uri);
     };
 
-    return <PreviewWrapper onClick={() => onSelect(spotifyTrack.uri)}>
+    return <PreviewWrapper onClick={() => onSelect(spotifyTrack)}>
         <TrackWrapper>
             <img src={spotifyTrack.album.images[2].url}></img>
             <TrackDetails>
@@ -72,7 +72,7 @@ const TrackDetails = styled('div')`
 const PlayIcon = styled(PlayIconRaw)`
     width: 30px;
     height: 30px;
-    margin: 0px 5px;
+    margin: 0px 10px;
     cursor: pointer;
     transition: 200ms;
 
@@ -84,7 +84,7 @@ const PlayIcon = styled(PlayIconRaw)`
 const PauseIcon = styled(PauseIconRaw)`
     width: 30px;
     height: 30px;
-    margin: 0px 5px;
+    margin: 0px 10px;
     cursor: pointer;
     transition: 200ms;
 
