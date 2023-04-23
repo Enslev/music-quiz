@@ -3,7 +3,6 @@ import { QuizModel } from '../../../mongoose/Quiz';
 import { CreateQuizSchema, GetQuizSchema, GetQuizzesSchema, PutQuizSchema } from './schema';
 import { ValidatedRequest } from 'express-joi-validation';
 import { initQuiz, sanitizeQuizRequest } from '../../../services/quiz';
-import { Types } from 'mongoose';
 
 export const getQuizzes = async (req: ValidatedRequest<GetQuizzesSchema>, res: Response) => {
 
@@ -58,13 +57,6 @@ export const putQuiz = async (req: ValidatedRequest<PutQuizSchema>, res: Respons
 
     if (!quizFromDB) return res.status(404).send();
 
-    console.log(req.params.quizId);
-
-    await QuizModel.findOneAndUpdate({
-        _id: new Types.ObjectId(req.params.quizId),
-    }, sanitizedQuiz);
-
-    const updatedQuiz = QuizModel.findById(quizFromDB._id);
-
+    const updatedQuiz = await quizFromDB.updateOne(sanitizedQuiz);
     res.status(200).send(updatedQuiz);
 };
