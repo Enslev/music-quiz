@@ -36,11 +36,14 @@ const LandingPage: React.FC = () => {
 
     const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = createQuiz({
+        await createQuiz({
             title: newQuizTitle,
         });
-        console.log(response);
 
+        const response = await getQuizzes();
+        setQuizzes(response);
+
+        setModalIsOpen(false);
     };
 
     return <>
