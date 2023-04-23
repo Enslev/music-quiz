@@ -40,10 +40,11 @@ const RightMenu: React.FC<Props> = (props) => {
 
 const ModalContainer = styled('div')`
     position: absolute;
-    height: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
     top: 0px;
     right: 0px;
-    background: #326670;
+    background-color: #326670;
     width: 500px;
     padding: 20px;
     z-index: 100;

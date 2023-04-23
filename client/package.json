@@ -14,6 +14,7 @@
     "@types/react": "^18.0.35",
     "@types/react-dom": "^18.0.11",
     "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
     "overmind": "^28.0.2",
     "overmind-react": "^29.0.2",
     "react": "^18.2.0",

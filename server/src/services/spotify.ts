@@ -34,6 +34,21 @@ export const exchangeCode = async (code: string): Promise<SpotifyAccessTokenResp
     });
 };
 
+export const exchangeRefreshToken = async (refreshToken: string): Promise<SpotifyAccessTokenResponse> => {
+    const clientId = process.env.SPOTIFY_CLIENT_ID ?? '';
+    const clientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? '';
+
+    const params = new URLSearchParams();
+    params.append('grant_type', 'refresh_token');
+    params.append('refresh_token', refreshToken);
+
+    return await request<SpotifyAccessTokenResponse>('https://accounts.spotify.com/api/token', {
+        headers: { 'Authorization': 'Basic ' + (Buffer.from(clientId + ':' + clientSecret).toString('base64')) },
+        method: 'POST',
+        body: params,
+    });
+};
+
 export const getUserInformation = async (accessToken: string) => {
 
     const response = request<UserInformationResponse>('https://api.spotify.com/v1/me', {

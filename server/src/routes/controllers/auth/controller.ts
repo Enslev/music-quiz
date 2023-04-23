@@ -34,7 +34,6 @@ export const exchangeCode = async (req: Request, res: Response) => {
     const code = req.body.code;
     const exhangeResponse = await spotify.exchangeCode(code);
     const userInfo = await spotify.getUserInformation(exhangeResponse.access_token);
-    console.log(userInfo);
 
     let user = await UserModel.findOne({ spotifyKey: userInfo.id });
     if (!user) {
@@ -54,6 +53,23 @@ export const exchangeCode = async (req: Request, res: Response) => {
         accessToken: exhangeResponse.access_token,
         refreshToken: exhangeResponse.refresh_token,
         userId: user.id,
+    };
+
+    res.status(200).send({
+        token: signJWT(JWTContent),
+    });
+};
+
+export const refreshAccessToken = async (req: Request, res: Response) => {
+    const code = req.body.code;
+    const exhangeResponse = await spotify.exchangeRefreshToken(code);
+
+    console.log('exhangeResponse', exhangeResponse);
+
+    const JWTContent = {
+        accessToken: exhangeResponse.access_token,
+        refreshToken: code,
+        userId: req.user._id.toString(),
     };
 
     res.status(200).send({

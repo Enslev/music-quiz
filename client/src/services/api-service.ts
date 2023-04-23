@@ -4,6 +4,11 @@ interface RequestOptions {
     query?: QueryObject;
 }
 
+export interface ErrorResponse {
+    status: number;
+    message: string;
+}
+
 const get = <T = unknown>(url: string, options: RequestOptions = {}) => {
     const requestOptions = {
         method: 'GET',
@@ -70,7 +75,7 @@ const handleResponse = <T>(response: Response) => {
         const data = text && JSON.parse(text);
 
         if (!response.ok) {
-            const error = (data && data.message) || response.statusText;
+            const error = data.error|| response.statusText;
             return Promise.reject(error);
         }
 

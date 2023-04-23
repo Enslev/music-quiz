@@ -3,7 +3,10 @@ import { Quiz } from '../../overmind/actions/api/quiz';
 import { ReactComponent as PlusIconRaw } from '../../assets/plus-circle.svg';
 import { styled } from '@mui/material';
 import RightMenu from '../RightMenuComponent';
-import TrackSearchBar from '../TrackSearchBar';
+import TrackSearchBar from '../track-search/TrackSearchBar';
+import { useActions } from '../../overmind';
+import { TrackFromSpotify } from '../../overmind/actions/api/types';
+import TrackPreview from '../track-search/TrackPreview';
 
 interface Props {
     isRevealed?: boolean,
@@ -14,10 +17,19 @@ interface Props {
 const JeopardyBox: React.FC<Props> = (props) => {
 
     const { track, isRevealed, editMode } = props;
+    const { search } = useActions().api.spotify;
 
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const onSearch = (searchValue: string) => {
-        console.log(searchValue);
+    const [searchResult, setSearchResult] = useState<TrackFromSpotify[]>([]);
+
+    const onSearch = async (searchValue: string) => {
+        const searchResponse = await search(searchValue);
+        if (!searchResponse) {
+            setSearchResult([]);
+            return;
+        }
+
+        setSearchResult(searchResponse?.tracks.items);
     };
 
     if (editMode) {
@@ -35,7 +47,11 @@ const JeopardyBox: React.FC<Props> = (props) => {
             >
                 <TrackSearchBar
                     onSearch={(value) => onSearch(value)}
+                    onClear={() => setSearchResult([])}
                 />
+                <TrackWrapper>
+                    {searchResult.map((track) => <TrackPreview key={track.id} spotifyTrack={track}/>)}
+                </TrackWrapper>
             </RightMenu>
         </>;
     }
@@ -112,6 +128,13 @@ const BoxWrapperHidden = styled('div')`
     .artist {
         font-size: 15px;
     }
+`;
+
+const TrackWrapper = styled('div')`
+    display: flex;
+    height: 90%;
+    flex-direction: column;
+    overflow-y: scroll;
 `;
 
 export default JeopardyBox;

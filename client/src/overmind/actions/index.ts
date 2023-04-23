@@ -10,6 +10,7 @@ export const onInitializeOvermind = async ({
     effects,
 }: Context) => {
     state.token = localStorage.getItem('token');
+    state.spotifyPlayer.currentlyPlaying = localStorage.getItem('currentlyPlaying');
 };
 
 export * as auth from './auth';
