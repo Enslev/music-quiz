@@ -64,8 +64,6 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     const code = req.body.code;
     const exhangeResponse = await spotify.exchangeRefreshToken(code);
 
-    console.log('exhangeResponse', exhangeResponse);
-
     const JWTContent = {
         accessToken: exhangeResponse.access_token,
         refreshToken: code,

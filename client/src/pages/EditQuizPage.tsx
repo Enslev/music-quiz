@@ -22,8 +22,6 @@ const EditQuizPage: React.FC = () => {
     const debouncedSave = useDebouncedCallback(async() => {
         if (!quiz) return;
         const updatedQuiz = await putQuiz(quiz);
-        console.log('Setting new quiz');
-        console.log(updatedQuiz.categories[0].tracks);
         setQuiz(updatedQuiz);
     }, 500);
 
