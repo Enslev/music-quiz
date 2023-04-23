@@ -47,6 +47,7 @@ const PreviewWrapper = styled('div')`
     justify-content: space-between;
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
+    cursor: pointer;
 
     &:hover {
         background: linear-gradient(135deg, rgba(50,102,112,1) 0%, rgba(45,196,181,1) 100%);

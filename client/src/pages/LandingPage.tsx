@@ -50,7 +50,7 @@ const LandingPage: React.FC = () => {
         <h1>Landing</h1>
         <Button variant='contained' onClick={() => setModalIsOpen(!modalIsOpen)}>Open modal</Button>
         <ul>
-            {quizzes && quizzes.map((quiz) => <li key={quiz._id}><Link to={`/quiz/${quiz._id}`}>{quiz.title}</Link></li>)}
+            {quizzes && quizzes.map((quiz) => <li key={quiz._id}><Link to={`/quiz/${quiz._id}/edit`}>{quiz.title}</Link></li>)}
         </ul>
         <RightMenu
             open={modalIsOpen}

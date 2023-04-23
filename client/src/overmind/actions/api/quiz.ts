@@ -19,6 +19,8 @@ export interface Quiz {
     }[]
 }
 
+export type Track = Quiz['categories'][number]['tracks'][number];
+
 export const getQuizzes = async ({ state }: Context) => {
 
     const response = await request.get<Quiz[]>('http://localhost:9001/api/quiz', {

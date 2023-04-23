@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Quiz } from '../../overmind/actions/api/quiz';
+import { Track } from '../../overmind/actions/api/quiz';
 import { ReactComponent as PlusIconRaw } from '../../assets/plus-circle.svg';
 import { styled } from '@mui/material';
 import SearchMenu from '../track-search/SearchMenu';
@@ -7,7 +7,7 @@ import { TrackFromSpotify } from '../../overmind/actions/api/types';
 
 interface Props {
     isRevealed?: boolean;
-    track: Quiz['categories'][number]['tracks'][number];
+    track: Track;
     editMode: boolean;
     saveTrigger: () => void;
 }
@@ -19,7 +19,14 @@ const JeopardyBox: React.FC<Props> = (props) => {
 
     const handleClose = (selectedTrack: TrackFromSpotify | null) => {
         setSearchMenuIsOpen(false);
-        if (selectedTrack) {
+        if (!selectedTrack && track.trackUrl) {
+            track.title = '';
+            track.artist = '';
+            track.trackUrl = '';
+            saveTrigger();
+        }
+
+        if (selectedTrack && selectedTrack.uri != track.trackUrl) {
             track.title = selectedTrack.name;
             track.artist = selectedTrack.artists.map((artist) => artist.name).join(', ');
             track.trackUrl = selectedTrack.uri;
@@ -50,6 +57,7 @@ const JeopardyBox: React.FC<Props> = (props) => {
             <SearchMenu
                 open={searchMenuIsOpen}
                 handleClose={handleClose}
+                track={track}
             />
         </>;
     }

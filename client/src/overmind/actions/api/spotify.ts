@@ -3,7 +3,7 @@ import request, { ErrorResponse } from '../../../services/api-service';
 import jwt from 'jwt-decode';
 import { Token } from '../auth';
 import { hasProp } from '../../../services/utils';
-import { SearchSpotifyResponseBody } from './types';
+import { SearchSpotifyResponseBody, TrackFromSpotify } from './types';
 
 export const search = async (context: Context, searchTerm: string): Promise<SearchSpotifyResponseBody | null> => {
     return spotifyWrapper<SearchSpotifyResponseBody>(context, 'search', {
@@ -34,6 +34,7 @@ export const play = async (context: Context, trackUri: string) => {
     };
     return spotifyWrapper(context, 'me/player/play', options);
 };
+
 export const pause = async (context: Context) => {
     // Update state
     context.state.spotifyPlayer.currentlyPlaying = null;
@@ -49,6 +50,14 @@ export const pause = async (context: Context) => {
     return spotifyWrapper(context, 'me/player/pause', options);
 };
 
+export const getTrack = async (context: Context, trackUri: string) => {
+    const trackId = trackUri.split(':')[2];
+
+    const options: spotifyWrapperOptions = {
+        method: 'GET',
+    };
+    return spotifyWrapper<TrackFromSpotify>(context, `tracks/${trackId}`, options);
+};
 
 interface spotifyWrapperOptions {
     method: 'GET' | 'PUT';
