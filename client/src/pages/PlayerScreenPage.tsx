@@ -19,7 +19,7 @@ const PlayerScreenPage: React.FC = () => {
         })();
     }, []);
 
-    if (!quiz) return <div>loading</div>;
+    if (!quiz) return <></>;
 
     return <>
         <QuizTable

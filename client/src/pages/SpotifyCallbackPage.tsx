@@ -17,7 +17,7 @@ const SpotifyCallbackPage: React.FC = () => {
         });
     }, [auth, code, navigate]);
 
-    return <>Loading</>;
+    return <></>;
 
 };
 

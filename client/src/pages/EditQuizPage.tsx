@@ -25,7 +25,7 @@ const EditQuizPage: React.FC = () => {
         setQuiz(updatedQuiz);
     }, 500);
 
-    if (!quiz) return <div>loading</div>;
+    if (!quiz) return <></>;
 
     return <>
         <QuizTable
