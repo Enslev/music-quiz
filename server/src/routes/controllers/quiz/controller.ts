@@ -60,9 +60,11 @@ export const putQuiz = async (req: ValidatedRequest<PutQuizSchema>, res: Respons
 
     console.log(req.params.quizId);
 
-    const updatedQuiz = await QuizModel.findOneAndUpdate({
+    await QuizModel.findOneAndUpdate({
         _id: new Types.ObjectId(req.params.quizId),
     }, sanitizedQuiz);
+
+    const updatedQuiz = QuizModel.findById(quizFromDB._id);
 
     res.status(200).send(updatedQuiz);
 };

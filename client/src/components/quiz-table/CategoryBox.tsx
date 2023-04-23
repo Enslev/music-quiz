@@ -52,6 +52,7 @@ const CategoryBox: React.FC<Props> = (props)  => {
                 track={track}
                 isRevealed={revealed ? revealed.includes(track._id) : false}
                 editMode={editMode}
+                saveTrigger={saveTrigger}
             />
         ))}
     </CategoryContainer>;

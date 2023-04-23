@@ -16,13 +16,15 @@ const EditQuizPage: React.FC = () => {
         (async () => {
             const response = await getQuiz(quizId ?? 'noid');
             setQuiz(response);
-            console.log(response);
         })();
     }, []);
 
     const debouncedSave = useDebouncedCallback(async() => {
         if (!quiz) return;
-        await putQuiz(quiz);
+        const updatedQuiz = await putQuiz(quiz);
+        console.log('Setting new quiz');
+        console.log(updatedQuiz.categories[0].tracks);
+        setQuiz(updatedQuiz);
     }, 500);
 
     if (!quiz) return <div>loading</div>;

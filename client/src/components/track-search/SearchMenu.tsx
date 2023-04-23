@@ -10,17 +10,18 @@ import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
 
 interface Props {
     open: boolean,
-    onClose: () => void;
+    handleClose: (selectedTrack: TrackFromSpotify | null) => void;
 }
 
 const SearchMenu: React.FC<Props> = (props) => {
 
-    const { open, onClose } = props;
+    const { open, handleClose } = props;
     const { spotifyPlayer } = useAppState();
     const { search, play, pause } = useActions().api.spotify;
 
     const [searchResult, setSearchResult] = useState<TrackFromSpotify[]>([]);
     const [selectedTrack, setSelectedTrack] = useState<TrackFromSpotify | null>(null);
+    const [searchValue, setSearchValue] = useState<string>('');
 
     const onSearch = async (searchValue: string) => {
         const searchResponse = await search(searchValue);
@@ -34,7 +35,11 @@ const SearchMenu: React.FC<Props> = (props) => {
 
     return <RightMenu
         open={open}
-        handleClose={onClose}
+        handleClose={() => {
+            setSelectedTrack(null);
+            setSearchValue('');
+            handleClose(selectedTrack);
+        }}
     >
         <div style={{ overflowX: 'hidden' }}>
             {selectedTrack &&
@@ -54,6 +59,8 @@ const SearchMenu: React.FC<Props> = (props) => {
             <Slide direction='right' in={Boolean(!selectedTrack)}>
                 <div>
                     <TrackSearchBar
+                        value={searchValue}
+                        onChange={(newValue) => setSearchValue(newValue)}
                         onSearch={(value) => onSearch(value)}
                         onClear={() => setSearchResult([])}
                     />

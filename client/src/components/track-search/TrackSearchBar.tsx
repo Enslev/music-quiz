@@ -1,21 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { styled } from '@mui/material';
 import { ReactComponent as XIconRaw } from '../../assets/x.svg';
 import { ReactComponent as SearchIconRaw } from '../../assets/search.svg';
 import { useDebouncedCallback } from 'use-debounce';
 
 interface Props {
+    value: string;
+    onChange: (value: string) => void;
     onSearch: (value: string) => void;
     onClear: () => void;
 }
 
 const TrackSearchBar: React.FC<Props> = (props) => {
 
-    const { onSearch, onClear } = props;
+    const { value, onChange, onSearch, onClear } = props;
     const ref = useRef<HTMLInputElement>(null);
-    const [value, setValue] = useState<string>('');
 
     const debouncedSearch = useDebouncedCallback(() => {
+        if (!value) return;
         onSearch(value);
     }, 500);
 
@@ -24,13 +26,13 @@ const TrackSearchBar: React.FC<Props> = (props) => {
         <input
             value={value}
             onChange={(e) => {
-                setValue(e.target.value);
+                onChange(e.target.value);
                 debouncedSearch();
             }}
             ref={ref}
         ></input>
         <XIcon onClick={() => {
-            setValue('');
+            onChange('');
             onClear();
             ref.current?.focus();
         }}/>

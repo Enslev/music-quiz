@@ -3,30 +3,53 @@ import { Quiz } from '../../overmind/actions/api/quiz';
 import { ReactComponent as PlusIconRaw } from '../../assets/plus-circle.svg';
 import { styled } from '@mui/material';
 import SearchMenu from '../track-search/SearchMenu';
+import { TrackFromSpotify } from '../../overmind/actions/api/types';
 
 interface Props {
-    isRevealed?: boolean,
-    track: Quiz['categories'][number]['tracks'][number],
-    editMode: boolean,
+    isRevealed?: boolean;
+    track: Quiz['categories'][number]['tracks'][number];
+    editMode: boolean;
+    saveTrigger: () => void;
 }
 
 const JeopardyBox: React.FC<Props> = (props) => {
 
-    const { track, isRevealed, editMode } = props;
+    const { track, isRevealed, editMode, saveTrigger } = props;
     const [searchMenuIsOpen, setSearchMenuIsOpen] = useState<boolean>(false);
+
+    const handleClose = (selectedTrack: TrackFromSpotify | null) => {
+        setSearchMenuIsOpen(false);
+        if (selectedTrack) {
+            track.title = selectedTrack.name;
+            track.artist = selectedTrack.artists.map((artist) => artist.name).join(', ');
+            track.trackUrl = selectedTrack.uri;
+            saveTrigger();
+        }
+    };
 
     if (editMode) {
         return <>
-            <BoxWrapperEditable
-                className={'track-box'}
-                onClick={() => setSearchMenuIsOpen(true)}
-            >
-                <PlusIcon/>
-            </BoxWrapperEditable>
+            {track.trackUrl &&
+                <BoxWrapperEditable
+                    className={'track-box'}
+                    onClick={() => setSearchMenuIsOpen(true)}
+                >
+                    <span className='artist'>{track.artist}</span>
+                    <h3>{track.title}</h3>
+                </BoxWrapperEditable>
+            }
+            {!track.trackUrl &&
+                <BoxWrapperEditable
+                    className={'track-box'}
+                    onClick={() => setSearchMenuIsOpen(true)}
+                >
+                    <PlusIcon/>
+                </BoxWrapperEditable>
+            }
 
             <SearchMenu
                 open={searchMenuIsOpen}
-                onClose={() => setSearchMenuIsOpen(false)}
+                handleClose={handleClose}
             />
         </>;
     }

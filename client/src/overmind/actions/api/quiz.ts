@@ -53,5 +53,7 @@ export const putQuiz = async ({ state }: Context, body: putQuizRequestBody) => {
         body,
     });
 
+    console.log('response from update', response.categories.at(0)?.tracks);
+
     return response;
 };
