@@ -57,6 +57,8 @@ export const putQuiz = async (req: ValidatedRequest<PutQuizSchema>, res: Respons
 
     if (!quizFromDB) return res.status(404).send();
 
-    const updatedQuiz = await quizFromDB.updateOne(sanitizedQuiz);
+    await quizFromDB.updateOne(sanitizedQuiz);
+
+    const updatedQuiz = await QuizModel.findById(req.body._id);
     res.status(200).send(updatedQuiz);
 };
