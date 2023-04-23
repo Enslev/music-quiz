@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Quiz } from '../../overmind/actions/api/quiz';
 import { ReactComponent as PlusIconRaw } from '../../assets/plus-circle.svg';
-import { Button, Fade, Slide, styled } from '@mui/material';
-import RightMenu from '../RightMenuComponent';
-import TrackSearchBar from '../track-search/TrackSearchBar';
-import { useActions } from '../../overmind';
-import { TrackFromSpotify } from '../../overmind/actions/api/types';
-import TrackPreview from '../track-search/TrackPreview';
+import { styled } from '@mui/material';
+import SearchMenu from '../track-search/SearchMenu';
 
 interface Props {
     isRevealed?: boolean,
@@ -17,58 +13,21 @@ interface Props {
 const JeopardyBox: React.FC<Props> = (props) => {
 
     const { track, isRevealed, editMode } = props;
-    const { search } = useActions().api.spotify;
-
-    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const [searchResult, setSearchResult] = useState<TrackFromSpotify[]>([]);
-    const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
-
-    const onSearch = async (searchValue: string) => {
-        const searchResponse = await search(searchValue);
-        if (!searchResponse) {
-            setSearchResult([]);
-            return;
-        }
-
-        setSearchResult(searchResponse?.tracks.items);
-    };
+    const [searchMenuIsOpen, setSearchMenuIsOpen] = useState<boolean>(false);
 
     if (editMode) {
         return <>
             <BoxWrapperEditable
                 className={'track-box'}
-                onClick={() => setModalIsOpen(true)}
+                onClick={() => setSearchMenuIsOpen(true)}
             >
                 <PlusIcon/>
             </BoxWrapperEditable>
 
-            <RightMenu
-                open={modalIsOpen}
-                handleClose={() => setModalIsOpen(false)}
-            >
-                <div style={{ overflowX: 'hidden' }}>
-                    <Slide direction='left' in={Boolean(selectedTrack)}>
-                        <div>
-                            <Button onClick={() => setSelectedTrack(null)}>Go back</Button>
-                        </div>
-                    </Slide>
-                    <Slide direction='right' in={Boolean(!selectedTrack)}>
-                        <div>
-                            <TrackSearchBar
-                                onSearch={(value) => onSearch(value)}
-                                onClear={() => setSearchResult([])}
-                            />
-                            <TrackWrapper>
-                                {searchResult.map((track) => <TrackPreview
-                                    key={track.id}
-                                    spotifyTrack={track}
-                                    onSelect={(trackUri) => setSelectedTrack(trackUri)}
-                                />)}
-                            </TrackWrapper>
-                        </div>
-                    </Slide>
-                </div>
-            </RightMenu>
+            <SearchMenu
+                open={searchMenuIsOpen}
+                onClose={() => setSearchMenuIsOpen(false)}
+            />
         </>;
     }
 
@@ -144,13 +103,6 @@ const BoxWrapperHidden = styled('div')`
     .artist {
         font-size: 15px;
     }
-`;
-
-const TrackWrapper = styled('div')`
-    display: flex;
-    height: 90%;
-    flex-direction: column;
-    overflow-y: scroll;
 `;
 
 export default JeopardyBox;
