@@ -19,6 +19,7 @@ export interface Quiz {
     }[]
 }
 
+export type Category = Quiz['categories'][number];
 export type Track = Quiz['categories'][number]['tracks'][number];
 
 export const getQuizzes = async ({ state }: Context) => {

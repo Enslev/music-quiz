@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useActions } from '../overmind';
 import { Quiz } from '../overmind/actions/api/quiz';
-import QuizTable from '../components/quiz-table/QuizTable';
 import { useDebouncedCallback } from 'use-debounce';
+import QuizGridComponent from '../components/quiz-grid/QuizGridComponent';
 
 const EditQuizPage: React.FC = () => {
 
@@ -28,10 +28,11 @@ const EditQuizPage: React.FC = () => {
     if (!quiz) return <></>;
 
     return <>
-        <QuizTable
+        <QuizGridComponent
             quiz={quiz}
-            saveTrigger={debouncedSave}
             editMode
+            saveTrigger={(debouncedSave)}
+            revealed={['6446c846ef3d95b10c5182ad']}
         />
     </>;
 };

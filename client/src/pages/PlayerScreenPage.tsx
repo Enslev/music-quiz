@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useActions } from '../overmind';
 import { Quiz } from '../overmind/actions/api/quiz';
 import { useParams } from 'react-router-dom';
-import QuizTable from '../components/quiz-table/QuizTable';
+import QuizGridComponent from '../components/quiz-grid/QuizGridComponent';
 
 const PlayerScreenPage: React.FC = () => {
 
     const { quizId } = useParams();
     const { getQuiz } = useActions().api.quiz;
     const [quiz, setQuiz] = useState<Quiz | null>(null);
-
-    const revealed: string[] = ['644235feee86f710920cdd57', '644235feee86f710920cdd67'];
 
     useEffect(() => {
         (async () => {
@@ -22,9 +20,9 @@ const PlayerScreenPage: React.FC = () => {
     if (!quiz) return <></>;
 
     return <>
-        <QuizTable
+        <QuizGridComponent
             quiz={quiz}
-            revealed={revealed}
+            revealed={[]}
         />
     </>;
 };
