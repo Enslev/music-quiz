@@ -17,10 +17,30 @@ export const search = async (context: Context, searchTerm: string): Promise<Sear
     });
 };
 
-export const play = async (context: Context, trackUri: string) => {
+interface PlayPayload {
+    trackUri: string;
+    position?: number;
+}
+export const play = async (context: Context, payload: PlayPayload) => {
+    const {
+        trackUri,
+        position = 0,
+    } = payload;
+
     // Update state
     context.state.spotifyPlayer.currentlyPlaying = trackUri;
     localStorage.setItem('currentlyPlaying', trackUri);
+
+    const body: {
+        uris: string[],
+        position_ms?: number,
+    } = {
+        uris: [trackUri],
+    };
+
+    if (position > 0) {
+        body.position_ms = position;
+    }
 
     // Trigger spotify API
     const options: spotifyWrapperOptions = {
@@ -28,9 +48,7 @@ export const play = async (context: Context, trackUri: string) => {
         query: {
             device_id: 'a2fbc6475d5078c9725986d4804dfff78b3f30da',
         },
-        body: {
-            uris: [trackUri],
-        },
+        body,
     };
     return spotifyWrapper(context, 'me/player/play', options);
 };

@@ -25,7 +25,7 @@ const TrackPreview: React.FC<Props> = ({
 
     const handlePlay = (e: React.MouseEvent) => {
         e.stopPropagation();
-        play(spotifyTrack.uri);
+        play({ trackUri: spotifyTrack.uri });
     };
 
     return <PreviewWrapper onClick={() => onSelect(spotifyTrack)}>

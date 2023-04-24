@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Slide, styled } from '@mui/material';
+import { Box, Button, Slide, Slider, Stack, styled } from '@mui/material';
 import RightMenu from '../RightMenu';
 import TrackSearchBar from '../track-search/TrackSearchBar';
 import { useActions, useAppState } from '../../overmind';
@@ -8,6 +8,7 @@ import TrackPreview from '../track-search/TrackPreview';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
 import { Track } from '../../overmind/actions/api/quiz';
+import { pad } from '../../services/utils';
 
 interface Props {
     open: boolean;
@@ -29,6 +30,7 @@ const SearchMenu: React.FC<Props> = ({
     const [searchValue, setSearchValue] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [manualSearch, setManualSearch] = useState<boolean>(false);
+    const [selectedTrackPosition, setSelectedTrackPosition] = useState<number>(track.position);
 
     const onSearch = async (searchValue: string) => {
         const searchResponse = await search(searchValue);
@@ -46,6 +48,37 @@ const SearchMenu: React.FC<Props> = ({
         setLoading(false);
     };
 
+    const handlePositionChange = async (newPosition: number | number[]) => {
+        if (Array.isArray(newPosition)) return;
+
+        track.position = newPosition;
+        setSelectedTrackPosition(newPosition);
+    };
+
+    const formatMs = (ms: number) => {
+        const minutes = Math.floor(ms / 60000);
+        const seconds = Math.floor((ms - (minutes * 60000)) / 1000);
+        return `${pad(minutes, 2)}:${pad(seconds, 2)}`;
+    };
+
+    const handlePlay = () => {
+        if (!selectedTrack) return;
+
+        play({
+            trackUri: selectedTrack.uri,
+            position: selectedTrackPosition,
+        });
+    };
+
+
+    const handleCloseSearch = () => {
+        setSelectedTrack(null);
+        setSearchValue('');
+        setManualSearch(false);
+        handleClose(selectedTrack);
+    };
+
+    // If saved track is passed in, get it go directly to Selected Track view
     useEffect(() => {
         if (!loading && !manualSearch && !selectedTrack && track.trackUrl) {
             setLoading(true);
@@ -59,12 +92,7 @@ const SearchMenu: React.FC<Props> = ({
 
     return <RightMenu
         open={open}
-        handleClose={() => {
-            setSelectedTrack(null);
-            setSearchValue('');
-            setManualSearch(false);
-            handleClose(selectedTrack);
-        }}
+        handleClose={handleCloseSearch}
     >
         <div style={{ overflowX: 'hidden' }}>
             {selectedTrack &&
@@ -80,8 +108,22 @@ const SearchMenu: React.FC<Props> = ({
                     </span>
                     <Center>
                         { spotifyPlayer.currentlyPlaying == selectedTrack.uri && <PauseIcon onClick={() => pause()}/>}
-                        { spotifyPlayer.currentlyPlaying != selectedTrack.uri && <PlayIcon onClick={() => play(selectedTrack.uri)}/>}
+                        { spotifyPlayer.currentlyPlaying != selectedTrack.uri && <PlayIcon onClick={handlePlay}/>}
                     </Center>
+                    <SliderWrapper>
+                        <span>Start position</span>
+                        <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+                            <span>{formatMs(selectedTrackPosition)}</span>
+                            <Slider
+                                value={selectedTrackPosition}
+                                onChange={(e, newValue) => handlePositionChange(newValue)}
+                                min={0}
+                                max={selectedTrack.duration_ms}
+                                disabled={Boolean(spotifyPlayer.currentlyPlaying)}
+                            />
+                            <span>{formatMs(selectedTrack.duration_ms)}</span>
+                        </Stack>
+                    </SliderWrapper>
                 </TrackSelectedWrapper>
             </Slide>}
             <Slide direction='right' in={Boolean(!selectedTrack)}>
@@ -128,6 +170,10 @@ const TrackSelectedWrapper = styled('div')(({
     },
 }));
 
+const SliderWrapper = styled(Box)(({
+    width: '100%',
+}));
+
 const Center = styled('div')(({
     display: 'flex',
     justifyContent: 'center',
@@ -139,16 +185,19 @@ const PlayIcon = styled(PlayIconRaw)(({
     height: '150px',
     cursor: 'pointer',
     transition: '200ms',
+    margin: '30px 0px',
 
     '&:hover': {
         scale: '1.05',
     },
 }));
+
 const PauseIcon = styled(PauseIconRaw)(({
     width: '150px',
     height: '150px',
     cursor: 'pointer',
     transition: '200ms',
+    margin: '30px 0px',
 
     '&:hover': {
         scale: '1.05',

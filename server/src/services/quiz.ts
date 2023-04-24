@@ -15,6 +15,7 @@ export const sanitizeQuizRequest = (quizRequestBody: RequestQuiz) => {
                 artist: track.artist,
                 trackUrl: track.trackUrl,
                 points: track.points,
+                position: track.position,
             };
         });
 
@@ -50,6 +51,7 @@ const generateEmptyTrack = (): TrackDocument => {
         artist: '',
         trackUrl: '',
         points: 0,
+        position: 0,
     };
 };
 

@@ -26,19 +26,19 @@ const TrackBox: React.FC<Props> = ({
 
     const handleClose = (selectedTrack: TrackFromSpotify | null) => {
         setSearchMenuIsOpen(false);
-        if (!selectedTrack && track.trackUrl) {
+        if (!selectedTrack) {
             track.title = '';
             track.artist = '';
             track.trackUrl = '';
+            track.position = 0;
             saveTrigger();
+            return;
         }
 
-        if (selectedTrack && selectedTrack.uri != track.trackUrl) {
-            track.title = selectedTrack.name;
-            track.artist = selectedTrack.artists.map((artist) => artist.name).join(', ');
-            track.trackUrl = selectedTrack.uri;
-            saveTrigger();
-        }
+        track.title = selectedTrack.name;
+        track.artist = selectedTrack.artists.map((artist) => artist.name).join(', ');
+        track.trackUrl = selectedTrack.uri;
+        saveTrigger();
     };
 
 
