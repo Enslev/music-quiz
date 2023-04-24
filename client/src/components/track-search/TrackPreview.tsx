@@ -10,8 +10,11 @@ interface Props {
     onSelect: (trackUri: TrackFromSpotify) => void;
 }
 
-const TrackPreview: React.FC<Props> = (props) => {
-    const { spotifyTrack, onSelect } = props;
+const TrackPreview: React.FC<Props> = ({
+    spotifyTrack,
+    onSelect,
+}) => {
+
     const { spotifyPlayer } = useAppState();
     const { play, pause } = useActions().api.spotify;
 
@@ -38,61 +41,61 @@ const TrackPreview: React.FC<Props> = (props) => {
     </PreviewWrapper>;
 };
 
-const PreviewWrapper = styled('div')`
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    width: 100%;
-    font-size: 20px;
-    justify-content: space-between;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
-    cursor: pointer;
+const PreviewWrapper = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: '20px',
+    width: '100%',
+    fontSize: '20px',
+    justifyContent: 'space-between',
+    borderTopRightRadius: '25px',
+    borderBottomRightRadius: '25px',
+    cursor: 'pointer',
 
-    &:hover {
-        background: linear-gradient(135deg, rgba(50,102,112,1) 0%, rgba(45,196,181,1) 100%);
-    }
-`;
+    '&:hover': {
+        background: `linear-gradient(135deg, ${theme.palette.background.default} 25%, ${theme.palette.primary.main}  100%)`,
+    },
+}));
 
-const TrackWrapper = styled('div')`
-    display: flex;
-    max-width: 90%;
-`;
+const TrackWrapper = styled('div')(({
+    display: 'flex',
+    maxWidth: '90%',
+}));
 
-const TrackDetails = styled('div')`
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    justify-content: center;
+const TrackDetails = styled('div')(({
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: '10px',
+    justifyContent: 'center',
 
-    .artist {
-        font-size: 15px;
-        color: lightGray;
-    }
-`;
+    artist: {
+        fontSize: '15px',
+        color: 'lightGray',
+    },
+}));
 
-const PlayIcon = styled(PlayIconRaw)`
-    width: 30px;
-    height: 30px;
-    margin: 0px 10px;
-    cursor: pointer;
-    transition: 200ms;
+const PlayIcon = styled(PlayIconRaw)(({
+    width: '30px',
+    height: '30px',
+    margin: '0px 10px',
+    cursor: 'pointer',
+    transition: '200ms',
 
-    &:hover {
-        scale: 1.2;
-    }
-`;
+    '&:hover': {
+        scale: '1.2',
+    },
+}));
 
-const PauseIcon = styled(PauseIconRaw)`
-    width: 30px;
-    height: 30px;
-    margin: 0px 10px;
-    cursor: pointer;
-    transition: 200ms;
+const PauseIcon = styled(PauseIconRaw)(({
+    width: '30px',
+    height: '30px',
+    margin: '0px 10px',
+    cursor: 'pointer',
+    transition: '200ms',
 
-    &:hover {
-        scale: 1.2;
-    }
-`;
+    '&:hover': {
+        scale: '1.2',
+    },
+}));
 
 export default TrackPreview;

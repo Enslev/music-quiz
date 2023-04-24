@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Slide, styled } from '@mui/material';
-import RightMenu from '../RightMenuComponent';
+import RightMenu from '../RightMenu';
 import TrackSearchBar from '../track-search/TrackSearchBar';
 import { useActions, useAppState } from '../../overmind';
 import { TrackFromSpotify } from '../../overmind/actions/api/types';
@@ -15,9 +15,12 @@ interface Props {
     handleClose: (selectedTrack: TrackFromSpotify | null) => void;
 }
 
-const SearchMenu: React.FC<Props> = (props) => {
+const SearchMenu: React.FC<Props> = ({
+    open,
+    handleClose,
+    track,
+}) => {
 
-    const { open, handleClose, track } = props;
     const { spotifyPlayer } = useAppState();
     const { search, play, pause, getTrack } = useActions().api.spotify;
 
@@ -66,7 +69,7 @@ const SearchMenu: React.FC<Props> = (props) => {
         <div style={{ overflowX: 'hidden' }}>
             {selectedTrack &&
             <Slide direction='left' in={Boolean(selectedTrack)}>
-                <SelectedTrackWrapper>
+                <TrackSelectedWrapper>
                     <Button onClick={() => {
                         setSelectedTrack(null);
                         setManualSearch(true);
@@ -79,7 +82,7 @@ const SearchMenu: React.FC<Props> = (props) => {
                         { spotifyPlayer.currentlyPlaying == selectedTrack.uri && <PauseIcon onClick={() => pause()}/>}
                         { spotifyPlayer.currentlyPlaying != selectedTrack.uri && <PlayIcon onClick={() => play(selectedTrack.uri)}/>}
                     </Center>
-                </SelectedTrackWrapper>
+                </TrackSelectedWrapper>
             </Slide>}
             <Slide direction='right' in={Boolean(!selectedTrack)}>
                 <div>
@@ -103,54 +106,53 @@ const SearchMenu: React.FC<Props> = (props) => {
 
 };
 
-const TrackWrapper = styled('div')`
-    display: flex;
-    height: 90%;
-    flex-direction: column;
-    overflow-y: scroll;
-`;
+const TrackWrapper = styled('div')(({
+    height: '90%',
+    display: 'flex',
+    flexDirection: 'column',
+    overflowY: 'scroll',
+}));
 
-const SelectedTrackWrapper = styled('div')`
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
+const TrackSelectedWrapper = styled('div')(({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
 
-    .title {
-        font-weight: 600;
-        font-size: 30px;
-    }
+    '.title': {
+        fontWeight: 600,
+        fontSize: '30px',
+    },
 
-    .artist {
-        font-size: 20px;
-    }
-`;
+    '.artist': {
+        fontSize: '20px',
+    },
+}));
 
-const Center = styled('div')`
-    display: flex;
-    justify-content: center;
-    width: 100%;
-`;
+const Center = styled('div')(({
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
+}));
 
-const PlayIcon = styled(PlayIconRaw)`
-    width: 150px;
-    height: 150px;
-    cursor: pointer;
-    transition: 200ms;
+const PlayIcon = styled(PlayIconRaw)(({
+    width: '150px',
+    height: '150px',
+    cursor: 'pointer',
+    transition: '200ms',
 
-    &:hover {
-        scale: 1.05;
-    }
-`;
+    '&:hover': {
+        scale: '1.05',
+    },
+}));
+const PauseIcon = styled(PauseIconRaw)(({
+    width: '150px',
+    height: '150px',
+    cursor: 'pointer',
+    transition: '200ms',
 
-const PauseIcon = styled(PauseIconRaw)`
-    width: 150px;
-    height: 150px;
-    cursor: pointer;
-    transition: 200ms;
-
-    &:hover {
-        scale: 1.05;
-    }
-`;
+    '&:hover': {
+        scale: '1.05',
+    },
+}));
 
 export default SearchMenu;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useActions } from '../overmind';
 import { Quiz } from '../overmind/actions/api/quiz';
 import { useParams } from 'react-router-dom';
-import QuizGridComponent from '../components/quiz-grid/QuizGridComponent';
+import QuizGrid from '../components/quiz-grid/QuizGrid';
 
 const PlayerScreenPage: React.FC = () => {
 
@@ -20,7 +20,7 @@ const PlayerScreenPage: React.FC = () => {
     if (!quiz) return <></>;
 
     return <>
-        <QuizGridComponent
+        <QuizGrid
             quiz={quiz}
             revealed={[]}
         />

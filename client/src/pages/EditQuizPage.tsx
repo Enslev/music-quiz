@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useActions } from '../overmind';
 import { Quiz } from '../overmind/actions/api/quiz';
 import { useDebouncedCallback } from 'use-debounce';
-import QuizGridComponent from '../components/quiz-grid/QuizGridComponent';
+import QuizGrid from '../components/quiz-grid/QuizGrid';
 
 const EditQuizPage: React.FC = () => {
 
@@ -28,7 +28,7 @@ const EditQuizPage: React.FC = () => {
     if (!quiz) return <></>;
 
     return <>
-        <QuizGridComponent
+        <QuizGrid
             quiz={quiz}
             editMode
             saveTrigger={(debouncedSave)}

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useActions, useAppState } from '../overmind';
 import { Quiz } from '../overmind/actions/api/quiz';
 import { Button, FormControl, TextField } from '@mui/material';
-import RightMenu from '../components/RightMenuComponent';
+import RightMenu from '../components/RightMenu';
 
 const LandingPage: React.FC = () => {
 

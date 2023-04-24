@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Category } from '../../overmind/actions/api/quiz';
 import { TextField, styled } from '@mui/material';
 
@@ -8,13 +8,13 @@ interface Props {
     saveTrigger: () => void;
 }
 
-const CategoryBox: React.FC<Props> = (props) => {
-
-    const { category, editMode, saveTrigger } = props;
+const CategoryBox: React.FC<Props> = ({
+    category,
+    editMode,
+    saveTrigger,
+}) => {
 
     const [categoryTitle, setCategoryTitle] = useState<string>(category.title);
-
-    const textFieldRef = useRef<HTMLInputElement>(null);
 
     function handleChange(value: string): void {
         setCategoryTitle(value);
@@ -27,10 +27,9 @@ const CategoryBox: React.FC<Props> = (props) => {
         }
     }
 
-    return <>
+    return (<>
         {editMode && <BoxWrapper>
             <TextField
-                ref={textFieldRef}
                 value={categoryTitle}
                 onChange={(e) => handleChange(e.target.value)}
                 variant='standard'
@@ -44,7 +43,7 @@ const CategoryBox: React.FC<Props> = (props) => {
         {!editMode && <BoxWrapper>
             <h3>{category.title}</h3>
         </BoxWrapper>}
-    </>;
+    </>);
 };
 
 const BoxWrapper = styled('div')(({ theme }) => ({

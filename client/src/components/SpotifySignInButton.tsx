@@ -29,26 +29,26 @@ const SpotifySignInButton: React.FC = () => {
     </SpotifyLogin>;
 };
 
-const SpotifyLogin = styled('button')`
-    background-color: #1DB954;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+const SpotifyLogin = styled('button')(({
+    backgroundColor: '#1DB954',
+    border: 'none',
+    padding: '5px 10px',
+    borderRadius: '5px',
 
-    &:hover {
-        cursor: pointer;
-        background-color: #1aa34a;
+    '&:hover': {
+        cursor: 'pointer',
+        backgroundColor: '#1aa34a',
 
-        &:active {
-            background-color: #168d40
-        }
-    }
-`;
+        '&:active': {
+            backgroundColor: '#168d40',
+        },
+    },
+}));
 
-const SpotifyLogo =  styled(SpotifyLogoRaw)`
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-`;
+const SpotifyLogo =  styled(SpotifyLogoRaw)(({
+    width: '30px',
+    height: '30px',
+    marginRight: '10px',
+}));
 
 export default SpotifySignInButton;

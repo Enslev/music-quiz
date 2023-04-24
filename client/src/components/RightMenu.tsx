@@ -38,19 +38,19 @@ const RightMenu: React.FC<Props> = (props) => {
     </>);
 };
 
-const ModalContainer = styled('div')`
-    position: absolute;
-    height: 100vh;
-    box-sizing: border-box;
-    top: 0px;
-    right: 0px;
-    background-color: #326670;
-    width: 500px;
-    padding: 20px;
-    z-index: 100;
+const ModalContainer = styled('div')(({ theme }) => ({
+    position: 'absolute',
+    height: '100vh',
+    boxSizing: 'border-box',
+    top: '0px',
+    right: '0px',
+    backgroundColor: theme.palette.background.default,
+    width: '500px',
+    padding: '20px',
+    zIndex: '100',
 
-    -webkit-box-shadow: 25px 0px 25px 20px #000000;
-    box-shadow: 25px 0px 25px 20px #000000;
-`;
+    webkitBoxShadow: '25px 0px 25px 20px #000000',
+    boxShadow: '25px 0px 25px 20px #000000',
+}));
 
 export default RightMenu;
