@@ -63,6 +63,7 @@ const TrackDetails = styled('div')`
     display: flex;
     flex-direction: column;
     margin-left: 10px;
+    justify-content: center;
 
     .artist {
         font-size: 15px;
