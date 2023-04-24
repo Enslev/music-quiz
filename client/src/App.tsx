@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SpotifyCallbackPage from './pages/SpotifyCallbackPage';
-import HeaderWrapper from './components/Header';
+import Header from './components/Header';
 import EditQuizPage from './pages/EditQuizPage';
 import PlayerScreenPage from './pages/PlayerScreenPage';
 import { useTheme } from '@mui/material';
@@ -15,7 +15,7 @@ const App: React.FC = () => {
     return (
         <BrowserRouter>
             <style>{`body { background-color: ${theme.palette.background.default} }`}</style>
-            <HeaderWrapper/>
+            <Header/>
             <Routes>
                 <Route path="/" Component={LandingPage} />
                 <Route path="login" Component={LoginPage} />
