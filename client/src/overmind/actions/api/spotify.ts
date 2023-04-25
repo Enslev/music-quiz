@@ -27,8 +27,15 @@ export const play = async (context: Context, payload: PlayPayload) => {
         position = 0,
     } = payload;
 
+    const { state } = context;
+
+    if (state.spotifyPlayer.currentlyPlaying == trackUri) {
+        return resume(context);
+    }
+
     // Update state
-    context.state.spotifyPlayer.currentlyPlaying = trackUri;
+    state.spotifyPlayer.isPlaying = true;
+    state.spotifyPlayer.currentlyPlaying = trackUri;
     localStorage.setItem('currentlyPlaying', trackUri);
 
     const body: {
@@ -53,9 +60,38 @@ export const play = async (context: Context, payload: PlayPayload) => {
     return spotifyWrapper(context, 'me/player/play', options);
 };
 
+export const resume = async (context: Context) => {
+    // Update state
+    context.state.spotifyPlayer.isPlaying = true;
+
+    // Trigger spotify API
+    const options: spotifyWrapperOptions = {
+        method: 'PUT',
+        query: {
+            device_id: 'a2fbc6475d5078c9725986d4804dfff78b3f30da',
+        },
+    };
+    return spotifyWrapper(context, 'me/player/play', options);
+};
+
 export const pause = async (context: Context) => {
     // Update state
+    context.state.spotifyPlayer.isPlaying = false;
+
+    // Trigger spotify API
+    const options: spotifyWrapperOptions = {
+        method: 'PUT',
+        query: {
+            device_id: 'a2fbc6475d5078c9725986d4804dfff78b3f30da',
+        },
+    };
+    return spotifyWrapper(context, 'me/player/pause', options);
+};
+
+export const stop = async (context: Context) => {
+    // Update state
     context.state.spotifyPlayer.currentlyPlaying = null;
+    context.state.spotifyPlayer.isPlaying = false;
     localStorage.removeItem('currentlyPlaying');
 
     // Trigger spotify API

@@ -6,7 +6,7 @@ import { useActions, useAppState } from '../../overmind';
 import { TrackFromSpotify } from '../../overmind/actions/api/types';
 import TrackPreview from '../track-search/TrackPreview';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
-import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
+import { ReactComponent as StopIconRaw } from '../../assets/stop-circle.svg';
 import { Track } from '../../overmind/actions/api/quiz';
 import { pad } from '../../services/utils';
 
@@ -23,7 +23,7 @@ const SearchMenu: React.FC<Props> = ({
 }) => {
 
     const { spotifyPlayer } = useAppState();
-    const { search, play, pause, getTrack } = useActions().api.spotify;
+    const { search, play, stop, getTrack } = useActions().api.spotify;
 
     const [searchResult, setSearchResult] = useState<TrackFromSpotify[]>([]);
     const [selectedTrack, setSelectedTrack] = useState<TrackFromSpotify | null>(null);
@@ -107,8 +107,14 @@ const SearchMenu: React.FC<Props> = ({
                         {selectedTrack.artists.map((artist) => artist.name).join(', ')}
                     </span>
                     <Center>
-                        { spotifyPlayer.currentlyPlaying == selectedTrack.uri && <PauseIcon onClick={() => pause()}/>}
-                        { spotifyPlayer.currentlyPlaying != selectedTrack.uri && <PlayIcon onClick={handlePlay}/>}
+
+                        { !spotifyPlayer.isPlaying &&
+                            <PlayIcon onClick={handlePlay}/>
+                        }
+
+                        { spotifyPlayer.isPlaying && spotifyPlayer.currentlyPlaying == selectedTrack.uri &&
+                            <StopIcon onClick={() => stop()}/>
+                        }
                     </Center>
                     <SliderWrapper>
                         <span>Start position</span>
@@ -119,7 +125,7 @@ const SearchMenu: React.FC<Props> = ({
                                 onChange={(e, newValue) => handlePositionChange(newValue)}
                                 min={0}
                                 max={selectedTrack.duration_ms}
-                                disabled={Boolean(spotifyPlayer.currentlyPlaying)}
+                                disabled={Boolean(spotifyPlayer.isPlaying)}
                             />
                             <span>{formatMs(selectedTrack.duration_ms)}</span>
                         </Stack>
@@ -192,7 +198,7 @@ const PlayIcon = styled(PlayIconRaw)(({
     },
 }));
 
-const PauseIcon = styled(PauseIconRaw)(({
+const StopIcon = styled(StopIconRaw)(({
     width: '150px',
     height: '150px',
     cursor: 'pointer',

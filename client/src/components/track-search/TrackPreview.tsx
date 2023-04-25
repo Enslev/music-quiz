@@ -2,7 +2,7 @@ import React, {  } from 'react';
 import { styled } from '@mui/material';
 import { TrackFromSpotify } from '../../overmind/actions/api/types';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
-import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
+import { ReactComponent as StopIconRaw } from '../../assets/stop-circle.svg';
 import { useActions, useAppState } from '../../overmind';
 
 interface Props {
@@ -16,11 +16,11 @@ const TrackPreview: React.FC<Props> = ({
 }) => {
 
     const { spotifyPlayer } = useAppState();
-    const { play, pause } = useActions().api.spotify;
+    const { play, stop } = useActions().api.spotify;
 
-    const handlePause = (e: React.MouseEvent) => {
+    const handleStop = (e: React.MouseEvent) => {
         e.stopPropagation();
-        pause();
+        stop();
     };
 
     const handlePlay = (e: React.MouseEvent) => {
@@ -36,8 +36,15 @@ const TrackPreview: React.FC<Props> = ({
                 <span className='artist'>{spotifyTrack.artists.map((artist) => artist.name).join(', ')}</span>
             </TrackDetails>
         </TrackWrapper>
-        { spotifyPlayer.currentlyPlaying == spotifyTrack.uri && <PauseIcon onClick={handlePause}/>}
-        { spotifyPlayer.currentlyPlaying != spotifyTrack.uri && <PlayIcon onClick={handlePlay}/>}
+
+        { (!spotifyPlayer.isPlaying || spotifyPlayer.currentlyPlaying != spotifyTrack.uri) &&
+            <PlayIcon onClick={handlePlay}/>
+        }
+
+        { (spotifyPlayer.isPlaying && spotifyPlayer.currentlyPlaying == spotifyTrack.uri) &&
+            <StopIcon onClick={handleStop}/>
+        }
+
     </PreviewWrapper>;
 };
 
@@ -86,7 +93,7 @@ const PlayIcon = styled(PlayIconRaw)(({
     },
 }));
 
-const PauseIcon = styled(PauseIconRaw)(({
+const StopIcon = styled(StopIconRaw)(({
     width: '30px',
     height: '30px',
     margin: '0px 10px',

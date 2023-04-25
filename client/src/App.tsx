@@ -8,6 +8,7 @@ import Header from './components/Header';
 import EditQuizPage from './pages/EditQuizPage';
 import PlayerScreenPage from './pages/PlayerScreenPage';
 import { useTheme } from '@mui/material';
+import MasterQuizPage from './pages/MasterQuizPage';
 
 const App: React.FC = () => {
     const theme = useTheme();
@@ -19,6 +20,7 @@ const App: React.FC = () => {
             <Routes>
                 <Route path="/" Component={LandingPage} />
                 <Route path="login" Component={LoginPage} />
+                <Route path="quiz/:quizId/master" Component={MasterQuizPage} />
                 <Route path="quiz/:quizId/edit" Component={EditQuizPage} />
                 <Route path="quiz/:quizId" Component={PlayerScreenPage} />
                 <Route path="auth/callback" Component={SpotifyCallbackPage} />

@@ -6,6 +6,7 @@ type State = {
   isLoggedIn: boolean;
   spotifyPlayer: {
     currentlyPlaying: string | null;
+    isPlaying: boolean;
   }
 }
 
@@ -15,5 +16,6 @@ export const state: State = {
     isLoggedIn: derived((state: State) => Boolean(state.token)),
     spotifyPlayer: {
         currentlyPlaying: null,
+        isPlaying: false,
     },
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useActions, useAppState } from '../overmind';
 import { Quiz } from '../overmind/actions/api/quiz';
 import { Button, FormControl, TextField } from '@mui/material';
@@ -9,20 +9,12 @@ import RightMenu from '../components/RightMenu';
 const LandingPage: React.FC = () => {
 
     const state = useAppState();
-    const navigate = useNavigate();
     const { createQuiz } = useActions().api.quiz;
     const [quizzes, setQuizzes] = useState<Quiz[] | null>(null);
     const { getQuizzes } = useActions().api.quiz;
 
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [newQuizTitle, setNewQuizTitle] = useState<string>('');
-
-    // Send user to login if no login token is found
-    useEffect(() => {
-        if (!state.isLoggedIn) {
-            navigate('/login');
-        }
-    }, [navigate]);
 
     useEffect(() => {
         (async () => {
