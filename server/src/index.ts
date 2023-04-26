@@ -3,8 +3,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 
-import { init } from './mongoose';
+import { initMongo } from './mongoose';
 import routes from './routes';
+import { initRedis } from './services/redis';
 
 dotenv.config();
 
@@ -17,10 +18,18 @@ const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res: Respon
     next();
 };
 
+const init = () => {
+    const initMongoPromise = initMongo();
+    const initRedisPromise = initRedis();
+
+    return Promise.all([
+        initMongoPromise,
+        initRedisPromise,
+    ]);
+};
+
 (async () => {
     await init();
-    console.log(`⚡️[server]: Connected to MongoDB`);
-
     app.use(morgan('tiny'));
     app.use(cors());
     app.use(express.json());

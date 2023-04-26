@@ -2,6 +2,8 @@ version: '3'
 
 services:
     server:
+        container_name: server
+        depends_on: [cache]
         build: ./server
         expose:
             - ${API_PORT}
@@ -12,7 +14,9 @@ services:
         volumes:
             - ./server/src:/srv/app/music-quiz-server/src
         command: npm run dev
+
     client:
+        container_name: react
         restart: always
         build: ./client
         expose:
@@ -30,3 +34,16 @@ services:
         links:
             - server
         command: npm run start
+
+    cache:
+        container_name: redis
+        image: redis:6.2-alpine
+        restart: always
+        ports:
+        - '6379:6379'
+        command: redis-server --save 20 1 --loglevel warning
+        volumes: 
+        - cache:/data
+volumes:
+  cache:
+    driver: local

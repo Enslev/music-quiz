@@ -1,20 +1,5 @@
+import { SpotifyAccessTokenResponse, TrackFromSpotify, UserInformationResponse } from '../types/spotify';
 import { request } from './request';
-
-interface SpotifyAccessTokenResponse {
-    access_token: string;
-    token_type: string;
-    expires_in: number;
-    refresh_token: string;
-    scope: string;
-}
-
-interface UserInformationResponse {
-    country: string;
-    display_name: string;
-    email: string;
-    id: string;
-    uri: string;
-}
 
 export const exchangeCode = async (code: string): Promise<SpotifyAccessTokenResponse> => {
     const clientId = process.env.SPOTIFY_CLIENT_ID ?? '';
@@ -52,6 +37,17 @@ export const exchangeRefreshToken = async (refreshToken: string): Promise<Spotif
 export const getUserInformation = async (accessToken: string) => {
 
     const response = request<UserInformationResponse>('https://api.spotify.com/v1/me', {
+        headers: {
+            authorization: `Bearer ${accessToken}`,
+        },
+    });
+
+    return response;
+};
+
+export const getTrack = async (accessToken: string, trackId: string): Promise<TrackFromSpotify> => {
+
+    const response = request<TrackFromSpotify>(`https://api.spotify.com/v1/tracks/${trackId}?market=DK`, {
         headers: {
             authorization: `Bearer ${accessToken}`,
         },
