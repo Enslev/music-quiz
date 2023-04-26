@@ -1,7 +1,7 @@
 interface RequestOptions {
     headers?: Record<string, string>;
     body?: object;
-    query?: QueryObject;
+    query?: QueryObject | null;
 }
 
 export interface ErrorResponse {

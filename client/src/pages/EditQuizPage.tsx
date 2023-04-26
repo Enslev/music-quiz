@@ -8,9 +8,8 @@ import QuizGrid from '../components/quiz-grid/QuizGrid';
 const EditQuizPage: React.FC = () => {
 
     const { quizId } = useParams();
-    const { getQuiz } = useActions().api.quiz;
+    const { getQuiz, putQuiz } = useActions().api.quiz;
     const [quiz, setQuiz] = useState<Quiz | null>(null);
-    const { putQuiz } = useActions().api.quiz;
 
     useEffect(() => {
         (async () => {

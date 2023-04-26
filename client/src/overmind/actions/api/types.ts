@@ -32,6 +32,10 @@ export interface SearchSpotifyResponseBody {
 }
 
 export interface TrackFromSpotify {
+    error?: {
+        status: number,
+        message: string,
+    },
     album : {
       album_group : string,
       album_type : string,

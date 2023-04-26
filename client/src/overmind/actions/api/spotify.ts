@@ -105,12 +105,12 @@ export const stop = async (context: Context) => {
 };
 
 export const getTrack = async (context: Context, trackUri: string) => {
-    const trackId = trackUri.split(':')[2];
 
     const options: spotifyWrapperOptions = {
         method: 'GET',
     };
-    return spotifyWrapper<TrackFromSpotify>(context, `tracks/${trackId}`, options);
+
+    return spotifyProxyWrapper<TrackFromSpotify>(context, `tracks/${trackUri}`, options);
 };
 
 interface spotifyWrapperOptions {
@@ -148,6 +148,42 @@ const spotifyWrapper = async <T>(context: Context, path: string, options: spotif
                 console.log('Need to refresh');
                 await actions.auth.refreshAccessToken();
                 return await spotifyWrapper<T>(context, path, options);
+            }
+        }
+        console.log('Something went really wrong with request', err);
+        return null;
+    }
+};
+
+const spotifyProxyWrapper = async <T>(context: Context, path: string, options: spotifyWrapperOptions, retry = 2): Promise<T | null> => {
+    const { state, actions } = context;
+    if (!state.token) return null;
+
+    try {
+        switch (options.method) {
+        case ('GET'): {
+            return await request.get<T>(`http://localhost:9001/api/spotify/${path}`, {
+                headers: { authorization: `Bearer ${context.state.token}` },
+                query: options.query ?? null,
+            });
+        }
+        case ('PUT'): {
+            return await request.put<T>(`http://localhost:9001/api/spotify/${path}`, {
+                headers: { authorization: `Bearer ${context.state.token}` },
+                query: options.query ?? null,
+                body: options.body,
+            });
+        }
+        }
+    } catch(err) {
+        if (hasProp(err, 'error')) {
+            const httpError = err.error as ErrorResponse;
+
+            if (httpError.status == 401 && httpError.message == 'The access token expired') {
+                if (retry == 0) throw Error('Max retries exceeded');
+
+                await actions.auth.refreshAccessToken();
+                return await spotifyProxyWrapper<T>(context, path, options, retry-1);
             }
         }
         console.log('Something went really wrong with request', err);
