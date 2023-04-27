@@ -11,7 +11,7 @@ export const initRedis = async () => {
     client.on('error', err => console.log('❗️ Redis Client Error', err));
 
     await client.connect();
-    console.log(`⚡️[server]: Redis initialized`);
+    console.log(`⚡️ Redis initialized`);
 };
 
 const getClient = (): RedisClientType => {
