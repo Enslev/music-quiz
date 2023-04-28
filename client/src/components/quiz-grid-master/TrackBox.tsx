@@ -49,6 +49,7 @@ const BoxWrapper = styled('div')(({ theme }) => ({
     textAlign: 'center',
     overflow: 'hidden',
     cursor: 'pointer',
+    padding: '5px',
 
     '@keyframes gradient-enter': {
         from: {

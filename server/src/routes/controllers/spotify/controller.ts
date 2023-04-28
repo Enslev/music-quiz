@@ -34,14 +34,12 @@ export const getTrack = async (req: ValidatedRequest<GetTrackSchema>, res: Respo
 
     const spotifyTrack = await getSpotifyTrack(req.spotifyAccessToken, trackId);
 
-    if (spotifyTrack.error?.status == 404) {
-
-        res.status(404).send({
-            status: 404,
-            message: 'Track not Found',
+    if (spotifyTrack.error && spotifyTrack.error?.status >= 400) {
+        res.status(spotifyTrack.error.status).send({
+            status: spotifyTrack.error.status,
+            message: spotifyTrack.error.message,
         });
         return;
-
     }
 
     await redis.set(trackId, spotifyTrack);

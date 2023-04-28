@@ -53,7 +53,7 @@ const QuizWrapper = styled('div')({
     padding: '2vw',
 });
 
-const QuizGridWrapper = styled('div')(({ theme })  => ({
+const QuizGridWrapper = styled('div')(({ theme }) => ({
     width: '100%',
     backgroundColor: theme.palette.primary.main,
     color: 'white',

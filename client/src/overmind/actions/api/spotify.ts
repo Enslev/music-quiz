@@ -176,15 +176,9 @@ const spotifyProxyWrapper = async <T>(context: Context, path: string, options: s
         }
         }
     } catch(err) {
-        if (hasProp(err, 'error')) {
-            const httpError = err.error as ErrorResponse;
-
-            if (httpError.status == 401 && httpError.message == 'The access token expired') {
-                if (retry == 0) throw Error('Max retries exceeded');
-
-                await actions.auth.refreshAccessToken();
-                return await spotifyProxyWrapper<T>(context, path, options, retry-1);
-            }
+        if (err == 'Unauthorized') {
+            await actions.auth.refreshAccessToken();
+            return await spotifyProxyWrapper<T>(context, path, options, retry-1);
         }
         console.log('Something went really wrong with request', err);
         return null;
