@@ -59,7 +59,7 @@ export const putQuizSchema = {
                 artist: Joi.string().allow(''),
                 trackUrl: Joi.string().allow(''),
                 points: Joi.number(),
-                position: Joi.number().default(0),
+                startPosition: Joi.number().default(0),
             })),
         })),
     }),
@@ -78,7 +78,7 @@ export interface PutQuizSchema extends ValidatedRequestSchema {
                 artist: string;
                 trackUrl: string;
                 points: number;
-                position: number,
+                startPosition: number,
             }[]
         }[]
     },

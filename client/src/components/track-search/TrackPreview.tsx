@@ -1,13 +1,13 @@
 import React, {  } from 'react';
 import { styled } from '@mui/material';
-import { TrackFromSpotify } from '../../overmind/actions/api/types';
+import { SpotifyTrackObject } from '../../overmind/actions/api/types';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as StopIconRaw } from '../../assets/stop-circle.svg';
 import { useActions, useAppState } from '../../overmind';
 
 interface Props {
-    spotifyTrack: TrackFromSpotify;
-    onSelect: (trackUri: TrackFromSpotify) => void;
+    spotifyTrack: SpotifyTrackObject;
+    onSelect: (trackUri: SpotifyTrackObject) => void;
 }
 
 const TrackPreview: React.FC<Props> = ({

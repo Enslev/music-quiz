@@ -3,17 +3,17 @@ import { Box, Button, Slide, Slider, Stack, styled } from '@mui/material';
 import RightMenu from '../RightMenu';
 import TrackSearchBar from '../track-search/TrackSearchBar';
 import { useActions, useAppState } from '../../overmind';
-import { TrackFromSpotify } from '../../overmind/actions/api/types';
+import { SpotifyTrackObject } from '../../overmind/actions/api/types';
 import TrackPreview from '../track-search/TrackPreview';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
-import { ReactComponent as StopIconRaw } from '../../assets/stop-circle.svg';
+import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
 import { Track } from '../../overmind/actions/api/quiz';
 import { pad } from '../../services/utils';
 
 interface Props {
     open: boolean;
     track: Track;
-    handleClose: (selectedTrack: TrackFromSpotify | null) => void;
+    handleClose: (selectedTrack: SpotifyTrackObject | null) => void;
 }
 
 const SearchMenu: React.FC<Props> = ({
@@ -23,17 +23,17 @@ const SearchMenu: React.FC<Props> = ({
 }) => {
 
     const { spotifyPlayer } = useAppState();
-    const { search, play, stop, getTrack } = useActions().api.spotify;
+    const { spotify } = useActions().api;
 
-    const [searchResult, setSearchResult] = useState<TrackFromSpotify[]>([]);
-    const [selectedTrack, setSelectedTrack] = useState<TrackFromSpotify | null>(null);
+    const [searchResult, setSearchResult] = useState<SpotifyTrackObject[]>([]);
+    const [selectedTrack, setSelectedTrack] = useState<SpotifyTrackObject | null>(null);
     const [searchValue, setSearchValue] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [manualSearch, setManualSearch] = useState<boolean>(false);
-    const [selectedTrackPosition, setSelectedTrackPosition] = useState<number>(track.position);
+    const [selectedTrackPosition, setSelectedTrackPosition] = useState<number>(track.startPosition);
 
     const onSearch = async (searchValue: string) => {
-        const searchResponse = await search(searchValue);
+        const searchResponse = await spotify.search(searchValue);
         if (!searchResponse) {
             setSearchResult([]);
             return;
@@ -43,16 +43,19 @@ const SearchMenu: React.FC<Props> = ({
     };
 
     const fetchSelectedTrack = async (trackUri: string) => {
-        const spotifyTrack = await getTrack(trackUri);
+        const spotifyTrack = await spotify.getTrack(trackUri);
         setSelectedTrack(spotifyTrack);
         setLoading(false);
     };
 
     const handlePositionChange = async (newPosition: number | number[]) => {
         if (Array.isArray(newPosition)) return;
-
-        track.position = newPosition;
         setSelectedTrackPosition(newPosition);
+    };
+
+    const handlePositionChangeCommit = async (newPosition: number | number[]) => {
+        if (Array.isArray(newPosition)) return;
+        spotify.seek(newPosition);
     };
 
     const formatMs = (ms: number) => {
@@ -64,7 +67,7 @@ const SearchMenu: React.FC<Props> = ({
     const handlePlay = () => {
         if (!selectedTrack) return;
 
-        play({
+        spotify.play({
             trackUri: selectedTrack.uri,
             position: selectedTrackPosition,
         });
@@ -75,6 +78,7 @@ const SearchMenu: React.FC<Props> = ({
         setSelectedTrack(null);
         setSearchValue('');
         setManualSearch(false);
+        spotify.stop();
         handleClose(selectedTrack);
     };
 
@@ -85,6 +89,11 @@ const SearchMenu: React.FC<Props> = ({
             fetchSelectedTrack(track.trackUrl);
         }
     });
+
+    useEffect(() => {
+        if (spotifyPlayer.playpackPosition == null || spotifyPlayer.currentlyPlaying != selectedTrack?.uri) return;
+        setSelectedTrackPosition(spotifyPlayer.playpackPosition);
+    }, [spotifyPlayer.playpackPosition]);
 
     if (loading) {
         return <></>;
@@ -113,18 +122,18 @@ const SearchMenu: React.FC<Props> = ({
                         }
 
                         { spotifyPlayer.isPlaying && spotifyPlayer.currentlyPlaying == selectedTrack.uri &&
-                            <StopIcon onClick={() => stop()}/>
+                            <PauseIcon onClick={() => spotify.pause()}/>
                         }
                     </Center>
                     <SliderWrapper>
-                        <span>Start position</span>
                         <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
                             <span>{formatMs(selectedTrackPosition)}</span>
                             <Slider
                                 value={selectedTrackPosition}
-                                onChange={(e, newValue) => handlePositionChange(newValue)}
                                 min={0}
                                 max={selectedTrack.duration_ms}
+                                onChange={(e, newValue) => handlePositionChange(newValue)}
+                                onChangeCommitted={(e, newValue) => handlePositionChangeCommit(newValue)}
                                 disabled={Boolean(spotifyPlayer.isPlaying)}
                             />
                             <span>{formatMs(selectedTrack.duration_ms)}</span>
@@ -198,7 +207,7 @@ const PlayIcon = styled(PlayIconRaw)(({
     },
 }));
 
-const StopIcon = styled(StopIconRaw)(({
+const PauseIcon = styled(PauseIconRaw)(({
     width: '150px',
     height: '150px',
     cursor: 'pointer',

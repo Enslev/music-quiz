@@ -3,7 +3,28 @@ import request, { ErrorResponse } from '../../../services/api-service';
 import jwt from 'jwt-decode';
 import { Token } from '../auth';
 import { hasProp } from '../../../services/utils';
-import { SearchSpotifyResponseBody, TrackFromSpotify } from './types';
+import { GetPlaybackStateResponseBody, SearchSpotifyResponseBody, SpotifyTrackObject } from './types';
+
+const deviceID = 'a2fbc6475d5078c9725986d4804dfff78b3f30da'; // TODO Make this not hardcoded
+let playbackUpdateInterval: NodeJS.Timer | null = null;
+const PLAYBACK_UPDATE_INTERVAL_MS = 900 as const;
+
+const startPlaybackUpdates = (context: Context) => {
+    const { updatePlaybackPosition } = context.actions.api.spotify;
+    playbackUpdateInterval = setInterval(async () => {
+        updatePlaybackPosition();
+    }, PLAYBACK_UPDATE_INTERVAL_MS);
+};
+
+const stopPlaybackUpdates = () => {
+    if (!playbackUpdateInterval) return;
+    clearInterval(playbackUpdateInterval);
+};
+
+export const updatePlaybackPosition = async (context: Context) => {
+    const playbackResponse = await getPlaybackState(context);
+    context.state.spotifyPlayer.playpackPosition = playbackResponse?.progress_ms ?? null;
+};
 
 export const search = async (context: Context, searchTerm: string): Promise<SearchSpotifyResponseBody | null> => {
     return spotifyWrapper<SearchSpotifyResponseBody>(context, 'search', {
@@ -34,6 +55,7 @@ export const play = async (context: Context, payload: PlayPayload) => {
     }
 
     // Update state
+    startPlaybackUpdates(context);
     state.spotifyPlayer.isPlaying = true;
     state.spotifyPlayer.currentlyPlaying = trackUri;
     localStorage.setItem('currentlyPlaying', trackUri);
@@ -62,6 +84,7 @@ export const play = async (context: Context, payload: PlayPayload) => {
 
 export const resume = async (context: Context) => {
     // Update state
+    startPlaybackUpdates(context);
     context.state.spotifyPlayer.isPlaying = true;
 
     // Trigger spotify API
@@ -74,9 +97,28 @@ export const resume = async (context: Context) => {
     return spotifyWrapper(context, 'me/player/play', options);
 };
 
+export const seek = async (context: Context, newPosition: number) => {
+    const options: spotifyWrapperOptions = {
+        method: 'PUT',
+        query: {
+            position_ms: newPosition,
+            device_id: deviceID,
+        },
+    };
+
+    return spotifyWrapper(context, 'me/player/seek', options);
+};
+
 export const pause = async (context: Context) => {
+    const spotifyState = context.state.spotifyPlayer;
+    const isPlayingBeforeUpdate = spotifyState.isPlaying;
+
     // Update state
-    context.state.spotifyPlayer.isPlaying = false;
+    stopPlaybackUpdates();
+    spotifyState.isPlaying = false;
+
+    // Don't notify spotify if there is no song playing
+    if (!isPlayingBeforeUpdate) return;
 
     // Trigger spotify API
     const options: spotifyWrapperOptions = {
@@ -89,10 +131,18 @@ export const pause = async (context: Context) => {
 };
 
 export const stop = async (context: Context) => {
+    const spotifyState = context.state.spotifyPlayer;
+    const isPlayingBeforeUpdate = spotifyState.isPlaying;
+
     // Update state
-    context.state.spotifyPlayer.currentlyPlaying = null;
-    context.state.spotifyPlayer.isPlaying = false;
+    stopPlaybackUpdates();
+    spotifyState.currentlyPlaying = null;
+    spotifyState.isPlaying = false;
+    spotifyState.playpackPosition = null;
     localStorage.removeItem('currentlyPlaying');
+
+    // Don't notify spotify if there is no song playing
+    if (!isPlayingBeforeUpdate) return;
 
     // Trigger spotify API
     const options: spotifyWrapperOptions = {
@@ -104,13 +154,25 @@ export const stop = async (context: Context) => {
     return spotifyWrapper(context, 'me/player/pause', options);
 };
 
+export const getPlaybackState = async (context: Context) => {
+
+    const options: spotifyWrapperOptions = {
+        method: 'GET',
+        query: {
+            market: 'DK',
+        },
+    };
+
+    return spotifyWrapper<GetPlaybackStateResponseBody>(context, 'me/player', options);
+};
+
 export const getTrack = async (context: Context, trackUri: string) => {
 
     const options: spotifyWrapperOptions = {
         method: 'GET',
     };
 
-    return spotifyProxyWrapper<TrackFromSpotify>(context, `tracks/${trackUri}`, options);
+    return spotifyProxyWrapper<SpotifyTrackObject>(context, `tracks/${trackUri}`, options);
 };
 
 interface spotifyWrapperOptions {

@@ -21,17 +21,37 @@ export interface putQuizRequestBody {
 
 export interface SearchSpotifyResponseBody {
     tracks : {
-      href : string,
-      items : TrackFromSpotify[],
-      limit : number,
-      next : string,
-      offset : number,
-      previous : null,
-      total : number,
+        href : string,
+        items : SpotifyTrackObject[],
+        limit : number,
+        next : string,
+        offset : number,
+        previous : null,
+        total : number,
     }
 }
 
-export interface TrackFromSpotify {
+export interface GetPlaybackStateResponseBody {
+    shuffle_state: boolean,
+    repeat_state: 'off' | 'track' | 'context',
+    timestamp: number,
+    progress_ms: number,
+    is_playing: boolean,
+    device: SpotiyDeviceObject,
+    item: SpotifyTrackObject,
+}
+
+export interface SpotiyDeviceObject {
+    id: string,
+    is_active: boolean,
+    is_private_session: boolean,
+    is_restricted: boolean,
+    name: string,
+    type: string,
+    volume_percent: number
+}
+
+export interface SpotifyTrackObject {
     error?: {
         status: number,
         message: string,

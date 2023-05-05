@@ -7,6 +7,7 @@ type State = {
   spotifyPlayer: {
     currentlyPlaying: string | null;
     isPlaying: boolean;
+    playpackPosition: number | null;
   }
 }
 
@@ -17,5 +18,6 @@ export const state: State = {
     spotifyPlayer: {
         currentlyPlaying: null,
         isPlaying: false,
+        playpackPosition: null,
     },
 };

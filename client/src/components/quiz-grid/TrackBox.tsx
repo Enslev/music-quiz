@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import SearchMenu from '../track-search/SearchMenu';
 import { Track } from '../../overmind/actions/api/quiz';
-import { TrackFromSpotify } from '../../overmind/actions/api/types';
+import { SpotifyTrackObject } from '../../overmind/actions/api/types';
 import { styled } from '@mui/material';
 
 import { ReactComponent as PlusIconRaw } from '../../assets/plus-circle.svg';
@@ -24,13 +24,13 @@ const TrackBox: React.FC<Props> = ({
     const [searchMenuIsOpen, setSearchMenuIsOpen] = useState<boolean>(false);
 
 
-    const handleClose = (selectedTrack: TrackFromSpotify | null) => {
+    const handleClose = (selectedTrack: SpotifyTrackObject | null) => {
         setSearchMenuIsOpen(false);
         if (!selectedTrack) {
             track.title = '';
             track.artist = '';
             track.trackUrl = '';
-            track.position = 0;
+            track.startPosition = 0;
             saveTrigger();
             return;
         }

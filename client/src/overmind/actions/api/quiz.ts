@@ -15,7 +15,7 @@ export interface Quiz {
             artist: string;
             points:number;
             trackUrl: string;
-            position: number;
+            startPosition: number;
         }[]
     }[]
 }

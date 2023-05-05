@@ -9,13 +9,13 @@ type RequestTrack = PutQuizSchema['body']['categories'][number]['tracks'][number
 export const sanitizeQuizRequest = (quizRequestBody: RequestQuiz) => {
 
     const categories = quizRequestBody.categories.map((category: RequestCategory) => {
-        const tracks = category.tracks.map((track: RequestTrack) => {
+        const tracks: Omit<RequestTrack, '_id'>[] = category.tracks.map((track: RequestTrack) => {
             return {
                 title: track.title,
                 artist: track.artist,
                 trackUrl: track.trackUrl,
                 points: track.points,
-                position: track.position,
+                startPosition: track.startPosition,
             };
         });
 
@@ -51,7 +51,7 @@ const generateEmptyTrack = (): TrackDocument => {
         artist: '',
         trackUrl: '',
         points: 0,
-        position: 0,
+        startPosition: 0,
     };
 };
 

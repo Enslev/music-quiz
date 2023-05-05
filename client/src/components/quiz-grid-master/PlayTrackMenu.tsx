@@ -31,7 +31,7 @@ const PlayTrackMenu: React.FC<Props> = ({
 
     const handlePlay = (e: React.MouseEvent) => {
         e.stopPropagation();
-        play({ trackUri: track.trackUrl, position: track.position });
+        play({ trackUri: track.trackUrl, position: track.startPosition });
     };
 
 

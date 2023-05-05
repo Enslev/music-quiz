@@ -16,7 +16,7 @@ class Track {
     public points!: number;
 
     @prop({ default: 0 })
-    public position!: number;
+    public startPosition!: number;
 }
 
 class Category {
