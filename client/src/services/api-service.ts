@@ -21,7 +21,7 @@ const get = <T = unknown>(url: string, options: RequestOptions = {}) => {
     let query = '';
     if (options.query) query = '?' + queryBuilder(options.query);
 
-    return fetch(url + query, requestOptions).then(handleResponse<T>);
+    return fetch(url + query, requestOptions).then((response) => handleResponse<T>(response));
 };
 
 const post = <T = unknown>(url: string, options: RequestOptions = {}) => {
@@ -36,7 +36,7 @@ const post = <T = unknown>(url: string, options: RequestOptions = {}) => {
     let query = '';
     if (options.query) query = '?' + queryBuilder(options.query);
 
-    return fetch(url + query, requestOptions).then(handleResponse<T>);
+    return fetch(url + query, requestOptions).then((response) => handleResponse<T>(response));
 };
 
 const put = <T = unknown>(url: string, options: RequestOptions = {}) => {
@@ -51,7 +51,7 @@ const put = <T = unknown>(url: string, options: RequestOptions = {}) => {
     let query = '';
     if (options.query) query = '?' + queryBuilder(options.query);
 
-    return fetch(url + query, requestOptions).then(handleResponse<T>);
+    return fetch(url + query, requestOptions).then((response) => handleResponse<T>(response));
 };
 
 // prefixed with underscored because delete is a reserved word in javascript
@@ -67,7 +67,7 @@ const _delete = <T = unknown>(url: string, options: RequestOptions = {}) => {
     let query = '';
     if (options.query) query = '?' + queryBuilder(options.query);
 
-    return fetch(url + query, requestOptions).then(handleResponse<T>);
+    return fetch(url + query, requestOptions).then((response) => handleResponse<T>(response));
 };
 
 const handleResponse = <T>(response: Response) => {
