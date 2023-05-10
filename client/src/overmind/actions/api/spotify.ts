@@ -5,7 +5,7 @@ import { Token } from '../auth';
 import { hasProp } from '../../../services/utils';
 import { GetPlaybackStateResponseBody, SearchSpotifyResponseBody, SpotifyTrackObject } from './types';
 
-const deviceID = 'a2fbc6475d5078c9725986d4804dfff78b3f30da'; // TODO Make this not hardcoded
+const deviceID = 'df29db6cb8652085b5395dae088370700b12aff0'; // TODO Make this not hardcoded
 let playbackUpdateInterval: NodeJS.Timer | null = null;
 const PLAYBACK_UPDATE_INTERVAL_MS = 900 as const;
 
@@ -75,7 +75,7 @@ export const play = async (context: Context, payload: PlayPayload) => {
     const options: spotifyWrapperOptions = {
         method: 'PUT',
         query: {
-            device_id: 'a2fbc6475d5078c9725986d4804dfff78b3f30da',
+            device_id: deviceID,
         },
         body,
     };
@@ -91,7 +91,7 @@ export const resume = async (context: Context) => {
     const options: spotifyWrapperOptions = {
         method: 'PUT',
         query: {
-            device_id: 'a2fbc6475d5078c9725986d4804dfff78b3f30da',
+            device_id: deviceID,
         },
     };
     return spotifyWrapper(context, 'me/player/play', options);
@@ -124,7 +124,7 @@ export const pause = async (context: Context) => {
     const options: spotifyWrapperOptions = {
         method: 'PUT',
         query: {
-            device_id: 'a2fbc6475d5078c9725986d4804dfff78b3f30da',
+            device_id: deviceID,
         },
     };
     return spotifyWrapper(context, 'me/player/pause', options);
@@ -148,7 +148,7 @@ export const stop = async (context: Context) => {
     const options: spotifyWrapperOptions = {
         method: 'PUT',
         query: {
-            device_id: 'a2fbc6475d5078c9725986d4804dfff78b3f30da',
+            device_id: deviceID,
         },
     };
     return spotifyWrapper(context, 'me/player/pause', options);
