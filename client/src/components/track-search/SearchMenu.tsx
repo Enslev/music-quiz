@@ -28,7 +28,6 @@ const SearchMenu: React.FC<Props> = ({
     const [searchResult, setSearchResult] = useState<SpotifyTrackObject[]>([]);
     const [selectedTrack, setSelectedTrack] = useState<SpotifyTrackObject | null>(null);
     const [searchValue, setSearchValue] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
     const [manualSearch, setManualSearch] = useState<boolean>(false);
     const [selectedTrackPosition, setSelectedTrackPosition] = useState<number>(track.startPosition);
 
@@ -45,7 +44,6 @@ const SearchMenu: React.FC<Props> = ({
     const fetchSelectedTrack = async (trackUri: string) => {
         const spotifyTrack = await spotify.getTrack(trackUri);
         setSelectedTrack(spotifyTrack);
-        setLoading(false);
     };
 
     const handlePositionChange = async (newPosition: number | number[]) => {
@@ -84,8 +82,7 @@ const SearchMenu: React.FC<Props> = ({
 
     // If saved track is passed in, get it go directly to Selected Track view
     useEffect(() => {
-        if (!loading && !manualSearch && !selectedTrack && track.trackUrl) {
-            setLoading(true);
+        if (!manualSearch && !selectedTrack && track.trackUrl) {
             fetchSelectedTrack(track.trackUrl);
         }
     });
@@ -94,10 +91,6 @@ const SearchMenu: React.FC<Props> = ({
         if (spotifyPlayer.playpackPosition == null || spotifyPlayer.currentlyPlaying != selectedTrack?.uri) return;
         setSelectedTrackPosition(spotifyPlayer.playpackPosition);
     }, [spotifyPlayer.playpackPosition]);
-
-    if (loading) {
-        return <></>;
-    }
 
     return <RightMenu
         open={open}
