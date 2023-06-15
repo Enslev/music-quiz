@@ -20,8 +20,7 @@ const EditQuizPage: React.FC = () => {
 
     const debouncedSave = useDebouncedCallback(async() => {
         if (!quiz) return;
-        const updatedQuiz = await putQuiz(quiz);
-        setQuiz(updatedQuiz);
+        await putQuiz(quiz);
     }, 500);
 
     if (!quiz) return <></>;
@@ -30,7 +29,7 @@ const EditQuizPage: React.FC = () => {
         <QuizGrid
             quiz={quiz}
             editMode
-            saveTrigger={(debouncedSave)}
+            saveTrigger={debouncedSave}
             revealed={['6446c846ef3d95b10c5182ad']}
         />
     </>;
