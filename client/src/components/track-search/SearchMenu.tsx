@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, Slide, Slider, Stack, styled } from '@mui/material';
 import RightMenu from '../RightMenu';
-import TrackSearchBar from '../track-search/TrackSearchBar';
+import TrackSearchBar, { TrackSearchBarRefHandler } from '../track-search/TrackSearchBar';
 import { useActions, useAppState } from '../../overmind';
 import { SpotifyTrackObject } from '../../overmind/actions/api/types';
 import TrackPreview from '../track-search/TrackPreview';
@@ -30,6 +30,13 @@ const SearchMenu: React.FC<Props> = ({
     const [searchValue, setSearchValue] = useState<string>('');
     const [manualSearch, setManualSearch] = useState<boolean>(false);
     const [selectedTrackPosition, setSelectedTrackPosition] = useState<number>(track.startPosition);
+    const searchBarRef = useRef<TrackSearchBarRefHandler>(null);
+
+    useEffect(() => {
+        if (open) {
+            searchBarRef.current?.focusSearch();
+        }
+    }, [open]);
 
     const onSearch = async (searchValue: string) => {
         const searchResponse = await spotify.search(searchValue);
@@ -141,6 +148,7 @@ const SearchMenu: React.FC<Props> = ({
                         onChange={(newValue) => setSearchValue(newValue)}
                         onSearch={(value) => onSearch(value)}
                         onClear={() => setSearchResult([])}
+                        ref={searchBarRef}
                     />
                     <TrackWrapper>
                         {searchResult.map((track) => <TrackPreview

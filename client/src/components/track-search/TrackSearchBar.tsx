@@ -1,8 +1,13 @@
-import React, { useRef } from 'react';
+import React, { RefObject, forwardRef, useImperativeHandle, useRef } from 'react';
 import { styled } from '@mui/material';
 import { ReactComponent as XIconRaw } from '../../assets/x.svg';
 import { ReactComponent as SearchIconRaw } from '../../assets/search.svg';
 import { useDebouncedCallback } from 'use-debounce';
+
+export type TrackSearchBarRefHandler = {
+  inputRef: RefObject<HTMLInputElement>;
+  focusSearch: () => void;
+}
 
 interface Props {
     value: string;
@@ -11,10 +16,17 @@ interface Props {
     onClear: () => void;
 }
 
-const TrackSearchBar: React.FC<Props> = (props) => {
+const TrackSearchBar= forwardRef<TrackSearchBarRefHandler, Props>(function trackSearchBar(props, ref) {
 
     const { value, onChange, onSearch, onClear } = props;
-    const ref = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useImperativeHandle(ref, () => ({
+        inputRef: inputRef,
+        focusSearch: () => {
+            setTimeout(() => inputRef.current?.focus(), 200);
+        },
+    }));
 
     const debouncedSearch = useDebouncedCallback(() => {
         if (!value) return;
@@ -29,15 +41,15 @@ const TrackSearchBar: React.FC<Props> = (props) => {
                 onChange(e.target.value);
                 debouncedSearch();
             }}
-            ref={ref}
+            ref={inputRef}
         ></input>
         <XIcon onClick={() => {
             onChange('');
             onClear();
-            ref.current?.focus();
+            inputRef.current?.focus();
         }}/>
     </SearchBar>;
-};
+});
 
 const SearchBar = styled('div')(({
     width: '100%',
