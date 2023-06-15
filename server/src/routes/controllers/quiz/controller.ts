@@ -3,6 +3,7 @@ import { QuizModel } from '../../../mongoose/Quiz';
 import { CreateQuizSchema, GetQuizSchema, GetQuizzesSchema, PutQuizSchema } from './schema';
 import { ValidatedRequest } from 'express-joi-validation';
 import { initQuiz, sanitizeQuizRequest } from '../../../services/quiz';
+import { Types } from 'mongoose';
 
 export const getQuizzes = async (req: ValidatedRequest<GetQuizzesSchema>, res: Response) => {
 
@@ -20,6 +21,13 @@ export const getQuizzes = async (req: ValidatedRequest<GetQuizzesSchema>, res: R
 };
 
 export const getQuiz = async (req: ValidatedRequest<GetQuizSchema>, res: Response) => {
+    if (!Types.ObjectId.isValid(req.params.quizId)) {
+        res.status(400).send({
+            message: 'Invalid id',
+        });
+        return;
+    }
+
     let quizzesPromise = QuizModel.findOne({
         user: req.user._id,
         _id: req.params.quizId,
