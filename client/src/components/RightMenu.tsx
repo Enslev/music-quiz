@@ -41,6 +41,8 @@ const RightMenu: React.FC<Props> = (props) => {
 const ModalContainer = styled('div')(({ theme }) => ({
     position: 'absolute',
     height: '100vh',
+    maxHeight: '100vh',
+    overflowY: 'hidden',
     boxSizing: 'border-box',
     top: '0px',
     right: '0px',
