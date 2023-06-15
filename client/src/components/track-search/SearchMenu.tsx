@@ -169,6 +169,7 @@ const TrackWrapper = styled('div')(({
     display: 'flex',
     flexDirection: 'column',
     overflowY: 'scroll',
+    paddingRight: '5px',
 }));
 
 const TrackSelectedWrapper = styled('div')(({
