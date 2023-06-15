@@ -24,6 +24,7 @@ const App: React.FC = () => {
                 <Route path="quiz/:quizId/edit" Component={EditQuizPage} />
                 <Route path="quiz/:quizId" Component={PlayerScreenPage} />
                 <Route path="auth/callback" Component={SpotifyCallbackPage} />
+                <Route path="*" element={<div>Not found</div>} />
             </Routes>
         </BrowserRouter>
     );
