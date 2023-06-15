@@ -27,13 +27,18 @@ const TrackBox: React.FC<Props> = ({
     const handleClose = (selectedTrack: SpotifyTrackObject | null) => {
         setSearchMenuIsOpen(false);
         if (!selectedTrack) {
-            track.title = '';
-            track.artist = '';
-            track.trackUrl = '';
-            track.startPosition = 0;
-            saveTrigger();
+            if (track.trackUrl != '') {
+                track.title = '';
+                track.artist = '';
+                track.trackUrl = '';
+                track.startPosition = 0;
+                saveTrigger();
+            }
             return;
         }
+
+        // If no changes detected, skip save step.
+        if (track.trackUrl == selectedTrack.uri) return;
 
         track.title = selectedTrack.name;
         track.artist = selectedTrack.artists.map((artist) => artist.name).join(', ');
