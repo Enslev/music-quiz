@@ -165,10 +165,10 @@ const SearchMenu: React.FC<Props> = ({
 };
 
 const TrackWrapper = styled('div')(({
-    height: '90%',
+    height: '90vh',
     display: 'flex',
     flexDirection: 'column',
-    overflowY: 'scroll',
+    overflowY: 'auto',
     paddingRight: '5px',
 }));
 
