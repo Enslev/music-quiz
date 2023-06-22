@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useActions, useAppState } from '../overmind';
-import { Quiz } from '../overmind/actions/api/quiz';
+import { Quiz } from '../overmind/actions/api/quiz/types';
 import { Button, FormControl, TextField } from '@mui/material';
 import RightMenu from '../components/RightMenu';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Quiz } from '../../overmind/actions/api/quiz';
+import { Quiz } from '../../overmind/actions/api/quiz/types';
 import { styled } from '@mui/material';
 import CategoryBox from './CategoryBox';
 import { noop } from '../../services/utils';

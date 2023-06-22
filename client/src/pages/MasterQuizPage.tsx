@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useActions } from '../overmind';
-import { Quiz } from '../overmind/actions/api/quiz';
+import { Quiz } from '../overmind/actions/api/quiz/types';
 import QuizGrid from '../components/quiz-grid-master/QuizGrid';
 
 const MasterQuizPage: React.FC = () => {

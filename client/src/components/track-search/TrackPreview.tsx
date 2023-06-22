@@ -1,9 +1,9 @@
 import React, {  } from 'react';
 import { styled } from '@mui/material';
-import { SpotifyTrackObject } from '../../overmind/actions/api/types';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as StopIconRaw } from '../../assets/stop-circle.svg';
 import { useActions, useAppState } from '../../overmind';
+import { SpotifyTrackObject } from '../../overmind/actions/api/spotify/types';
 
 interface Props {
     spotifyTrack: SpotifyTrackObject;

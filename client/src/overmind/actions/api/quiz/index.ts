@@ -1,24 +1,6 @@
-import { Context } from '../..';
-import request from '../../../services/api-service';
-import { createQuizRequestBody, putQuizRequestBody } from './types';
-
-export interface Quiz {
-    _id: string;
-    title: string;
-    user: string;
-    categories: {
-        _id: string;
-        title: string;
-        tracks: {
-            _id: string;
-            title: string;
-            artist: string;
-            points:number;
-            trackUrl: string;
-            startPosition: number;
-        }[]
-    }[]
-}
+import { Context } from '../../..';
+import request from '../../../../services/api-service';
+import { Quiz, createQuizRequestBody, putQuizRequestBody } from './types';
 
 export type Category = Quiz['categories'][number];
 export type Track = Quiz['categories'][number]['tracks'][number];

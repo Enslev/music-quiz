@@ -1,9 +1,9 @@
-import { Context } from '../..';
-import request, { ErrorResponse } from '../../../services/api-service';
+import { Context } from '../../..';
+import request, { ErrorResponse } from '../../../../services/api-service';
 import jwt from 'jwt-decode';
-import { Token } from '../auth';
-import { hasProp } from '../../../services/utils';
-import { GetPlaybackStateResponseBody, SearchSpotifyResponseBody, SpotifyTrackObject } from './types';
+import { Token } from '../../auth';
+import { hasProp } from '../../../../services/utils';
+import { SearchSpotifyResponseBody, GetPlaybackStateResponseBody, SpotifyTrackObject } from './types';
 
 const deviceID = 'df29db6cb8652085b5395dae088370700b12aff0'; // TODO Make this not hardcoded
 let playbackUpdateInterval: NodeJS.Timer | null = null;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useActions } from '../overmind';
-import { Quiz } from '../overmind/actions/api/quiz';
+import { Quiz } from '../overmind/actions/api/quiz/types';
 import { useDebouncedCallback } from 'use-debounce';
 import QuizGrid from '../components/quiz-grid/QuizGrid';
 import { Button, styled } from '@mui/material';

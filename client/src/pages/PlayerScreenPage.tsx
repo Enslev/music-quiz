@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useActions } from '../overmind';
-import { Quiz } from '../overmind/actions/api/quiz';
+import { Quiz } from '../overmind/actions/api/quiz/types';
 import { useParams } from 'react-router-dom';
 import QuizGrid from '../components/quiz-grid/QuizGrid';
 

@@ -3,12 +3,12 @@ import { Box, Button, Slide, Slider, Stack, styled } from '@mui/material';
 import RightMenu from '../RightMenu';
 import TrackSearchBar, { TrackSearchBarRefHandler } from '../track-search/TrackSearchBar';
 import { useActions, useAppState } from '../../overmind';
-import { SpotifyTrackObject } from '../../overmind/actions/api/types';
 import TrackPreview from '../track-search/TrackPreview';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
 import { Track } from '../../overmind/actions/api/quiz';
 import { pad } from '../../services/utils';
+import { SpotifyTrackObject } from '../../overmind/actions/api/spotify/types';
 
 export type SelectedTrackMeta = {
     startPosition?: number,
