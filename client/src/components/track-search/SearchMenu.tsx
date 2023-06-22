@@ -10,10 +10,15 @@ import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
 import { Track } from '../../overmind/actions/api/quiz';
 import { pad } from '../../services/utils';
 
+export type SelectedTrackMeta = {
+    startPosition?: number,
+    highlightLocation?: number,
+}
+
 interface Props {
     open: boolean;
     track: Track;
-    handleClose: (selectedTrack: SpotifyTrackObject | null) => void;
+    handleClose: (selectedTrack: SpotifyTrackObject | null, meta: SelectedTrackMeta) => void;
 }
 
 const SearchMenu: React.FC<Props> = ({
@@ -29,7 +34,13 @@ const SearchMenu: React.FC<Props> = ({
     const [selectedTrack, setSelectedTrack] = useState<SpotifyTrackObject | null>(null);
     const [searchValue, setSearchValue] = useState<string>('');
     const [manualSearch, setManualSearch] = useState<boolean>(false);
-    const [selectedTrackPosition, setSelectedTrackPosition] = useState<number>(track.startPosition);
+    const [selectedTrackStartPosition, setSelectedTrackStartPosition] = useState<number>(track.startPosition);
+
+    const [selectedTrackMeta, setSelectedTrackMeta] = useState<Required<SelectedTrackMeta>>({
+        startPosition: track.startPosition,
+        highlightLocation: 0,
+    });
+
     const searchBarRef = useRef<TrackSearchBarRefHandler>(null);
 
     useEffect(() => {
@@ -55,7 +66,7 @@ const SearchMenu: React.FC<Props> = ({
 
     const handlePositionChange = async (newPosition: number | number[]) => {
         if (Array.isArray(newPosition)) return;
-        setSelectedTrackPosition(newPosition);
+        setSelectedTrackStartPosition(newPosition);
     };
 
     const handlePositionChangeCommit = async (newPosition: number | number[]) => {
@@ -74,7 +85,7 @@ const SearchMenu: React.FC<Props> = ({
 
         spotify.play({
             trackUri: selectedTrack.uri,
-            position: selectedTrackPosition,
+            position: selectedTrackStartPosition,
         });
     };
 
@@ -84,7 +95,8 @@ const SearchMenu: React.FC<Props> = ({
         setSearchValue('');
         setManualSearch(false);
         spotify.stop();
-        handleClose(selectedTrack);
+
+        handleClose(selectedTrack, selectedTrackMeta);
     };
 
     // If saved track is passed in, get it go directly to Selected Track view
@@ -96,7 +108,7 @@ const SearchMenu: React.FC<Props> = ({
 
     useEffect(() => {
         if (spotifyPlayer.playpackPosition == null || spotifyPlayer.currentlyPlaying != selectedTrack?.uri) return;
-        setSelectedTrackPosition(spotifyPlayer.playpackPosition);
+        setSelectedTrackStartPosition(spotifyPlayer.playpackPosition);
     }, [spotifyPlayer.playpackPosition]);
 
     return <RightMenu
@@ -127,18 +139,27 @@ const SearchMenu: React.FC<Props> = ({
                     </Center>
                     <SliderWrapper>
                         <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                            <span>{formatMs(selectedTrackPosition)}</span>
+                            <span>{formatMs(selectedTrackStartPosition)}</span>
                             <Slider
-                                value={selectedTrackPosition}
+                                value={selectedTrackStartPosition}
                                 min={0}
                                 max={selectedTrack.duration_ms}
                                 onChange={(e, newValue) => handlePositionChange(newValue)}
                                 onChangeCommitted={(e, newValue) => handlePositionChangeCommit(newValue)}
-                                disabled={Boolean(spotifyPlayer.isPlaying)}
                             />
                             <span>{formatMs(selectedTrack.duration_ms)}</span>
                         </Stack>
                     </SliderWrapper>
+                    <Button
+                        variant="contained"
+                        onClick={() => setSelectedTrackMeta({
+                            ...selectedTrackMeta,
+                            startPosition: selectedTrackStartPosition,
+                        })}
+                    >
+                        Set as start location
+                    </Button>
+                    Current start position: {formatMs(selectedTrackMeta.startPosition)}
                 </TrackSelectedWrapper>
             </Slide>}
             <Slide direction='right' in={Boolean(!selectedTrack)}>
@@ -189,6 +210,7 @@ const TrackSelectedWrapper = styled('div')(({
 
 const SliderWrapper = styled(Box)(({
     width: '100%',
+    marginBottom: '10px',
 }));
 
 const Center = styled('div')(({

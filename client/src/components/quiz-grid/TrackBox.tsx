@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import SearchMenu from '../track-search/SearchMenu';
+import SearchMenu, { SelectedTrackMeta } from '../track-search/SearchMenu';
 import { Track } from '../../overmind/actions/api/quiz';
 import { SpotifyTrackObject } from '../../overmind/actions/api/types';
 import { styled } from '@mui/material';
@@ -24,7 +24,7 @@ const TrackBox: React.FC<Props> = ({
     const [searchMenuIsOpen, setSearchMenuIsOpen] = useState<boolean>(false);
 
 
-    const handleClose = (selectedTrack: SpotifyTrackObject | null) => {
+    const handleClose = (selectedTrack: SpotifyTrackObject | null, meta: SelectedTrackMeta) => {
         setSearchMenuIsOpen(false);
         if (!selectedTrack) {
             if (track.trackUrl != '') {
@@ -38,11 +38,15 @@ const TrackBox: React.FC<Props> = ({
         }
 
         // If no changes detected, skip save step.
-        if (track.trackUrl == selectedTrack.uri) return;
+        if (track.trackUrl == selectedTrack.uri &&
+            track.startPosition == meta.startPosition) {
+            return;
+        }
 
         track.title = selectedTrack.name;
         track.artist = selectedTrack.artists.map((artist) => artist.name).join(', ');
         track.trackUrl = selectedTrack.uri;
+        track.startPosition = meta.startPosition ?? 0;
         saveTrigger();
     };
 
