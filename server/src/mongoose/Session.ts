@@ -39,6 +39,9 @@ export class Session extends TimeStamps {
 
     @prop({ default: false })
     public active!: boolean;
+
+    @prop({ required: true, unique: true })
+    public code!: string;
 }
 
 export const SessionModel = getModelForClass(Session);

@@ -2,8 +2,9 @@ import { Response } from 'express';
 import { ValidatedRequest } from 'express-joi-validation';
 import { CreateSessionSchema } from './schema';
 import { Types } from 'mongoose';
-import { Quiz, QuizModel } from '../../../mongoose/Quiz';
-import { SessionModel } from '../../../mongoose/Session';
+import { QuizModel } from '../../../mongoose/Quiz';
+import { SessionDocument, SessionModel } from '../../../mongoose/Session';
+import { makeCode } from './utils';
 
 export const createSession = async (req: ValidatedRequest<CreateSessionSchema>, res: Response) => {
 
@@ -23,10 +24,28 @@ export const createSession = async (req: ValidatedRequest<CreateSessionSchema>, 
         return;
     }
 
+    // We allow 10 attempts at creating a unique code, which should be more than enough
+    let code = '';
+    let codeAttempts = 0;
+    let sessionByCode: SessionDocument | null = null;
+    do {
+        code = makeCode(5);
+        sessionByCode = await SessionModel.findOne({ code });
+        codeAttempts++;
+    } while (sessionByCode != null && codeAttempts <= 10);
+
+    if (sessionByCode != null) {
+        res.status(500).send({
+            message: 'Something went wrong while generating unique code',
+        });
+        return;
+    }
+
     const sessionDoc = await SessionModel.create({
         title: quiz.title,
         categories: quiz.categories,
         user: req.user._id,
+        code: code,
     });
 
     res.status(200).send(sessionDoc);
