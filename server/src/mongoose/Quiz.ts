@@ -19,7 +19,7 @@ class Track {
     public startPosition!: number;
 }
 
-class Category {
+export class Category {
 
     @prop()
     public title!: string;
