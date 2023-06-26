@@ -1,34 +1,33 @@
-import { Ref, Severity, getModelForClass, modelOptions, prop, DocumentType } from '@typegoose/typegoose';
+import { Ref, getModelForClass, prop, DocumentType } from '@typegoose/typegoose';
 import { User } from './User';
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
 class Track {
-    @prop()
+    @prop({ required: true })
     public trackUrl!: string;
 
-    @prop()
+    @prop({ required: true })
     public title!: string;
 
-    @prop()
+    @prop({ required: true })
     public artist!: string;
 
-    @prop()
+    @prop({ required: true })
     public points!: number;
 
-    @prop({ default: 0 })
+    @prop({ required: true, default: 0 })
     public startPosition!: number;
 }
 
 export class Category {
 
-    @prop()
+    @prop({ required: true })
     public title!: string;
 
-    @prop({ type: Track })
+    @prop({ type: () => [Track], required: true })
     public tracks!: Track[];
 }
 
-@modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class Quiz extends TimeStamps {
 
     @prop({ required: true })
@@ -37,7 +36,7 @@ export class Quiz extends TimeStamps {
     @prop({ required: true, ref: User })
     public user!: Ref<User>;
 
-    @prop({ type: Category })
+    @prop({ type: () => [Category], required: true })
     public categories!: Category[];
 }
 

@@ -1,4 +1,4 @@
-import { Ref, Severity, getModelForClass, modelOptions, prop, DocumentType } from '@typegoose/typegoose';
+import { Ref, getModelForClass, prop, DocumentType } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
 import { User } from './User';
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
@@ -6,10 +6,10 @@ import { Category } from './Quiz';
 
 class Team {
 
-    @prop()
+    @prop({ required: true })
     public name!: string;
 
-    @prop()
+    @prop({ type: () => [Number], default: [] })
     public pointsHistory!: number[];
 
     public get points() {
@@ -19,7 +19,7 @@ class Team {
     }
 }
 
-@modelOptions({ options: { allowMixed: Severity.ALLOW } })
+
 export class Session extends TimeStamps {
 
     @prop({ required: true })
@@ -28,16 +28,16 @@ export class Session extends TimeStamps {
     @prop({ required: true, ref: User })
     public user!: Ref<User>;
 
-    @prop({ type: Category })
+    @prop({ type: () => [Category], required: true })
     public categories!: Category[];
 
-    @prop({ default: [] })
+    @prop({ type: () => [Types.ObjectId], required: true, default: [] })
     public revealed!: Types.ObjectId[];
 
-    @prop({ type: Team })
+    @prop({ type: () => [Team], required: true, default: [] })
     public teams!: Team[];
 
-    @prop({ default: false })
+    @prop({ required: true, default: false })
     public active!: boolean;
 
     @prop({ required: true, unique: true })
