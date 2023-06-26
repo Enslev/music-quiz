@@ -1,6 +1,7 @@
 import { derived } from 'overmind';
 
 type State = {
+  apiUrl: string,
   name: string;
   token: string | null;
   isLoggedIn: boolean;
@@ -12,6 +13,7 @@ type State = {
 }
 
 export const state: State = {
+    apiUrl: 'http://localhost:9001',
     name: 'Guest',
     token: null,
     isLoggedIn: derived((state: State) => Boolean(state.token)),

@@ -22,7 +22,7 @@ const App: React.FC = () => {
                 <Route path="login" Component={LoginPage} />
                 <Route path="quiz/:quizId/master" Component={MasterQuizPage} />
                 <Route path="quiz/:quizId/edit" Component={EditQuizPage} />
-                <Route path="quiz/:quizId" Component={PlayerScreenPage} />
+                <Route path="session/:quizCode" Component={PlayerScreenPage} />
                 <Route path="auth/callback" Component={SpotifyCallbackPage} />
                 <Route path="*" element={<div>Not found</div>} />
             </Routes>

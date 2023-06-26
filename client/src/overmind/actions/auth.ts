@@ -14,7 +14,7 @@ export interface Token {
 
 export const loginWithCode = async ({ state }: Context, code: string) => {
     const codeExhangeResponse = await request
-        .post<ExchangeCodeResponse>('http://localhost:9001/api/auth/code', {
+        .post<ExchangeCodeResponse>(`${state.apiUrl}/api/auth/code`, {
             body: { code },
         });
 
@@ -30,7 +30,7 @@ export const refreshAccessToken = async ({ state }: Context) => {
     const { refreshToken } = jwt<Token>(state.token);
 
     const codeExhangeResponse = await request
-        .post<ExchangeCodeResponse>('http://localhost:9001/api/auth/refresh', {
+        .post<ExchangeCodeResponse>(`${state.apiUrl}/api/auth/refresh`, {
             headers: { authorization: `Bearer ${state.token}` },
             body: {
                 code: refreshToken,

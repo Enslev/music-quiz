@@ -1,10 +1,13 @@
 import React from 'react';
 import { Button } from '@mui/material';
+import { useAppState } from '../overmind';
 
 const LoginPage: React.FC = () => {
 
+    const { apiUrl } = useAppState();
+
     const login = () => {
-        window.location.href = 'http://localhost:9001/api/spotify/auth';
+        window.location.href = `${apiUrl}/api/spotify/auth`;
     };
 
     return <>

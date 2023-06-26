@@ -7,7 +7,7 @@ export type Track = Quiz['categories'][number]['tracks'][number];
 
 export const getQuizzes = async ({ state }: Context) => {
 
-    const response = await request.get<Quiz[]>('http://localhost:9001/api/quiz', {
+    const response = await request.get<Quiz[]>(`${state.apiUrl}/api/quiz`, {
         headers: { authorization: `Bearer ${state.token}` },
         // query: { populate: 'user' },
     });
@@ -16,7 +16,7 @@ export const getQuizzes = async ({ state }: Context) => {
 };
 
 export const getQuiz = async ({ state }: Context, quizId: string) => {
-    const response = await request.get<Quiz>(`http://localhost:9001/api/quiz/${quizId}`, {
+    const response = await request.get<Quiz>(`${state.apiUrl}/api/quiz/${quizId}`, {
         headers: { authorization: `Bearer ${state.token}` },
     });
 
@@ -24,7 +24,7 @@ export const getQuiz = async ({ state }: Context, quizId: string) => {
 };
 
 export const createQuiz = async ({ state }: Context, body: createQuizRequestBody) => {
-    const response = await request.post<Quiz>('http://localhost:9001/api/quiz', {
+    const response = await request.post<Quiz>(`${state.apiUrl}/api/quiz`, {
         headers: { authorization: `Bearer ${state.token}` },
         body,
     });
@@ -34,7 +34,7 @@ export const createQuiz = async ({ state }: Context, body: createQuizRequestBody
 
 
 export const putQuiz = async ({ state }: Context, body: putQuizRequestBody) => {
-    const response = await request.put<Quiz>(`http://localhost:9001/api/quiz/${body._id}`, {
+    const response = await request.put<Quiz>(`${state.apiUrl}/api/quiz/${body._id}`, {
         headers: { authorization: `Bearer ${state.token}` },
         body,
     });

@@ -4,8 +4,10 @@ import { useActions, useAppState } from '../overmind';
 import { styled } from '@mui/material';
 
 const SpotifySignInButton: React.FC = () => {
+    const { apiUrl } = useAppState();
+
     const login = () => {
-        window.location.href = 'http://localhost:9001/api/auth/redirect';
+        window.location.href = `${apiUrl}/api/auth/redirect`;
     };
     const isLoggedIn = useAppState().isLoggedIn;
     const { logout } = useActions().auth;

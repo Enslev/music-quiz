@@ -224,13 +224,13 @@ const spotifyProxyWrapper = async <T>(context: Context, path: string, options: s
     try {
         switch (options.method) {
         case ('GET'): {
-            return await request.get<T>(`http://localhost:9001/api/spotify/${path}`, {
+            return await request.get<T>(`${state.apiUrl}/api/spotify/${path}`, {
                 headers: { authorization: `Bearer ${context.state.token}` },
                 query: options.query ?? null,
             });
         }
         case ('PUT'): {
-            return await request.put<T>(`http://localhost:9001/api/spotify/${path}`, {
+            return await request.put<T>(`${state.apiUrl}/api/spotify/${path}`, {
                 headers: { authorization: `Bearer ${context.state.token}` },
                 query: options.query ?? null,
                 body: options.body,
