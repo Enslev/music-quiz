@@ -11,7 +11,7 @@ const EditQuizPage: React.FC = () => {
     const { quizId } = useParams();
     const navigate = useNavigate();
     const { getQuiz, putQuiz } = useActions().api.quiz;
-    const { createQuiz } = useActions().api.sessions;
+    const { createSession } = useActions().api.sessions;
     const [quiz, setQuiz] = useState<Quiz | null>(null);
 
     useEffect(() => {
@@ -29,7 +29,7 @@ const EditQuizPage: React.FC = () => {
     if (!quiz) return <></>;
 
     const handleCreateSession = async () => {
-        const session = await createQuiz({ quizId: quiz._id });
+        const session = await createSession({ quizId: quiz._id });
         navigate(`/session/${session.code}`);
     };
 
@@ -43,7 +43,7 @@ const EditQuizPage: React.FC = () => {
             </Button>
         </ButtonWrapper>
         <QuizGrid
-            quiz={quiz}
+            categories={quiz.categories}
             editMode
             saveTrigger={debouncedSave}
             revealed={['6446c846ef3d95b10c5182ad']}

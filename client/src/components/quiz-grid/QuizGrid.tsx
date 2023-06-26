@@ -1,32 +1,32 @@
 import React from 'react';
-import { Quiz } from '../../overmind/actions/api/quiz/types';
 import { styled } from '@mui/material';
 import CategoryBox from './CategoryBox';
 import { noop } from '../../services/utils';
 import TrackBox from './TrackBox';
+import { Category } from '../../overmind/actions/api/quiz';
 
 interface Props {
     editMode?: boolean;
     revealed?: string[],
-    quiz: Quiz | null,
+    categories: Category[] | null,
     saveTrigger?: () => void;
 }
 
 const QuizGrid: React.FC<Props> = (props) => {
 
     const {
-        quiz,
+        categories,
         revealed,
         saveTrigger,
         editMode = false,
     } = props;
 
-    if (!quiz) return <></>;
+    if (!categories) return <></>;
 
     return (
         <QuizWrapper>
             <QuizGridWrapper>
-                {quiz.categories.map((category) => {
+                {categories.map((category) => {
                     return <React.Fragment
                         key={category._id}
                     >
