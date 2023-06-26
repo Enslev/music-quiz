@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { ValidatedRequest } from 'express-joi-validation';
-import { CreateSessionSchema } from './schema';
+import { CreateSessionSchema, GetSessionSchema } from './schema';
 import { Types } from 'mongoose';
 import { QuizModel } from '../../../mongoose/Quiz';
 import { SessionDocument, SessionModel } from '../../../mongoose/Session';
@@ -51,6 +51,12 @@ export const createSession = async (req: ValidatedRequest<CreateSessionSchema>, 
     res.status(200).send(sessionDoc);
 };
 
-export const getSessions = async (req: unknown, res: Response) => {
-    res.status(200).send();
+export const getSessions = async (req: ValidatedRequest<GetSessionSchema>, res: Response) => {
+    const sessionDoc = await SessionModel.findOne({ code: req.params.sessionCode });
+
+    if (!sessionDoc) {
+        throw { message: 'Session not Found' };
+    }
+
+    res.status(200).send(sessionDoc);
 };

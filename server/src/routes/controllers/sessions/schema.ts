@@ -12,3 +12,15 @@ export interface CreateSessionSchema extends ValidatedRequestSchema {
         quizId: string;
     }
 }
+
+export const getSessionSchema = {
+    params: Joi.object({
+        sessionCode: Joi.string().required(),
+    }),
+};
+
+export interface GetSessionSchema extends ValidatedRequestSchema {
+    [ContainerTypes.Params]: {
+        sessionCode: string;
+    }
+}
