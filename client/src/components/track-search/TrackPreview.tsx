@@ -30,7 +30,7 @@ const TrackPreview: React.FC<Props> = ({
 
     return <PreviewWrapper onClick={() => onSelect(spotifyTrack)}>
         <TrackWrapper>
-            <img src={spotifyTrack.album.images[2].url}></img>
+            <AlbumImage src={spotifyTrack.album.images[2].url}></AlbumImage>
             <TrackDetails>
                 <span>{spotifyTrack.name}</span>
                 <span className='artist'>{spotifyTrack.artists.map((artist) => artist.name).join(', ')}</span>
@@ -60,7 +60,7 @@ const PreviewWrapper = styled('div')(({ theme }) => ({
     cursor: 'pointer',
 
     '&:hover': {
-        background: `linear-gradient(135deg, ${theme.palette.background.default} 25%, ${theme.palette.primary.main}  100%)`,
+        background: `linear-gradient(45deg, ${theme.palette.background.default} 25%, ${theme.palette.primary.main}  100%)`,
     },
 }));
 
@@ -103,6 +103,11 @@ const StopIcon = styled(StopIconRaw)(({
     '&:hover': {
         scale: '1.2',
     },
+}));
+
+const AlbumImage = styled('img')(({
+    width: '64px',
+    height: '64px',
 }));
 
 export default TrackPreview;
