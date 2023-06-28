@@ -4,9 +4,9 @@ import { authMiddleware } from '../../../services/auth';
 import { validator as customValidator } from '../../utils';
 import { createSessionSchema, getSessionSchema } from './schema';
 
-const router = Router({ mergeParams: true });
+const sessionRoutes = Router();
 
-router.post('/', customValidator(createSessionSchema), authMiddleware, createSession);
-router.get('/:sessionCode', customValidator(getSessionSchema), getSessions);
+sessionRoutes.post('/', customValidator(createSessionSchema), authMiddleware, createSession);
+sessionRoutes.get('/:sessionCode', customValidator(getSessionSchema), getSessions);
 
-export default router;
+export { sessionRoutes };

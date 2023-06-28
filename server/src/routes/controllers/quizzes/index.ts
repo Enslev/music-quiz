@@ -4,11 +4,11 @@ import { createQuizSchema, getQuizJoiSchema, getQuizzesJoiSchema, putQuizSchema 
 import { authMiddleware } from '../../../services/auth';
 import { validator as customValidator } from '../../utils';
 
-const router = Router({ mergeParams: true });
+const quizzesRoutes = Router();
 
-router.get('/', customValidator(getQuizzesJoiSchema), authMiddleware, getQuizzes);
-router.post('/',  customValidator(createQuizSchema), authMiddleware, createQuiz);
-router.get('/:quizId', customValidator(getQuizJoiSchema), authMiddleware, getQuiz);
-router.put('/:quizId', customValidator(putQuizSchema), authMiddleware, putQuiz);
+quizzesRoutes.get('/', customValidator(getQuizzesJoiSchema), authMiddleware, getQuizzes);
+quizzesRoutes.post('/',  customValidator(createQuizSchema), authMiddleware, createQuiz);
+quizzesRoutes.get('/:quizId', customValidator(getQuizJoiSchema), authMiddleware, getQuiz);
+quizzesRoutes.put('/:quizId', customValidator(putQuizSchema), authMiddleware, putQuiz);
 
-export default router;
+export { quizzesRoutes };

@@ -1,17 +1,18 @@
 import { Router } from 'express';
-import HealthRoute from './controllers/health';
-import AuthRoute from './controllers/auth';
-import QuizRoutes from './controllers/quizzes';
-import SpotifyRoutes from './controllers/spotify';
-import SessionsRoutes from './controllers/sessions';
+import { healthRoutes } from './controllers/health';
+import { authRoutes } from './controllers/auth';
+import { quizzesRoutes } from './controllers/quizzes';
+import { spotifyRoutes } from './controllers/spotify';
+import { sessionRoutes } from './controllers/sessions';
 
-const router = Router({ mergeParams: true });
+const routes = Router();
 
-router.use('/health', HealthRoute);
-router.use('/auth', AuthRoute);
-router.use('/quizzes', QuizRoutes);
-router.use('/spotify', SpotifyRoutes);
-router.use('/sessions', SessionsRoutes);
+routes.use('/health', healthRoutes);
+routes.use('/auth', authRoutes);
+routes.use('/spotify', spotifyRoutes);
+routes.use('/quizzes', quizzesRoutes);
+routes.use('/sessions', sessionRoutes);
 
-export default router;
-
+export {
+    routes,
+};

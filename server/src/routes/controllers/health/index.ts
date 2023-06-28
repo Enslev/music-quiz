@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { ruok } from './controller';
 
-const router = Router({ mergeParams: true });
+const healthRoutes = Router();
 
-router.get('/ruok', ruok);
+healthRoutes.get('/ruok', ruok);
 
-export default router;
+export { healthRoutes };
