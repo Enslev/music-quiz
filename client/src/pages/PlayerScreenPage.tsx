@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { useActions } from '../overmind';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useActions, useAppState } from '../overmind';
+import { useNavigate, useParams } from 'react-router-dom';
 import QuizGrid from '../components/quiz-grid/QuizGrid';
-import { Session } from '../overmind/actions/api/sessions/types';
 
 const PlayerScreenPage: React.FC = () => {
 
-    const { quizCode: sessionCode } = useParams();
-    const { getSession } = useActions().api.sessions;
-    const [session, setSession] = useState<Session | null>(null);
+    const { session } = useAppState();
+    const navigate = useNavigate();
+    const { loadSession } = useActions().sessions;
+    const { sessionCode } = useParams();
 
     useEffect(() => {
-        (async () => {
-            const response = await getSession(sessionCode ?? 'noid');
-            setSession(response);
-        })();
+        if (!sessionCode) return navigate('/');
+        loadSession(sessionCode);
     }, []);
 
     if (!session) return <></>;
+
+    console.log(session);
 
     return <>
         <QuizGrid

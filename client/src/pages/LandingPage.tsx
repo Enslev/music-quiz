@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useActions, useAppState } from '../overmind';
-import { Quiz } from '../overmind/actions/api/quiz/types';
+import { Quiz } from '../overmind/effects/api/quizzes/types';
 import { Button, FormControl, TextField } from '@mui/material';
 import RightMenu from '../components/RightMenu';
 
 const LandingPage: React.FC = () => {
 
+
     const state = useAppState();
-    const { createQuiz } = useActions().api.quiz;
     const [quizzes, setQuizzes] = useState<Quiz[] | null>(null);
-    const { getQuizzes } = useActions().api.quiz;
+    const { getAllQuizzes, createQuiz } = useActions().quiz;
 
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [newQuizTitle, setNewQuizTitle] = useState<string>('');
@@ -20,20 +20,18 @@ const LandingPage: React.FC = () => {
         (async () => {
             if (!state.isLoggedIn) return;
 
-            const response = await getQuizzes();
-            setQuizzes(response);
+            const quizzes = await getAllQuizzes();
+            setQuizzes(quizzes);
         })();
     }, []);
 
 
     const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await createQuiz({
-            title: newQuizTitle,
-        });
+        await createQuiz(newQuizTitle);
 
-        const response = await getQuizzes();
-        setQuizzes(response);
+        const quizzes = await getAllQuizzes();
+        setQuizzes(quizzes);
 
         setModalIsOpen(false);
     };

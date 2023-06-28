@@ -1,5 +1,5 @@
 import React from 'react';
-import { Quiz } from '../../overmind/actions/api/quiz/types';
+import { Quiz } from '../../overmind/effects/api/quizzes/types';
 import { styled } from '@mui/material';
 import CategoryBox from './CategoryBox';
 import TrackBox from './TrackBox';

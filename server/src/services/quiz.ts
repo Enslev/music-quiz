@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 import { CategoryDocument, Quiz, TrackDocument } from '../mongoose/Quiz';
-import { PutQuizSchema } from '../routes/controllers/quiz/schema';
+import { PutQuizSchema } from '../routes/controllers/quizzes/schema';
 
 type RequestQuiz = PutQuizSchema['body'];
 type RequestCategory = PutQuizSchema['body']['categories'][number];

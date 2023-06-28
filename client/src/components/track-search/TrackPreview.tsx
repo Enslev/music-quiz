@@ -3,7 +3,7 @@ import { styled } from '@mui/material';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as StopIconRaw } from '../../assets/stop-circle.svg';
 import { useActions, useAppState } from '../../overmind';
-import { SpotifyTrackObject } from '../../overmind/actions/api/spotify/types';
+import { SpotifyTrackObject } from '../../overmind/effects/api/spotify/types';
 
 interface Props {
     spotifyTrack: SpotifyTrackObject;
@@ -16,7 +16,7 @@ const TrackPreview: React.FC<Props> = ({
 }) => {
 
     const { spotifyPlayer } = useAppState();
-    const { play, stop } = useActions().api.spotify;
+    const { play, stop } = useActions().spotify;
 
     const handleStop = (e: React.MouseEvent) => {
         e.stopPropagation();

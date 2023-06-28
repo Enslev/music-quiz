@@ -3,7 +3,7 @@ import { styled } from '@mui/material';
 import CategoryBox from './CategoryBox';
 import { noop } from '../../services/utils';
 import TrackBox from './TrackBox';
-import { Category } from '../../overmind/actions/api/quiz';
+import { Category } from '../../overmind/effects/api/quizzes/types';
 
 interface Props {
     editMode?: boolean;

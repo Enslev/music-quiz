@@ -1,8 +1,13 @@
 import React from 'react';
 import SpotifySignInButton from './SpotifySignInButton';
 import { styled } from '@mui/material';
+import { useAppState } from '../overmind';
 
 const Header: React.FC = () => {
+
+    const { showHeader } = useAppState();
+
+    if (!showHeader) return <></>;
 
     return <HeaderWrapper>
         <SpotifySignInButton/>

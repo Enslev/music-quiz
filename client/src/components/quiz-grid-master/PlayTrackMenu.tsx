@@ -1,6 +1,6 @@
 import React from 'react';
 import RightMenu from '../RightMenu';
-import { Category, Track } from '../../overmind/actions/api/quiz';
+import { Category, Track } from '../../overmind/effects/api/quizzes/types';
 import { styled } from '@mui/material';
 import { useAppState, useActions } from '../../overmind';
 
@@ -22,7 +22,7 @@ const PlayTrackMenu: React.FC<Props> = ({
 }) => {
 
     const { spotifyPlayer } = useAppState();
-    const { play, stop } = useActions().api.spotify;
+    const { play, stop } = useActions().spotify;
 
     const handleStop = (e: React.MouseEvent) => {
         e.stopPropagation();

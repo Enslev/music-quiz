@@ -1,35 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useActions } from '../overmind';
-import { Quiz } from '../overmind/actions/api/quiz/types';
+import { useActions, useAppState } from '../overmind';
 import { useDebouncedCallback } from 'use-debounce';
 import QuizGrid from '../components/quiz-grid/QuizGrid';
 import { Button, styled } from '@mui/material';
+import { clone } from '../services/utils';
 
 const EditQuizPage: React.FC = () => {
 
+    const { loadQuiz, saveQuiz } = useActions().quiz;
     const { quizId } = useParams();
     const navigate = useNavigate();
-    const { getQuiz, putQuiz } = useActions().api.quiz;
-    const { createSession } = useActions().api.sessions;
-    const [quiz, setQuiz] = useState<Quiz | null>(null);
+    const { quiz } = useAppState();
+    const { createSession } = useActions().sessions;
+
+    const quizCopy = clone(quiz);
 
     useEffect(() => {
-        (async () => {
-            const response = await getQuiz(quizId ?? 'noid');
-            setQuiz(response);
-        })();
+        if (!quizId) return;
+        loadQuiz(quizId);
     }, []);
 
-    const debouncedSave = useDebouncedCallback(async() => {
-        if (!quiz) return;
-        await putQuiz(quiz);
+    const debouncedSave = useDebouncedCallback(async () => {
+        if (!quiz || !quizCopy) return;
+        await saveQuiz(quizCopy);
     }, 500);
 
-    if (!quiz) return <></>;
+    if (!quizId) {
+        navigate('/');
+        return <></>;
+    }
+
+    if (!quizCopy) return <></>;
 
     const handleCreateSession = async () => {
-        const session = await createSession({ quizId: quiz._id });
+        if (!quiz) return;
+        const session = await createSession(quiz._id);
         navigate(`/session/${session.code}`);
     };
 
@@ -43,7 +49,7 @@ const EditQuizPage: React.FC = () => {
             </Button>
         </ButtonWrapper>
         <QuizGrid
-            categories={quiz.categories}
+            categories={quizCopy.categories}
             editMode
             saveTrigger={debouncedSave}
             revealed={['6446c846ef3d95b10c5182ad']}

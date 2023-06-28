@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
 import SearchMenu, { SelectedTrackMeta } from '../track-search/SearchMenu';
-import { Track } from '../../overmind/actions/api/quiz';
+import { Track } from '../../overmind/effects/api/quizzes/types';
 import { styled } from '@mui/material';
 
 import { ReactComponent as PlusIconRaw } from '../../assets/plus-circle.svg';
-import { SpotifyTrackObject } from '../../overmind/actions/api/spotify/types';
+import { SpotifyTrackObject } from '../../overmind/effects/api/spotify/types';
 
 interface Props {
     track: Track;

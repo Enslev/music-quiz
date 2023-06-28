@@ -1,5 +1,5 @@
 import React from 'react';
-import { Category } from '../../overmind/actions/api/quiz';
+import { Category } from '../../overmind/effects/api/quizzes/types';
 import { styled } from '@mui/material';
 
 interface Props {

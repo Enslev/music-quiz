@@ -10,3 +10,7 @@ export const pad = (n: number, size: number) => {
     while (numberString.length < size) numberString = '0' + numberString;
     return numberString;
 };
+
+export const clone = <T>(object: T): T => {
+    return JSON.parse(JSON.stringify(object));
+};

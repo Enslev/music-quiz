@@ -35,3 +35,6 @@ export interface putQuizRequestBody {
         }[]
     }[]
 }
+
+export type Category = Quiz['categories'][number];
+export type Track = Quiz['categories'][number]['tracks'][number];

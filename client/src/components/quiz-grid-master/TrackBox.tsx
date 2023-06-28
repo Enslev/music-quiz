@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Category, Track } from '../../overmind/actions/api/quiz';
+import { Category, Track } from '../../overmind/effects/api/quizzes/types';
 import { styled } from '@mui/material';
 import PlayTrackMenu from './PlayTrackMenu';
 

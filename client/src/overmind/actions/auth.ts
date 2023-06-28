@@ -1,3 +1,4 @@
+import { Mutex } from 'async-mutex';
 import { Context } from '..';
 import request from '../../services/api-service';
 import jwt from 'jwt-decode';
@@ -23,26 +24,38 @@ export const loginWithCode = async ({ state }: Context, code: string) => {
     localStorage.setItem('token', state.token);
 };
 
-export const refreshAccessToken = async ({ state }: Context) => {
-    console.log('refreshing token');
+const refreshTokenMutex = new Mutex();
+export const refreshAccessToken = async ({ state, effects, actions }: Context) => {
     if (!state.token) return;
 
+    if (refreshTokenMutex.isLocked()) {
+        console.log('Refresh is already in progress');
+        await refreshTokenMutex.waitForUnlock();
+        return;
+    }
+
+    await refreshTokenMutex.acquire();
+    console.log('Refresh mutex aquired - Refreshing token');
+
     const { refreshToken } = jwt<Token>(state.token);
+    const newToken = await effects.api.auth.refreshSpotifyToken(refreshToken);
 
-    const codeExhangeResponse = await request
-        .post<ExchangeCodeResponse>(`${state.apiUrl}/api/auth/refresh`, {
-            headers: { authorization: `Bearer ${state.token}` },
-            body: {
-                code: refreshToken,
-            },
-        });
+    state.token = newToken;
+    localStorage.setItem('token', newToken);
 
-    state.token = codeExhangeResponse.token;
-
-    localStorage.setItem('token', state.token);
+    actions.auth.updateEffectsApiKey();
+    refreshTokenMutex.release();
 };
 
 export const logout = ({ state }: Context) => {
     state.token = null;
     localStorage.removeItem('token');
+};
+
+export const updateEffectsApiKey = ({ state, effects }: Context) => {
+    const token = state.token;
+    if (!token) return;
+
+    const updateAuthMethods = Object.values(effects.api).map((api) => api.updateAuth);
+    updateAuthMethods.forEach((updateAuthMethod) => updateAuthMethod(token));
 };

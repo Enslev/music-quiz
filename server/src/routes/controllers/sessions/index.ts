@@ -7,6 +7,6 @@ import { createSessionSchema, getSessionSchema } from './schema';
 const router = Router({ mergeParams: true });
 
 router.post('/', customValidator(createSessionSchema), authMiddleware, createSession);
-router.get('/:sessionCode', customValidator(getSessionSchema), authMiddleware, getSessions);
+router.get('/:sessionCode', customValidator(getSessionSchema), getSessions);
 
 export default router;

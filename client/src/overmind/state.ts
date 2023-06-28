@@ -1,4 +1,6 @@
 import { derived } from 'overmind';
+import { Quiz } from './effects/api/quizzes/types';
+import { Session } from './effects/api/sessions/types';
 
 type State = {
   apiUrl: string,
@@ -9,7 +11,10 @@ type State = {
     currentlyPlaying: string | null;
     isPlaying: boolean;
     playpackPosition: number | null;
-  }
+  },
+  showHeader: boolean,
+  quiz: Quiz | null,
+  session: Session | null,
 }
 
 export const state: State = {
@@ -22,4 +27,7 @@ export const state: State = {
         isPlaying: false,
         playpackPosition: null,
     },
+    showHeader: true,
+    quiz: null,
+    session: null,
 };

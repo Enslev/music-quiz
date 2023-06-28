@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useActions } from '../overmind';
-import { Quiz } from '../overmind/actions/api/quiz/types';
+import { useActions, useAppState } from '../overmind';
 import QuizGrid from '../components/quiz-grid-master/QuizGrid';
 
 const MasterQuizPage: React.FC = () => {
 
+
     const { quizId } = useParams();
-    const { getQuiz } = useActions().api.quiz;
-    const [quiz, setQuiz] = useState<Quiz | null>(null);
+    const { quiz } = useAppState();
+    const { loadQuiz } = useActions().quiz;
 
     useEffect(() => {
-        (async () => {
-            const response = await getQuiz(quizId ?? 'noid');
-            setQuiz(response);
-        })();
+        if (!quizId) return;
+        loadQuiz(quizId);
     }, []);
 
     if (!quiz) return <></>;

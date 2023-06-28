@@ -11,7 +11,6 @@ const SpotifyCallbackPage: React.FC = () => {
     const code = searchParams.get('code');
 
     useEffect(() => {
-
         auth.loginWithCode(code ?? '').then(() => {
             navigate('/');
         });

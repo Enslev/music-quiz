@@ -1,4 +1,4 @@
-import { Category } from '../quiz';
+import { Category } from '../quizzes/types';
 import { MongoDoc } from '../types';
 
 export interface Team {

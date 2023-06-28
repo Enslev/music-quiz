@@ -6,9 +6,9 @@ import { useActions, useAppState } from '../../overmind';
 import TrackPreview from '../track-search/TrackPreview';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
-import { Track } from '../../overmind/actions/api/quiz';
+import { Track } from '../../overmind/effects/api/quizzes/types';
 import { pad } from '../../services/utils';
-import { SpotifyTrackObject } from '../../overmind/actions/api/spotify/types';
+import { SpotifyTrackObject } from '../../overmind/effects/api/spotify/types';
 
 export type SelectedTrackMeta = {
     startPosition?: number,
@@ -28,7 +28,7 @@ const SearchMenu: React.FC<Props> = ({
 }) => {
 
     const { spotifyPlayer } = useAppState();
-    const { spotify } = useActions().api;
+    const { spotify } = useActions();
 
     const [searchResult, setSearchResult] = useState<SpotifyTrackObject[]>([]);
     const [selectedTrack, setSelectedTrack] = useState<SpotifyTrackObject | null>(null);
@@ -101,6 +101,7 @@ const SearchMenu: React.FC<Props> = ({
 
     // If saved track is passed in, get it go directly to Selected Track view
     useEffect(() => {
+        if (!open) return;
         if (!manualSearch && !selectedTrack && track.trackUrl) {
             fetchSelectedTrack(track.trackUrl);
         }
