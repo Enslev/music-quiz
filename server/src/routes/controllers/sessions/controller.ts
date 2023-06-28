@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { ValidatedRequest } from 'express-joi-validation';
-import { CreateSessionSchema, GetSessionSchema } from './schema';
+import { CreateSessionSchema, CreateTeamSchema, GetSessionSchema } from './schema';
 import { Types } from 'mongoose';
 import { QuizModel } from '../../../mongoose/Quiz';
 import { SessionDocument, SessionModel } from '../../../mongoose/Session';
@@ -55,8 +55,29 @@ export const getSessions = async (req: ValidatedRequest<GetSessionSchema>, res: 
     const sessionDoc = await SessionModel.findOne({ code: req.params.sessionCode });
 
     if (!sessionDoc) {
-        throw { message: 'Session not Found' };
+        res.status(404).send({
+            message: 'Session not Found',
+        });
+        return;
     }
 
     res.status(200).send(sessionDoc);
+};
+
+export const createTeam = async (req: ValidatedRequest<CreateTeamSchema>, res: Response) => {
+    const sessionDoc = await SessionModel.findOne({ _id: req.params.sessionId });
+
+    if (!sessionDoc) {
+        res.status(404).send({
+            message: 'Session not Found',
+        });
+        return;
+    }
+
+    sessionDoc.teams.push({
+        name: req.body.name,
+    });
+
+    const savedSession = await sessionDoc.save();
+    res.status(200).json(savedSession);
 };

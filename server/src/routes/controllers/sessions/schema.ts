@@ -24,3 +24,21 @@ export interface GetSessionSchema extends ValidatedRequestSchema {
         sessionCode: string;
     }
 }
+
+export const createTeamSchema = {
+    params: Joi.object({
+        sessionId: Joi.string().required(),
+    }),
+    body: Joi.object({
+        name: Joi.string().required(),
+    }),
+};
+
+export interface CreateTeamSchema extends ValidatedRequestSchema {
+    [ContainerTypes.Params]: {
+        sessionId: string;
+    },
+    [ContainerTypes.Body]: {
+        name: string;
+    }
+}

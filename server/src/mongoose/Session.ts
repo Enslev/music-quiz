@@ -10,15 +10,8 @@ class Team {
     public name!: string;
 
     @prop({ type: () => [Number], default: [] })
-    public pointsHistory!: number[];
-
-    public get points() {
-        return this.pointsHistory.reduce((acc, cur) => {
-            return acc += cur;
-        }, 0);
-    }
+    public pointsHistory?: number[];
 }
-
 
 export class Session extends TimeStamps {
 
@@ -46,3 +39,5 @@ export class Session extends TimeStamps {
 
 export const SessionModel = getModelForClass(Session);
 export type SessionDocument = DocumentType<Session>;
+
+export type TeamDocument = SessionDocument['teams'][number];

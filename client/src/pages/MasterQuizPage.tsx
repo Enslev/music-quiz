@@ -15,13 +15,12 @@ const MasterQuizPage: React.FC = () => {
         loadSession(sessionCode);
     }, []);
 
-    console.log(session);
     if (!session) return <></>;
 
     return <>
         <QuizGridHost
             categories={session.categories}
-            revealed={['6446c846ef3d95b10c5182ad']}
+            revealed={['649c23fca364346a745be426']}
         />
     </>;
 };
