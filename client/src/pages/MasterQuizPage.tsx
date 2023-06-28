@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useActions, useAppState } from '../overmind';
 import QuizGridHost from '../components/quiz-grid-master/QuizGridHost';
+import { TeamLabel } from '../components/quiz-grid-master/TeamLabel';
+import { styled } from '@mui/material';
 
 const MasterQuizPage: React.FC = () => {
-
-
     const { sessionCode } = useParams();
     const { session } = useAppState();
     const { loadSession } = useActions().sessions;
@@ -18,12 +18,26 @@ const MasterQuizPage: React.FC = () => {
     if (!session) return <></>;
 
     return <>
+        <TeamsWrapper>
+            {session.teams.map((team) => <TeamLabel
+                team={team}
+                key={team._id}
+            />)
+            }
+        </TeamsWrapper>
         <QuizGridHost
             categories={session.categories}
-            revealed={['649c23fca364346a745be426']}
+            revealed={session.revealed}
         />
     </>;
 };
+
+const TeamsWrapper = styled('div')(({
+    width: '100vw',
+    display: 'flex',
+    justifyContent: 'space-around',
+
+}));
 
 export default MasterQuizPage;
 
