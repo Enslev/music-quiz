@@ -1,5 +1,5 @@
 import React from 'react';
-import { Quiz } from '../../overmind/effects/api/quizzes/types';
+import { Category, Quiz } from '../../overmind/effects/api/quizzes/types';
 import { styled } from '@mui/material';
 import CategoryBox from './CategoryBox';
 import TrackBox from './TrackBox';
@@ -7,23 +7,23 @@ import TrackBox from './TrackBox';
 interface Props {
     editMode?: boolean;
     revealed?: string[],
-    quiz: Quiz | null,
+    categories: Category[] | null,
     saveTrigger?: () => void;
 }
 
-const QuizGrid: React.FC<Props> = (props) => {
+const QuizGridHost: React.FC<Props> = (props) => {
 
     const {
-        quiz,
+        categories,
         revealed,
     } = props;
 
-    if (!quiz) return <></>;
+    if (!categories) return <></>;
 
     return (
         <QuizWrapper>
             <QuizGridWrapper>
-                {quiz.categories.map((category) => {
+                {categories.map((category) => {
                     return <React.Fragment
                         key={category._id}
                     >
@@ -61,4 +61,4 @@ const QuizGridWrapper = styled('div')(({ theme })  => ({
     boxSizing: 'border-box',
 }));
 
-export default QuizGrid;
+export default QuizGridHost;

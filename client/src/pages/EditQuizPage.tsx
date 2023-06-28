@@ -36,7 +36,7 @@ const EditQuizPage: React.FC = () => {
     const handleCreateSession = async () => {
         if (!quiz) return;
         const session = await createSession(quiz._id);
-        navigate(`/session/${session.code}`);
+        navigate(`/session/${session.code}/host`);
     };
 
     return <>

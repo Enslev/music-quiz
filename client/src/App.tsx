@@ -29,7 +29,7 @@ const App: React.FC = () => {
             <Routes>
                 <Route path="/" Component={LandingPage} />
                 <Route path="login" Component={LoginPage} />
-                <Route path="quiz/:quizId/master" Component={MasterQuizPage} />
+                <Route path="session/:sessionCode/host" Component={MasterQuizPage} />
                 <Route path="quiz/:quizId/edit" Component={EditQuizPage} />
                 <Route path="session/:sessionCode" Component={PlayerScreenPage} />
                 <Route path="auth/callback" Component={SpotifyCallbackPage} />

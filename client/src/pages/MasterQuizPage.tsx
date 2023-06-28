@@ -1,25 +1,26 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useActions, useAppState } from '../overmind';
-import QuizGrid from '../components/quiz-grid-master/QuizGrid';
+import QuizGridHost from '../components/quiz-grid-master/QuizGridHost';
 
 const MasterQuizPage: React.FC = () => {
 
 
-    const { quizId } = useParams();
-    const { quiz } = useAppState();
-    const { loadQuiz } = useActions().quiz;
+    const { sessionCode } = useParams();
+    const { session } = useAppState();
+    const { loadSession } = useActions().sessions;
 
     useEffect(() => {
-        if (!quizId) return;
-        loadQuiz(quizId);
+        if (!sessionCode) return;
+        loadSession(sessionCode);
     }, []);
 
-    if (!quiz) return <></>;
+    console.log(session);
+    if (!session) return <></>;
 
     return <>
-        <QuizGrid
-            quiz={quiz}
+        <QuizGridHost
+            categories={session.categories}
             revealed={['6446c846ef3d95b10c5182ad']}
         />
     </>;
