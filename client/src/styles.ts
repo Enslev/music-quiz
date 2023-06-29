@@ -22,11 +22,19 @@ export const themeOptions: ThemeOptions = {
         secondary: {
             main: '#009cd9',
         },
+        error: {
+            main: '#C43B37',
+        },
         background: {
             default: '#326670',
         },
         custom: {
             darkerBackground: '#282c34',
+        },
+    },
+    typography: {
+        button: {
+            textTransform: 'none',
         },
     },
 };

@@ -155,7 +155,7 @@ const MasterQuizPage: React.FC = () => {
                     fullWidth
                     onClick={() => handleDeleteTeam(selectedTeam)}
                 >
-                    Delete team
+                    DELETE TEAM
                 </Button>
             </div>
         </RightMenu>
