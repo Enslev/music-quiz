@@ -5,6 +5,8 @@ import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { Category } from './Quiz';
 
 class Team {
+    @prop({ required: true, type: Types.ObjectId })
+    public _id!: Types.ObjectId;
 
     @prop({ required: true })
     public name!: string;
@@ -14,6 +16,8 @@ class Team {
 }
 
 export class Session extends TimeStamps {
+    @prop({ required: true, type: Types.ObjectId })
+    public _id!: Types.ObjectId;
 
     @prop({ required: true })
     public title!: string;

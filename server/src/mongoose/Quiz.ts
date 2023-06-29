@@ -1,8 +1,12 @@
 import { Ref, getModelForClass, prop, DocumentType } from '@typegoose/typegoose';
 import { User } from './User';
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
+import { Types } from 'mongoose';
 
 class Track {
+    @prop({ required: true, type: Types.ObjectId })
+    public _id!: Types.ObjectId;
+
     @prop()
     public trackUrl!: string;
 
@@ -22,6 +26,8 @@ class Track {
     public length!: number;
 }
 export class Category {
+    @prop({ required: true, type: Types.ObjectId })
+    public _id!: Types.ObjectId;
 
     @prop()
     public title!: string;
@@ -31,6 +37,8 @@ export class Category {
 }
 
 export class Quiz extends TimeStamps {
+    @prop({ required: true, type: Types.ObjectId })
+    public _id!: Types.ObjectId;
 
     @prop({ required: true })
     public title!: string;

@@ -39,6 +39,7 @@ export const initQuiz = (userId: Types.ObjectId, quizTitle: string): Quiz => {
     }
 
     return {
+        _id: new Types.ObjectId(),
         title: quizTitle,
         user: userId,
         categories,
@@ -48,6 +49,7 @@ export const initQuiz = (userId: Types.ObjectId, quizTitle: string): Quiz => {
 
 const generateEmptyTrack = (): TrackDocument => {
     return {
+        _id: new Types.ObjectId(),
         title: '',
         artist: '',
         trackUrl: '',
@@ -59,6 +61,7 @@ const generateEmptyTrack = (): TrackDocument => {
 
 const generateEmptyCategory = (): CategoryDocument => {
     const category = {
+        _id: new Types.ObjectId(),
         title: '',
         tracks: Array.from(Array(5).keys()).map(() => generateEmptyTrack()),
     };

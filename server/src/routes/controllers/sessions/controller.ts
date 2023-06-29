@@ -75,6 +75,7 @@ export const createTeam = async (req: ValidatedRequest<CreateTeamSchema>, res: R
     }
 
     sessionDoc.teams.push({
+        _id: new Types.ObjectId(),
         name: req.body.name,
     });
 
