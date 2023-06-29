@@ -41,6 +41,7 @@ export const createSession = async (req: ValidatedRequest<CreateSessionSchema>, 
         return;
     }
 
+
     const sessionDoc = await SessionModel.create({
         _id: new Types.ObjectId(),
         title: quiz.title,

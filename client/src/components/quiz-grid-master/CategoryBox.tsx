@@ -23,6 +23,7 @@ const BoxWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
     alignItems: 'center',
     padding: '10px',
+    textAlign: 'center',
 }));
 
 export default CategoryBox;

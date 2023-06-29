@@ -60,7 +60,8 @@ const PreviewWrapper = styled('div')(({ theme }) => ({
     cursor: 'pointer',
 
     '&:hover': {
-        background: `linear-gradient(45deg, ${theme.palette.background.default} 25%, ${theme.palette.primary.main}  100%)`,
+        // background: `linear-gradient(45deg, ${theme.palette.background.default} 25%, ${theme.palette.primary.main}  100%)`,
+        background: `linear-gradient(45deg, ${theme.palette.custom.darkerBackground} 25%, ${theme.palette.primary.main}  100%)`,
     },
 }));
 

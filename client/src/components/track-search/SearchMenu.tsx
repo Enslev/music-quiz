@@ -109,7 +109,7 @@ const SearchMenu: React.FC<Props> = ({
         open={open}
         handleClose={handleCloseSearch}
     >
-        <div style={{ overflowX: 'hidden' }}>
+        <>
             {selectedTrack &&
             <Slide direction='left' in={Boolean(selectedTrack)}>
                 <TrackSelectedWrapper>
@@ -174,7 +174,7 @@ const SearchMenu: React.FC<Props> = ({
                     </TrackWrapper>
                 </div>
             </Slide>
-        </div>
+        </>
     </RightMenu>;
 
 };

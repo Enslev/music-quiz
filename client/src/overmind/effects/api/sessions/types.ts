@@ -7,11 +7,17 @@ export interface Team {
     pointsHistory: number[];
 }
 
+export interface Claimed {
+    _id: string;
+    trackId: string;
+    teamId: string;
+}
+
 export interface Session extends MongoDoc {
     title: string;
     user: string;
     categories: Category[];
-    revealed: string[];
+    claimed: Claimed[];
     teams: Team[];
     active: boolean;
     code: string;

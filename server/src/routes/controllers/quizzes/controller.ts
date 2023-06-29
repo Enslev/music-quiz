@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { QuizModel } from '../../../mongoose/Quiz';
 import { CreateQuizSchema, GetQuizSchema, GetQuizzesSchema, PutQuizSchema } from './schema';
 import { ValidatedRequest } from 'express-joi-validation';
-import { initQuiz, sanitizeQuizRequest } from '../../../services/quiz';
+import { initQuiz } from '../../../services/quiz';
 import { Types } from 'mongoose';
 
 export const getQuizzes = async (req: ValidatedRequest<GetQuizzesSchema>, res: Response) => {
@@ -60,13 +60,10 @@ export const createQuiz = async (req: ValidatedRequest<CreateQuizSchema>, res: R
 
 export const putQuiz = async (req: ValidatedRequest<PutQuizSchema>, res: Response) => {
 
-    const sanitizedQuiz = sanitizeQuizRequest(req.body);
     const quizFromDB = await QuizModel.findById(req.body._id);
 
     if (!quizFromDB) return res.status(404).send();
 
-    await quizFromDB.updateOne(sanitizedQuiz);
-
-    const updatedQuiz = await QuizModel.findById(req.body._id);
+    const updatedQuiz = await QuizModel.findByIdAndUpdate(req.body._id, req.body);
     res.status(200).send(updatedQuiz);
 };

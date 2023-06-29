@@ -7,7 +7,3 @@ export const initMongo = async () => {
 
     console.log(`⚡️ MongoDB initialized`);
 };
-
-
-export { QuizDocument } from './Quiz';
-export { UserDocument } from './User';

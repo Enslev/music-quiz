@@ -5,7 +5,7 @@ import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { Category } from './Quiz';
 
 class Team {
-    @prop({ required: true, type: Types.ObjectId })
+    @prop({ type: Types.ObjectId })
     public _id!: Types.ObjectId;
 
     @prop({ required: true })
@@ -15,8 +15,19 @@ class Team {
     public pointsHistory?: number[];
 }
 
-export class Session extends TimeStamps {
+class Claimed {
+    @prop({ type: Types.ObjectId })
+    public _id!: Types.ObjectId;
+
     @prop({ required: true, type: Types.ObjectId })
+    public trackId!: Types.ObjectId;
+
+    @prop({ required: true, type: Types.ObjectId })
+    public teamId!: Types.ObjectId;
+}
+
+export class Session extends TimeStamps {
+    @prop({ type: Types.ObjectId })
     public _id!: Types.ObjectId;
 
     @prop({ required: true })
@@ -28,8 +39,8 @@ export class Session extends TimeStamps {
     @prop({ type: () => [Category], required: true })
     public categories!: Category[];
 
-    @prop({ type: () => [Types.ObjectId], required: true, default: [] })
-    public revealed!: Types.ObjectId[];
+    @prop({ type: () => [Claimed], required: true, default: [] })
+    public claimed!: Claimed[];
 
     @prop({ type: () => [Team], required: true, default: [] })
     public teams!: Team[];

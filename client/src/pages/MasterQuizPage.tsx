@@ -103,7 +103,7 @@ const MasterQuizPage: React.FC = () => {
 
         <QuizGridHost
             categories={session.categories}
-            revealed={session.revealed}
+            revealed={[]}
             selectTrack={handleTrackSelect}
         />
 
@@ -214,7 +214,7 @@ const MasterQuizPage: React.FC = () => {
         <SpotifyPlayer
             hide={Boolean(trackSelected)}
             tracks={allTracks}
-            disableKeybaord={teamSettingsOpen}
+            disableKeybaord={teamSettingsOpen || addTeamMenuOpen}
         />
     </>;
 };
