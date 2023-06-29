@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { ValidatedRequest } from 'express-joi-validation';
-import { CreateSessionSchema, CreateTeamSchema, GetSessionSchema } from './schema';
+import { CreateSessionSchema, CreateTeamSchema, GetSessionSchema, PutTeamSchema } from './schema';
 import { Types } from 'mongoose';
 import { QuizModel } from '../../../mongoose/Quiz';
 import { SessionDocument, SessionModel } from '../../../mongoose/Session';
@@ -78,6 +78,46 @@ export const createTeam = async (req: ValidatedRequest<CreateTeamSchema>, res: R
         _id: new Types.ObjectId(),
         name: req.body.name,
     });
+
+    const savedSession = await sessionDoc.save();
+    res.status(200).json(savedSession);
+};
+
+export const putTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Response) => {
+
+    if (req.body._id != req.params.teamId) {
+        res.status(400).send({
+            message: 'Team ID mismatch',
+        });
+        return;
+    }
+
+    const sessionDoc = await SessionModel.findOne({ _id: req.params.sessionId });
+
+    if (!sessionDoc) {
+        res.status(404).send({
+            message: 'Session not Found',
+        });
+        return;
+    }
+
+    const teamFromDb = sessionDoc.teams.find((team) =>
+        team._id.equals(req.params.teamId),
+    );
+
+    if (!teamFromDb) {
+        res.status(404).send({
+            message: 'Team not Found',
+        });
+        return;
+    }
+
+    const teamIdx = sessionDoc.teams.indexOf(teamFromDb);
+    sessionDoc.teams[teamIdx] = {
+        _id: new Types.ObjectId(req.body._id),
+        name: req.body.name,
+        pointsHistory: req.body.pointsHistory,
+    };
 
     const savedSession = await sessionDoc.save();
     res.status(200).json(savedSession);

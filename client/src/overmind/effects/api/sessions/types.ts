@@ -24,3 +24,9 @@ export interface CreateSessionRequestBody {
 export interface CreateTeamRequestBody {
     name: string,
 }
+
+export interface PutTeamRequestBody {
+    _id: string,
+    name: string,
+    pointsHistory: number[],
+}

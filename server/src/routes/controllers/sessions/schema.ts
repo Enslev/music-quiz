@@ -42,3 +42,27 @@ export interface CreateTeamSchema extends ValidatedRequestSchema {
         name: string;
     }
 }
+
+export const putTeamSchema = {
+    params: Joi.object({
+        sessionId: Joi.string().required(),
+        teamId: Joi.string().required(),
+    }),
+    body: Joi.object({
+        _id: Joi.string().required(),
+        name: Joi.string().required(),
+        pointsHistory: Joi.array().items(Joi.number()).required(),
+    }),
+};
+
+export interface PutTeamSchema extends ValidatedRequestSchema {
+    [ContainerTypes.Params]: {
+        sessionId: string;
+        teamId: string;
+    },
+    [ContainerTypes.Body]: {
+        _id: string;
+        name: string;
+        pointsHistory: number[];
+    }
+}
