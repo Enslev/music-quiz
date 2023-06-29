@@ -11,6 +11,7 @@ import { useThrottledCallback } from 'use-debounce';
 
 interface Props {
     hide?: boolean;
+    disableKeybaord?: boolean;
     tracks: Track[];
 }
 
@@ -19,6 +20,7 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
     const {
         tracks,
         hide = false,
+        disableKeybaord = false,
     } = props;
 
     const { resume, pause, stop, seek, updatePlaybackState } = useActions().spotify;
@@ -86,6 +88,8 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
     };
 
     const handleSpaceDown = useThrottledCallback(() => {
+        if (disableKeybaord) return;
+
         isPlaying ? pause() : resume();
     }, 200, { leading: true, trailing: false });
 

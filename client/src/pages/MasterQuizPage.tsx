@@ -170,6 +170,7 @@ const MasterQuizPage: React.FC = () => {
         <SpotifyPlayer
             hide={Boolean(trackSelected)}
             tracks={allTracks}
+            disableKeybaord={teamSettingsOpen}
         />
     </>;
 };
