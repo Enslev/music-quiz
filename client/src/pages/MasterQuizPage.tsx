@@ -5,11 +5,12 @@ import QuizGridHost from '../components/quiz-grid-master/QuizGridHost';
 import { TeamLabel } from '../components/quiz-grid-master/TeamLabel';
 import { Button, FormControl, TextField, styled } from '@mui/material';
 import { SpotifyPlayer } from '../components/Player/SpotifyPlayer';
-import { Track } from '../overmind/effects/api/quizzes/types';
+import { Category, Track } from '../overmind/effects/api/quizzes/types';
 
 import { ReactComponent as SpotifyLogoRaw } from '../assets/user-plus.svg';
 import RightMenu from '../components/RightMenu';
 import { Team } from '../overmind/effects/api/sessions/types';
+import PlayTrackMenu from '../components/quiz-grid-master/PlayTrackMenu';
 
 const MasterQuizPage: React.FC = () => {
     const { sessionCode } = useParams();
@@ -21,6 +22,7 @@ const MasterQuizPage: React.FC = () => {
     const [teamSettingsOpen, setTeamSettingsOpen] = useState<boolean>(false);
     const [teamName, setTeamName] = useState<string>('');
     const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+    const [trackSelected, setTrackSelected] = useState<{track: Track, category: Category} | null>(null);
 
     useEffect(() => {
         if (!sessionCode) return;
@@ -71,26 +73,29 @@ const MasterQuizPage: React.FC = () => {
         setTeamSettingsOpen(false);
     };
 
+    const handleTrackSelect = (track: Track, category: Category) => {
+        setTrackSelected({ track, category });
+    };
+
     if (!session) return <></>;
 
     return <>
         <TeamsWrapper>
-            {session.teams.length < 5 && <AddUserButton
-                onClick={handleNewTeamClick}
-            />}
             {session.teams.map((team) => <TeamLabel
                 team={team}
                 key={team._id}
                 onClick={handleTeamClick}
             />)
             }
+            {session.teams.length < 5 && <AddUserButton
+                onClick={handleNewTeamClick}
+            />}
         </TeamsWrapper>
+
         <QuizGridHost
             categories={session.categories}
             revealed={session.revealed}
-        />
-        <SpotifyPlayer
-            tracks={allTracks}
+            selectTrack={handleTrackSelect}
         />
 
         <RightMenu
@@ -154,6 +159,18 @@ const MasterQuizPage: React.FC = () => {
                 </Button>
             </div>
         </RightMenu>
+
+        <PlayTrackMenu
+            category={trackSelected?.category}
+            track={trackSelected?.track}
+            open={Boolean(trackSelected)}
+            handleClose={() => setTrackSelected(null)}
+        />
+
+        <SpotifyPlayer
+            hide={Boolean(trackSelected)}
+            tracks={allTracks}
+        />
     </>;
 };
 

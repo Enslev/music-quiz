@@ -2,41 +2,33 @@
 import React, { useState } from 'react';
 import { Category, Track } from '../../overmind/effects/api/quizzes/types';
 import { styled } from '@mui/material';
-import PlayTrackMenu from './PlayTrackMenu';
-
 
 interface Props {
     category: Category;
     track: Track;
     revealed: boolean;
+    selectTrack: (track: Track, category: Category) => void,
 }
 
 const TrackBox: React.FC<Props> = ({
     track,
     category,
     revealed,
+    selectTrack,
 }) => {
 
     const [hasHovered, setHasHovered] = useState<boolean>(false);
-    const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
     return (<>
         <BoxWrapper
             className={(revealed ? 'revealed': 'hidden') + (hasHovered ? ' hasHovered' : '')}
             onMouseEnter={() => setHasHovered(true)}
-            onClick={() => setMenuOpen(true)}
+            onClick={() => selectTrack(track, category)}
         >
             <span className='points'>{track.points}</span>
             <span className='title'>{track.title}</span>
             <span className='artist'>{track.artist}</span>
         </BoxWrapper>
-
-        <PlayTrackMenu
-            category={category}
-            track={track}
-            open={menuOpen}
-            handleClose={() => setMenuOpen(false)}
-        />
     </>);
 };
 

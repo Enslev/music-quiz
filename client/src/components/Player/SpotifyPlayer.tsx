@@ -10,12 +10,17 @@ import { TextWithScroll } from './TextWithScroll';
 import { useThrottledCallback } from 'use-debounce';
 
 interface Props {
+    hide?: boolean;
     tracks: Track[];
 }
 
 export const SpotifyPlayer: React.FC<Props> = (props) => {
 
-    const { tracks } = props;
+    const {
+        tracks,
+        hide = false,
+    } = props;
+
     const { resume, pause, stop, seek, updatePlaybackState } = useActions().spotify;
     const { currentlyPlaying, isPlaying, playpackPosition } = useAppState().spotifyPlayer;
     const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
@@ -82,11 +87,11 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
 
     const handleSpaceDown = useThrottledCallback(() => {
         isPlaying ? pause() : resume();
-    }, 100, { leading: true, trailing: false });
+    }, 200, { leading: true, trailing: false });
 
     return <Slide
         direction='up'
-        in={Boolean(currentlyPlaying)}
+        in={Boolean(currentlyPlaying) && !hide}
     >
         <PlayerWrapper>
             {currentTrack && <>

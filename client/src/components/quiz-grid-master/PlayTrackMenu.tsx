@@ -8,8 +8,8 @@ import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
 
 interface Props {
-    category: Category,
-    track: Track,
+    category?: Category,
+    track?: Track,
     open: boolean,
     handleClose: () => void;
 }
@@ -23,6 +23,8 @@ const PlayTrackMenu: React.FC<Props> = ({
 
     const { spotifyPlayer } = useAppState();
     const { play, pause } = useActions().spotify;
+
+    if (!category || !track) return <></>;
 
     const handleStop = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -67,6 +69,7 @@ const TrackSelectedWrapper = styled('div')(({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
+    color: 'white',
 
     '.title': {
         fontWeight: 600,

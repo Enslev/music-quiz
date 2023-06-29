@@ -1,14 +1,14 @@
 import React from 'react';
-import { Category } from '../../overmind/effects/api/quizzes/types';
+import { Category, Track } from '../../overmind/effects/api/quizzes/types';
 import { styled } from '@mui/material';
 import CategoryBox from './CategoryBox';
 import TrackBox from './TrackBox';
 
 interface Props {
     editMode?: boolean;
-    revealed?: string[],
-    categories: Category[] | null,
-    saveTrigger?: () => void;
+    revealed?: string[];
+    categories: Category[] | null;
+    selectTrack: (track: Track, category: Category) => void;
 }
 
 const QuizGridHost: React.FC<Props> = (props) => {
@@ -16,6 +16,7 @@ const QuizGridHost: React.FC<Props> = (props) => {
     const {
         categories,
         revealed,
+        selectTrack,
     } = props;
 
     if (!categories) return <></>;
@@ -35,6 +36,7 @@ const QuizGridHost: React.FC<Props> = (props) => {
                             category={category}
                             track={track}
                             revealed={revealed?.includes(track._id) ?? false}
+                            selectTrack={selectTrack}
                         />)}
                     </React.Fragment>;
                 })}
