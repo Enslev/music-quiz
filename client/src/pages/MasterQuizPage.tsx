@@ -20,9 +20,11 @@ const MasterQuizPage: React.FC = () => {
     const [allTracks, setAllTracks] = useState<Track[]>([]);
     const [addTeamMenuOpen, setAddTeamMenuOpen] = useState<boolean>(false);
     const [teamSettingsOpen, setTeamSettingsOpen] = useState<boolean>(false);
-    const [teamName, setTeamName] = useState<string>('');
     const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
     const [trackSelected, setTrackSelected] = useState<{track: Track, category: Category} | null>(null);
+
+    const [teamName, setTeamName] = useState<string>('');
+    const [newPoints, setNewPoints] = useState<string>('');
 
     useEffect(() => {
         if (!sessionCode) return;
@@ -44,11 +46,17 @@ const MasterQuizPage: React.FC = () => {
     const onEditTeamSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!selectedTeam) return;
+        const newPointsHistory = [...selectedTeam.pointsHistory];
+
+        const newPointsNumber = Number(newPoints);
+        if (newPointsNumber != 0) {
+            newPointsHistory.push(newPointsNumber);
+        }
 
         const newTeam: Team = {
             _id: selectedTeam._id,
             name: teamName,
-            pointsHistory: selectedTeam.pointsHistory,
+            pointsHistory: newPointsHistory,
         };
 
         updateTeam(newTeam);
@@ -61,6 +69,7 @@ const MasterQuizPage: React.FC = () => {
     };
 
     const handleTeamClick = (team: Team) => {
+        setNewPoints('0');
         setSelectedTeam(team);
         setTeamName(team.name);
         setTeamSettingsOpen(true);
@@ -106,7 +115,7 @@ const MasterQuizPage: React.FC = () => {
             <FormControl fullWidth>
                 <form onSubmit={onCreateTeamSubmit}>
                     <TextField
-                        id="new-quiz-name"
+                        id="new-team-name"
                         label="Team name"
                         variant="filled"
                         onChange={(e) => setTeamName(e.target.value)}
@@ -130,22 +139,57 @@ const MasterQuizPage: React.FC = () => {
             </div>
 
             <div className='content'>
-                <FormControl fullWidth>
+                <StyledForm fullWidth>
                     <form onSubmit={onEditTeamSubmit}>
                         <TextField
-                            id="new-quiz-name"
+                            id="edit-team-name"
                             label="Rename team"
                             variant="filled"
                             onChange={(e) => setTeamName(e.target.value)}
                             value={teamName}
                             fullWidth
-                            style={{ 'marginBottom': '15px' }}
+                            style={{ 'marginBottom': '5px' }}
                         />
                         <Button type="submit" fullWidth variant="contained" color="primary">
                             {'This is a better name!'}
                         </Button>
                     </form>
-                </FormControl>
+                </StyledForm>
+
+                <StyledForm fullWidth>
+                    <form onSubmit={onEditTeamSubmit}>
+                        <TextField
+                            id="new-quiz-points"
+                            label="points"
+                            variant="filled"
+                            onChange={(e) => {
+                                let newValue = e.target.value;
+                                newValue = newValue.replace(/,/g , '.');
+
+                                if (newValue == '') newValue = '0';
+
+                                if (newValue.length > 1 && !newValue.match(/^0\./)) {
+                                    newValue = newValue.replace(/^0*/, '');
+                                }
+
+                                if (!newValue.match(/^[0-9-]([0-9.]+)?$/) ||
+                                    (newValue.match(/\./g)?.length ?? 0) > 1
+                                ) {
+                                    return;
+                                }
+
+                                setNewPoints(newValue);
+                            }}
+                            value={newPoints}
+                            fullWidth
+                            type="text"
+                            style={{ 'marginBottom': '5px' }}
+                        />
+                        <Button type="submit" fullWidth variant="contained" color="primary">
+                            {'Submit points'}
+                        </Button>
+                    </form>
+                </StyledForm>
             </div>
 
             <div className='footer'>
@@ -183,6 +227,10 @@ const TeamsWrapper = styled('div')(({
     '> div': {
         margin: '0px 20px',
     },
+}));
+
+const StyledForm = styled(FormControl)(({
+    'marginBottom': '30px',
 }));
 
 const AddUserButton = styled(SpotifyLogoRaw)(({ theme }) => ({
