@@ -9,8 +9,8 @@ const sessionRoutes = Router();
 sessionRoutes.post('/', customValidator(createSessionSchema), authMiddleware, createSession);
 sessionRoutes.get('/:sessionCode', customValidator(getSessionSchema), getSessions);
 
-sessionRoutes.post('/:sessionId/teams', customValidator(createTeamSchema), createTeam);
-sessionRoutes.put('/:sessionId/teams/:teamId', customValidator(putTeamSchema), putTeam);
-sessionRoutes.delete('/:sessionId/teams/:teamId', customValidator(deleteTeamSchema), deleteTeam);
+sessionRoutes.post('/:sessionId/teams', customValidator(createTeamSchema), authMiddleware, createTeam);
+sessionRoutes.put('/:sessionId/teams/:teamId', customValidator(putTeamSchema), authMiddleware, putTeam);
+sessionRoutes.delete('/:sessionId/teams/:teamId', customValidator(deleteTeamSchema), authMiddleware, deleteTeam);
 
 export { sessionRoutes };
