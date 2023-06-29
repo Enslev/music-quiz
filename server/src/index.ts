@@ -35,10 +35,10 @@ const init = () => {
         });
     });
 
-    app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
         console.error(err);
         res.status(500).send({ message: 'Internal server error' });
-        next();
+        return;
     });
 
     app.listen(port, () => {

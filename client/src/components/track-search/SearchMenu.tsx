@@ -7,7 +7,7 @@ import TrackPreview from '../track-search/TrackPreview';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
 import { Track } from '../../overmind/effects/api/quizzes/types';
-import { pad } from '../../services/utils';
+import { formatMs } from '../../services/utils';
 import { SpotifyTrackObject } from '../../overmind/effects/api/spotify/types';
 
 export type SelectedTrackMeta = {
@@ -74,12 +74,6 @@ const SearchMenu: React.FC<Props> = ({
         spotify.seek(newPosition);
     };
 
-    const formatMs = (ms: number) => {
-        const minutes = Math.floor(ms / 60000);
-        const seconds = Math.floor((ms - (minutes * 60000)) / 1000);
-        return `${pad(minutes, 2)}:${pad(seconds, 2)}`;
-    };
-
     const handlePlay = () => {
         if (!selectedTrack) return;
 
@@ -88,7 +82,6 @@ const SearchMenu: React.FC<Props> = ({
             position: selectedTrackStartPosition,
         });
     };
-
 
     const handleCloseSearch = () => {
         setSelectedTrack(null);

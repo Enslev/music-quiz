@@ -1,6 +1,17 @@
-// import { ThemeOptions } from '@mui/material/styles';
-
 import { ThemeOptions, createTheme } from '@mui/material';
+
+declare module '@mui/material/styles/createPalette' {
+    export interface PaletteOptions {
+        custom: {
+            darkerBackground: string,
+        }
+    }
+    export interface Palette {
+        custom: {
+            darkerBackground: string,
+        }
+    }
+}
 
 export const themeOptions: ThemeOptions = {
     palette: {
@@ -13,6 +24,9 @@ export const themeOptions: ThemeOptions = {
         },
         background: {
             default: '#326670',
+        },
+        custom: {
+            darkerBackground: '#282c34',
         },
     },
 };

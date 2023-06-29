@@ -3,28 +3,30 @@ import { User } from './User';
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
 class Track {
-    @prop({ required: true })
+    @prop()
     public trackUrl!: string;
 
-    @prop({ required: true })
+    @prop()
     public title!: string;
 
-    @prop({ required: true })
+    @prop()
     public artist!: string;
 
-    @prop({ required: true })
+    @prop()
     public points!: number;
 
-    @prop({ required: true, default: 0 })
+    @prop({ default: 0 })
     public startPosition!: number;
-}
 
+    @prop({ default: 0 })
+    public length!: number;
+}
 export class Category {
 
-    @prop({ required: true })
+    @prop()
     public title!: string;
 
-    @prop({ type: () => [Track], required: true })
+    @prop({ type: () => [Track] })
     public tracks!: Track[];
 }
 

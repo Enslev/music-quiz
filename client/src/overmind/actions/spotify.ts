@@ -7,9 +7,12 @@ let playbackUpdateInterval: NodeJS.Timer | null = null;
 const PLAYBACK_UPDATE_INTERVAL_MS = 900 as const;
 
 const startPlaybackUpdates = (context: Context) => {
-    const { updatePlaybackPosition } = context.actions.spotify;
+    if (playbackUpdateInterval) clearInterval(playbackUpdateInterval);
+
+    const { updatePlaybackState } = context.actions.spotify;
+
     playbackUpdateInterval = setInterval(async () => {
-        updatePlaybackPosition();
+        updatePlaybackState();
     }, PLAYBACK_UPDATE_INTERVAL_MS);
 };
 
@@ -18,9 +21,18 @@ const stopPlaybackUpdates = () => {
     clearInterval(playbackUpdateInterval);
 };
 
-export const updatePlaybackPosition = async (context: Context) => {
+export const updatePlaybackState = async (context: Context) => {
     const playbackResponse = await getPlaybackState(context);
     context.state.spotifyPlayer.playpackPosition = playbackResponse?.progress_ms ?? null;
+
+    // If spotify is not playing, stop these updates
+    if (!(playbackResponse?.is_playing ?? true)) {
+        stopPlaybackUpdates();
+
+        if (context.state.spotifyPlayer.isPlaying) {
+            context.actions.spotify.clearState();
+        }
+    }
 };
 
 export const search = async (context: Context, searchTerm: string) => {
@@ -45,18 +57,19 @@ export const play = async (context: Context, options: playOptions) => {
         return resume(context);
     }
 
+    await spotifyWrapper(context,
+        () => effects.api.spotify.play(deviceId, {
+            uris: [trackUri],
+            position_ms: position,
+        }),
+    );
+
     // Update state
     startPlaybackUpdates(context);
     state.spotifyPlayer.isPlaying = true;
     state.spotifyPlayer.currentlyPlaying = trackUri;
     localStorage.setItem('currentlyPlaying', trackUri);
 
-    return spotifyWrapper(context,
-        () => effects.api.spotify.play(deviceId, {
-            uris: [trackUri],
-            position_ms: position,
-        }),
-    );
 };
 
 export const resume = async (context: Context) => {
@@ -98,17 +111,12 @@ export const pause = async (context: Context) => {
 };
 
 export const stop = async (context: Context) => {
-    const { effects, state } = context;
+    const { effects, state, actions } = context;
 
     const spotifyState = state.spotifyPlayer;
     const isPlayingBeforeUpdate = spotifyState.isPlaying;
 
-    // Update state
-    stopPlaybackUpdates();
-    spotifyState.currentlyPlaying = null;
-    spotifyState.isPlaying = false;
-    spotifyState.playpackPosition = null;
-    localStorage.removeItem('currentlyPlaying');
+    actions.spotify.clearState();
 
     // Don't notify spotify if there is no song playing
     if (!isPlayingBeforeUpdate) return;
@@ -116,6 +124,17 @@ export const stop = async (context: Context) => {
     return spotifyWrapper(context,
         () => effects.api.spotify.pause(deviceId),
     );
+};
+
+export const clearState = async (context: Context) => {
+    const { state } = context;
+    const spotifyState = state.spotifyPlayer;
+
+    stopPlaybackUpdates();
+    spotifyState.currentlyPlaying = null;
+    spotifyState.isPlaying = false;
+    spotifyState.playpackPosition = null;
+    localStorage.removeItem('currentlyPlaying');
 };
 
 export const getPlaybackState = async (context: Context) => {

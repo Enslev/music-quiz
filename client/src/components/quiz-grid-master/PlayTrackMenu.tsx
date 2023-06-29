@@ -22,11 +22,11 @@ const PlayTrackMenu: React.FC<Props> = ({
 }) => {
 
     const { spotifyPlayer } = useAppState();
-    const { play, stop } = useActions().spotify;
+    const { play, pause } = useActions().spotify;
 
     const handleStop = (e: React.MouseEvent) => {
         e.stopPropagation();
-        stop();
+        pause();
     };
 
     const handlePlay = (e: React.MouseEvent) => {

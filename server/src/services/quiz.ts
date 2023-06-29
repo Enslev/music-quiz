@@ -16,6 +16,7 @@ export const sanitizeQuizRequest = (quizRequestBody: RequestQuiz) => {
                 trackUrl: track.trackUrl,
                 points: track.points,
                 startPosition: track.startPosition,
+                length: track.length,
             };
         });
 
@@ -52,6 +53,7 @@ const generateEmptyTrack = (): TrackDocument => {
         trackUrl: '',
         points: 0,
         startPosition: 0,
+        length: 0,
     };
 };
 

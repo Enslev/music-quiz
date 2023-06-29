@@ -17,7 +17,6 @@ export const TeamLabel: React.FC<Props> = (props) => {
     </LabelWrapper>;
 };
 
-
 const LabelWrapper = styled('div')(({
     color: 'white',
     display: 'flex',

@@ -7,7 +7,8 @@ import { validator as customValidator } from '../../utils';
 const quizzesRoutes = Router();
 
 quizzesRoutes.get('/', customValidator(getQuizzesJoiSchema), authMiddleware, getQuizzes);
-quizzesRoutes.post('/',  customValidator(createQuizSchema), authMiddleware, createQuiz);
+quizzesRoutes.post('/', customValidator(createQuizSchema), authMiddleware, createQuiz);
+
 quizzesRoutes.get('/:quizId', customValidator(getQuizJoiSchema), authMiddleware, getQuiz);
 quizzesRoutes.put('/:quizId', customValidator(putQuizSchema), authMiddleware, putQuiz);
 

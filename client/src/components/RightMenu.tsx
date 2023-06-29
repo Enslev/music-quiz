@@ -46,7 +46,7 @@ const ModalContainer = styled('div')(({ theme }) => ({
     boxSizing: 'border-box',
     top: '0px',
     right: '0px',
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.custom.darkerBackground,
     width: '500px',
     padding: '20px',
     zIndex: '100',

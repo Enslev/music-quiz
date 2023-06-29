@@ -12,6 +12,7 @@ export interface Quiz {
             points:number;
             trackUrl: string;
             startPosition: number;
+            length: number;
         }[]
     }[]
 }

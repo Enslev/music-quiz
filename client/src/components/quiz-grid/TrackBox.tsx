@@ -32,6 +32,7 @@ const TrackBox: React.FC<Props> = ({
                 track.artist = '';
                 track.trackUrl = '';
                 track.startPosition = 0;
+                track.length = 0;
                 saveTrigger();
             }
             return;
@@ -47,6 +48,7 @@ const TrackBox: React.FC<Props> = ({
         track.artist = selectedTrack.artists.map((artist) => artist.name).join(', ');
         track.trackUrl = selectedTrack.uri;
         track.startPosition = meta.startPosition ?? 0;
+        track.length = selectedTrack.duration_ms;
         saveTrigger();
     };
 
