@@ -27,3 +27,12 @@ export const updateTeam = async ({ state, effects }: Context, team: Team) => {
     state.session = await effects.api.sessions.putTeam(sessionId, team);
     return state.session;
 };
+
+export const deleteTeam = async ({ state, effects }: Context, team: Team) => {
+    const sessionId = state.session?._id;
+
+    if (!sessionId) return;
+
+    state.session = await effects.api.sessions.deleteTeam(sessionId, team._id);
+    return state.session;
+};

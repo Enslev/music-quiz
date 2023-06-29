@@ -35,5 +35,11 @@ export const sessions = (() => {
                 body,
             });
         },
+
+        deleteTeam: async (sessionId: string, teamId: string) => {
+            return await request.delete<Session>(`${baseUrl}/${sessionId}/teams/${teamId}`, {
+                headers: { authorization: `Bearer ${apiToken}` },
+            });
+        },
     };
 })();

@@ -42,6 +42,7 @@ export const createSession = async (req: ValidatedRequest<CreateSessionSchema>, 
     }
 
     const sessionDoc = await SessionModel.create({
+        _id: new Types.ObjectId(),
         title: quiz.title,
         categories: quiz.categories,
         user: req.user._id,
@@ -118,6 +119,34 @@ export const putTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Respons
         name: req.body.name,
         pointsHistory: req.body.pointsHistory,
     };
+
+    const savedSession = await sessionDoc.save();
+    res.status(200).json(savedSession);
+};
+
+export const deleteTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Response) => {
+    const sessionDoc = await SessionModel.findOne({ _id: req.params.sessionId });
+
+    if (!sessionDoc) {
+        res.status(404).send({
+            message: 'Session not Found',
+        });
+        return;
+    }
+
+    const teamFromDb = sessionDoc.teams.find((team) =>
+        team._id.equals(req.params.teamId),
+    );
+
+    if (!teamFromDb) {
+        res.status(404).send({
+            message: 'Team not Found',
+        });
+        return;
+    }
+
+    const teamIdx = sessionDoc.teams.indexOf(teamFromDb);
+    sessionDoc.teams.splice(teamIdx, 1);
 
     const savedSession = await sessionDoc.save();
     res.status(200).json(savedSession);

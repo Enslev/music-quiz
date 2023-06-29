@@ -51,6 +51,21 @@ const ModalContainer = styled('div')(({ theme }) => ({
     padding: '20px',
     zIndex: '100',
 
+    display: 'flex',
+    flexFlow: 'column',
+
+    '.header': {
+        flex: '0 1 auto',
+    },
+
+    '.content ': {
+        flex: '1 1 auto',
+    },
+
+    '.footer  ': {
+        flex: '0 1 auto',
+    },
+
     webkitBoxShadow: '25px 0px 25px 20px #000000',
     boxShadow: '25px 0px 25px 20px #000000',
 }));

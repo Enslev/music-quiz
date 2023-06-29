@@ -66,3 +66,18 @@ export interface PutTeamSchema extends ValidatedRequestSchema {
         pointsHistory: number[];
     }
 }
+
+
+export const deleteTeamSchema = {
+    params: Joi.object({
+        sessionId: Joi.string().required(),
+        teamId: Joi.string().required(),
+    }),
+};
+
+export interface DeleteTeamSchema extends ValidatedRequestSchema {
+    [ContainerTypes.Params]: {
+        sessionId: string;
+        teamId: string;
+    },
+}

@@ -14,7 +14,7 @@ import { Team } from '../overmind/effects/api/sessions/types';
 const MasterQuizPage: React.FC = () => {
     const { sessionCode } = useParams();
     const { session } = useAppState();
-    const { loadSession, createteam, updateTeam } = useActions().sessions;
+    const { loadSession, createteam, updateTeam, deleteTeam } = useActions().sessions;
 
     const [allTracks, setAllTracks] = useState<Track[]>([]);
     const [addTeamMenuOpen, setAddTeamMenuOpen] = useState<boolean>(false);
@@ -53,19 +53,30 @@ const MasterQuizPage: React.FC = () => {
         setTeamSettingsOpen(false);
     };
 
+    const handleNewTeamClick = () => {
+        setTeamName('');
+        setAddTeamMenuOpen(true);
+    };
+
     const handleTeamClick = (team: Team) => {
         setSelectedTeam(team);
         setTeamName(team.name);
         setTeamSettingsOpen(true);
     };
 
+    const handleDeleteTeam = async (team: Team | null) => {
+        if (!team) return;
+
+        await deleteTeam(team);
+        setTeamSettingsOpen(false);
+    };
 
     if (!session) return <></>;
 
     return <>
         <TeamsWrapper>
             {session.teams.length < 5 && <AddUserButton
-                onClick={() => setAddTeamMenuOpen(true)}
+                onClick={handleNewTeamClick}
             />}
             {session.teams.map((team) => <TeamLabel
                 team={team}
@@ -109,24 +120,39 @@ const MasterQuizPage: React.FC = () => {
             open={teamSettingsOpen}
             handleClose={() => setTeamSettingsOpen(false)}
         >
-            <h1>{selectedTeam?.name}</h1>
+            <div className='header'>
+                <h1>{selectedTeam?.name}</h1>
+            </div>
 
-            <FormControl fullWidth>
-                <form onSubmit={onEditTeamSubmit}>
-                    <TextField
-                        id="new-quiz-name"
-                        label="Rename team"
-                        variant="filled"
-                        onChange={(e) => setTeamName(e.target.value)}
-                        value={teamName}
-                        fullWidth
-                        style={{ 'marginBottom': '15px' }}
-                    />
-                    <Button type="submit" fullWidth variant="contained" color="primary">
-                        {'This is a better name!'}
-                    </Button>
-                </form>
-            </FormControl>
+            <div className='content'>
+                <FormControl fullWidth>
+                    <form onSubmit={onEditTeamSubmit}>
+                        <TextField
+                            id="new-quiz-name"
+                            label="Rename team"
+                            variant="filled"
+                            onChange={(e) => setTeamName(e.target.value)}
+                            value={teamName}
+                            fullWidth
+                            style={{ 'marginBottom': '15px' }}
+                        />
+                        <Button type="submit" fullWidth variant="contained" color="primary">
+                            {'This is a better name!'}
+                        </Button>
+                    </form>
+                </FormControl>
+            </div>
+
+            <div className='footer'>
+                <Button
+                    variant='contained'
+                    color='error'
+                    fullWidth
+                    onClick={() => handleDeleteTeam(selectedTeam)}
+                >
+                    Delete team
+                </Button>
+            </div>
         </RightMenu>
     </>;
 };
@@ -139,7 +165,6 @@ const TeamsWrapper = styled('div')(({
     '> div': {
         margin: '0px 20px',
     },
-
 }));
 
 const AddUserButton = styled(SpotifyLogoRaw)(({ theme }) => ({
