@@ -1,6 +1,6 @@
 import { API_URL } from '../../utils';
 import request from '../../../../services/api-service';
-import { Session, createSessionRequestBody } from './types';
+import { Session, CreateSessionRequestBody, CreateTeamRequestBody } from './types';
 
 export const sessions = (() => {
     let apiToken: string;
@@ -11,7 +11,7 @@ export const sessions = (() => {
             apiToken = newToken;
         },
 
-        PostSession: async (body: createSessionRequestBody) => {
+        PostSession: async (body: CreateSessionRequestBody) => {
             return await request.post<Session>(baseUrl, {
                 headers: { authorization: `Bearer ${apiToken}` },
                 body,
@@ -20,6 +20,14 @@ export const sessions = (() => {
 
         getSession: async (sessionCode: string) => {
             return await request.get<Session>(`${baseUrl}/${sessionCode}`);
+        },
+
+        postTeam: async (sessionId: string, body: CreateTeamRequestBody) => {
+            // const sessionId =
+            return await request.post<Session>(`${baseUrl}/${sessionId}/teams`, {
+                headers: { authorization: `Bearer ${apiToken}` },
+                body,
+            });
         },
     };
 })();

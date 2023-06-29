@@ -17,6 +17,10 @@ export interface Session extends MongoDoc {
     code: string;
 }
 
-export interface createSessionRequestBody {
+export interface CreateSessionRequestBody {
     quizId: string;
+}
+
+export interface CreateTeamRequestBody {
+    name: string,
 }
