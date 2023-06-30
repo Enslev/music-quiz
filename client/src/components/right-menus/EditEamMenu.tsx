@@ -5,7 +5,6 @@ import { Team } from '../../overmind/effects/api/sessions/types';
 
 export interface EditTeamData {
     type: 'update' | 'delete';
-    _id: string;
     teamName?: string;
     newPoints?: number;
 }
@@ -42,7 +41,6 @@ export const EditTeamMenu: React.FC<Props> = (props) => {
 
         onSubmit({
             type: 'update',
-            _id: team._id,
             newPoints: Number(newPoints),
             teamName,
         });
@@ -50,11 +48,7 @@ export const EditTeamMenu: React.FC<Props> = (props) => {
 
     const handleDeleteTeam = () => {
         if (!team) return;
-
-        onSubmit({
-            type: 'delete',
-            _id: team?._id,
-        });
+        onSubmit({ type: 'delete' });
     };
 
     return <RightMenu

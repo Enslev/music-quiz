@@ -24,6 +24,9 @@ class Claimed {
 
     @prop({ required: true, type: Types.ObjectId })
     public teamId!: Types.ObjectId;
+
+    @prop({ required: true, default: false })
+    public artistGuessed!: boolean;
 }
 
 export class Session extends TimeStamps {
@@ -53,6 +56,9 @@ export class Session extends TimeStamps {
 }
 
 export const SessionModel = getModelForClass(Session);
+export const ClaimedModel = getModelForClass(Claimed);
+
 export type SessionDocument = DocumentType<Session>;
+export type ClaimedDocument = DocumentType<Claimed>;
 
 export type TeamDocument = SessionDocument['teams'][number];

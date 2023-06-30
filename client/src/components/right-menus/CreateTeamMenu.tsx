@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RightMenu } from '../RightMenu';
 import { Button, FormControl, TextField } from '@mui/material';
 
@@ -22,6 +22,11 @@ export const CreateTeamMenu: React.FC<Props> = (props) => {
         e.preventDefault();
         onSubmit(teamName);
     };
+
+    useEffect(() => {
+        if (!open) return;
+        setTeamName('');
+    }, [open]);
 
     return <RightMenu
         open={open}

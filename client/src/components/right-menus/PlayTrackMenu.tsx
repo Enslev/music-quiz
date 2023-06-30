@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { RightMenu, RightMenuContent, RightMenuHeader } from '../RightMenu';
 import { Category, Track } from '../../overmind/effects/api/quizzes/types';
-import { Box, Slider, Stack, styled } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, Slider, Stack, ToggleButton, ToggleButtonGroup, styled } from '@mui/material';
 import { useAppState, useActions } from '../../overmind';
+
+import { formatMs } from '../../services/utils';
+import { Claimed, Team } from '../../overmind/effects/api/sessions/types';
 
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
-import { formatMs } from '../../services/utils';
 
 interface Props {
     category?: Category,
     track?: Track,
+    teams: Team[],
     open: boolean,
+    previousClaimed: Claimed | null;
     onClose: () => void;
+    onWinner: (team: Team, track: Track, artistGuessed: boolean) => void;
 }
 
 export const PlayTrackMenu: React.FC<Props> = (props) => {
@@ -20,20 +25,27 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
     const {
         category,
         track,
+        teams,
         open,
+        previousClaimed,
         onClose,
+        onWinner,
     } = props;
 
     const { spotifyPlayer } = useAppState();
     const { play, pause, seek } = useActions().spotify;
 
     const [currentTrackPosition, setCurrentTrackPosition] = useState<number>(track?.startPosition ?? 0);
+    const [artistGuessed, setArtistGuessed] = useState<boolean>(false);
     const [sliderFocused, setSliderFocused] = useState<boolean>(false);
+    const [winningTeamId, setWinningTeamId] = useState<string | null>(null);
 
     useEffect(() => {
         if (!open) return;
 
+        setArtistGuessed(previousClaimed?.artistGuessed ?? false);
         setCurrentTrackPosition(track?.startPosition ?? 0);
+        setWinningTeamId(previousClaimed?.teamId || null);
     }, [open]);
 
     useEffect(() => {
@@ -108,6 +120,51 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                             <span>{formatMs(track.length)}</span>
                         </Stack>
                     </SliderWrapper>
+                    <h1>Who won?</h1>
+                    <FormControlLabel
+                        label="Artist guessed"
+                        disabled={Boolean(previousClaimed?.teamId)}
+                        control={<Checkbox
+                            checked={artistGuessed}
+                            onChange={() => setArtistGuessed(!artistGuessed)}
+                        />}
+                    />
+                    <ToggleButtonGroup
+                        orientation="vertical"
+                        value={winningTeamId}
+                        exclusive
+                        fullWidth
+                        disabled={Boolean(previousClaimed?.teamId)}
+                        onChange={(event: React.MouseEvent<HTMLElement>, teamId: string) => {
+                            setWinningTeamId(teamId);
+                        }}
+                        style={{ marginBottom: '10px' }}
+                    >
+                        {teams.map((team) =>
+                            <ToggleButton
+                                key={team._id}
+                                value={team._id}
+                                aria-label={team.name}
+                                fullWidth
+                            >
+                                {team.name}
+                            </ToggleButton>,
+                        )}
+                    </ToggleButtonGroup>
+
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        disabled={Boolean(previousClaimed?.teamId)}
+                        onClick={() => {
+                            const winningTeam = teams.find((team) => team._id == winningTeamId);
+                            if (!winningTeam) return;
+                            onWinner(winningTeam, track, artistGuessed);
+                        }}
+                    >
+                        {previousClaimed ? 'Winner already selected' : 'This is the winner!'}
+                    </Button>
                 </RightMenuContent>
             </>
 

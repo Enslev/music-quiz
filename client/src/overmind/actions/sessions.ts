@@ -1,5 +1,5 @@
 import { Context } from '../';
-import { Team } from '../effects/api/sessions/types';
+import { Claimed, Team } from '../effects/api/sessions/types';
 
 export const loadSession = async ({ state, effects }: Context, sessionCode: string) => {
     state.session = await effects.api.sessions.getSession(sessionCode);
@@ -34,5 +34,14 @@ export const deleteTeam = async ({ state, effects }: Context, team: Team) => {
     if (!sessionId) return;
 
     state.session = await effects.api.sessions.deleteTeam(sessionId, team._id);
+    return state.session;
+};
+
+export const claimTrack = async ({ state, effects }: Context, claimedTrack: Claimed) => {
+    const sessionId = state.session?._id;
+
+    if (!sessionId) return;
+
+    state.session = await effects.api.sessions.claimTrack(sessionId, claimedTrack);
     return state.session;
 };

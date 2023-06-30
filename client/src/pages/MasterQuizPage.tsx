@@ -16,7 +16,7 @@ import { EditTeamData, EditTeamMenu } from '../components/right-menus/EditEamMen
 const MasterQuizPage: React.FC = () => {
     const { sessionCode } = useParams();
     const { session } = useAppState();
-    const { loadSession, createteam, updateTeam, deleteTeam } = useActions().sessions;
+    const { loadSession, createteam, updateTeam, deleteTeam, claimTrack } = useActions().sessions;
     const { spotifyPlayer } = useAppState();
 
     const [allTracks, setAllTracks] = useState<Track[]>([]);
@@ -42,27 +42,42 @@ const MasterQuizPage: React.FC = () => {
     };
 
     const onEditTeamSubmit = (data: EditTeamData) => {
+        if (!selectedTeam) return;
+
         switch (data.type) {
-        case 'update': return handleUpdateTeam(data);
+        case 'update': return handleUpdateTeam(selectedTeam, data);
         case 'delete': return handleDeleteTeam();
         }
     };
 
-    const handleUpdateTeam = (data: EditTeamData) => {
-        if (!selectedTeam) return;
+    const onWinner = async (winningTeam: Team, track: Track, artistGuessed: boolean) => {
+        setTrackSelected(null);
+        await handleUpdateTeam(winningTeam, {
+            type: 'update',
+            newPoints: track.points + (artistGuessed ? 100 : 0),
+        });
 
-        const newPointsHistory = [...selectedTeam.pointsHistory];
+        await claimTrack({
+            teamId: winningTeam._id,
+            trackId: track._id,
+            artistGuessed,
+        });
+
+    };
+
+    const handleUpdateTeam = async (team: Team, data: EditTeamData) => {
+        const newPointsHistory = [...team.pointsHistory];
         if (data.newPoints && data.newPoints != 0) {
             newPointsHistory.push(data.newPoints);
         }
 
         const newTeam: Team = {
-            _id: selectedTeam._id,
-            name: data.teamName ?? selectedTeam.name,
+            _id: team._id,
+            name: data.teamName ?? team.name,
             pointsHistory: newPointsHistory,
         };
 
-        updateTeam(newTeam);
+        await updateTeam(newTeam);
         setEditTeamMenuOpen(false);
     };
 
@@ -103,7 +118,7 @@ const MasterQuizPage: React.FC = () => {
 
         <QuizGridHost
             categories={session.categories}
-            revealed={[]}
+            revealed={session.claimed.map((claimed) => claimed.trackId)}
             selectTrack={handleTrackSelect}
         />
 
@@ -123,8 +138,15 @@ const MasterQuizPage: React.FC = () => {
         <PlayTrackMenu
             category={trackSelected?.category}
             track={trackSelected?.track}
+            teams={session.teams}
+            previousClaimed={
+                session.claimed.find((claim) =>
+                    claim.trackId == trackSelected?.track._id,
+                ) ?? null
+            }
             open={Boolean(trackSelected)}
             onClose={() => setTrackSelected(null)}
+            onWinner={onWinner}
         />
 
         <SpotifyPlayer

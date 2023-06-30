@@ -67,7 +67,6 @@ export interface PutTeamSchema extends ValidatedRequestSchema {
     }
 }
 
-
 export const deleteTeamSchema = {
     params: Joi.object({
         sessionId: Joi.string().required(),
@@ -80,4 +79,26 @@ export interface DeleteTeamSchema extends ValidatedRequestSchema {
         sessionId: string;
         teamId: string;
     },
+}
+
+export const postClaimedSchema = {
+    params: Joi.object({
+        sessionId: Joi.string().required(),
+    }),
+    body: Joi.object({
+        trackId: Joi.string().required(),
+        teamId: Joi.string().required(),
+        artistGuessed: Joi.boolean().required(),
+    }),
+};
+
+export interface PostClaimedSchema extends ValidatedRequestSchema {
+    [ContainerTypes.Params]: {
+        sessionId: string;
+    },
+    [ContainerTypes.Body]: {
+        trackId: string,
+        teamId: string,
+        artistGuessed: boolean,
+    }
 }

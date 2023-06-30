@@ -1,6 +1,6 @@
 import { API_URL } from '../../utils';
 import request from '../../../../services/api-service';
-import { Session, CreateSessionRequestBody, CreateTeamRequestBody, PutTeamRequestBody } from './types';
+import { Session, CreateSessionRequestBody, CreateTeamRequestBody, PutTeamRequestBody, PostClaimedRequestBody } from './types';
 
 export const sessions = (() => {
     let apiToken: string;
@@ -39,6 +39,13 @@ export const sessions = (() => {
         deleteTeam: async (sessionId: string, teamId: string) => {
             return await request.delete<Session>(`${baseUrl}/${sessionId}/teams/${teamId}`, {
                 headers: { authorization: `Bearer ${apiToken}` },
+            });
+        },
+
+        claimTrack: async (sessionId: string, body: PostClaimedRequestBody) => {
+            return await request.post<Session>(`${baseUrl}/${sessionId}/claimed`, {
+                headers: { authorization: `Bearer ${apiToken}` },
+                body,
             });
         },
     };

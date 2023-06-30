@@ -8,9 +8,9 @@ export interface Team {
 }
 
 export interface Claimed {
-    _id: string;
     trackId: string;
     teamId: string;
+    artistGuessed: boolean;
 }
 
 export interface Session extends MongoDoc {
@@ -35,4 +35,9 @@ export interface PutTeamRequestBody {
     _id: string,
     name: string,
     pointsHistory: number[],
+}
+
+export interface PostClaimedRequestBody {
+    teamId: string;
+    trackId: string;
 }
