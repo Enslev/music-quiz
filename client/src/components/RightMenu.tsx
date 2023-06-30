@@ -38,6 +38,18 @@ export const RightMenu: React.FC<Props> = (props) => {
     </>);
 };
 
+export const RightMenuHeader: React.FC<{children: JSX.Element | JSX.Element[]}> = ({ children }) => {
+    return <div className='header'>{children}</div>;
+};
+
+export const RightMenuContent: React.FC<{children: JSX.Element | JSX.Element[]}> = ({ children }) => {
+    return <div className='content'>{children}</div>;
+};
+
+export const RightMenuFooter: React.FC<{children: JSX.Element | JSX.Element[]}> = ({ children }) => {
+    return <div className='footer'>{children}</div>;
+};
+
 const ModalContainer = styled('div')(({ theme }) => ({
     position: 'absolute',
     height: '100vh',

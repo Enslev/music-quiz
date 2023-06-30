@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { RightMenu } from '../RightMenu';
+import { RightMenu, RightMenuContent, RightMenuHeader } from '../RightMenu';
 import { Category, Track } from '../../overmind/effects/api/quizzes/types';
 import { Box, Slider, Stack, styled } from '@mui/material';
 import { useAppState, useActions } from '../../overmind';
@@ -72,10 +72,10 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
             onClose={onClose}
         >
             <>
-                <div className='header'>
+                <RightMenuHeader>
                     <span>{category.title} - {track.points} </span>
-                </div>
-                <div className='content'>
+                </RightMenuHeader>
+                <RightMenuContent>
                     <Title className='title'>{track.title + ''}</Title>
                     <Artist className='artist'>{track.artist}</Artist>
 
@@ -108,7 +108,7 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                             <span>{formatMs(track.length)}</span>
                         </Stack>
                     </SliderWrapper>
-                </div>
+                </RightMenuContent>
             </>
 
         </RightMenu>

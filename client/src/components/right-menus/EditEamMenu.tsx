@@ -1,6 +1,6 @@
 import { TextField, Button, styled, FormControl } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { RightMenu } from '../RightMenu';
+import { RightMenu, RightMenuContent, RightMenuFooter, RightMenuHeader } from '../RightMenu';
 import { Team } from '../../overmind/effects/api/sessions/types';
 
 export interface EditTeamData {
@@ -61,11 +61,11 @@ export const EditTeamMenu: React.FC<Props> = (props) => {
         open={open}
         onClose={onClose}
     >
-        <div className='header'>
+        <RightMenuHeader>
             <h1>{team?.name}</h1>
-        </div>
+        </RightMenuHeader>
 
-        <div className='content'>
+        <RightMenuContent>
             <StyledForm fullWidth>
                 <form onSubmit={handleSubmit}>
                     <TextField
@@ -110,9 +110,9 @@ export const EditTeamMenu: React.FC<Props> = (props) => {
                     </Button>
                 </form>
             </StyledForm>
-        </div>
+        </RightMenuContent>
 
-        <div className='footer'>
+        <RightMenuFooter>
             <Button
                 variant='contained'
                 color='error'
@@ -121,7 +121,7 @@ export const EditTeamMenu: React.FC<Props> = (props) => {
             >
             DELETE TEAM
             </Button>
-        </div>
+        </RightMenuFooter>
     </RightMenu>;
 };
 
