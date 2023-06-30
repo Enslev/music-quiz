@@ -9,6 +9,7 @@ interface Props {
     editMode?: boolean;
     revealed?: string[],
     categories: Category[] | null,
+    className?: string,
     saveTrigger?: () => void;
 }
 
@@ -19,12 +20,13 @@ const QuizGrid: React.FC<Props> = (props) => {
         revealed,
         saveTrigger,
         editMode = false,
+        className,
     } = props;
 
     if (!categories) return <></>;
 
     return (
-        <QuizWrapper>
+        <QuizWrapper className={className}>
             <QuizGridWrapper>
                 {categories.map((category) => {
                     return <React.Fragment
