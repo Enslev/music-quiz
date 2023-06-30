@@ -3,10 +3,13 @@ import 'express-async-errors';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
+import http from 'http';
+import { Server as IoServer } from 'socket.io';
 
 import { initMongo } from './mongoose';
 import { routes } from './routes';
 import { initRedis } from './services/redis';
+import { initIo } from './services/socket';
 
 dotenv.config();
 
@@ -41,7 +44,19 @@ const init = () => {
         return;
     });
 
-    app.listen(port, () => {
+    const server = http.createServer(app);
+
+    const io = new IoServer(server, {
+        cors: {
+            origin: '*',
+            methods: ['GET', 'POST'],
+        },
+    });
+
+    initIo(io);
+
+
+    server.listen(port, () => {
         console.log(`⚡️ Server is running at http://localhost:${port}`);
     });
 })();

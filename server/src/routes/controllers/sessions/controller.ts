@@ -5,6 +5,7 @@ import { Types } from 'mongoose';
 import { QuizModel } from '../../../mongoose/Quiz';
 import { SessionDocument, SessionModel, ClaimedModel } from '../../../mongoose/Session';
 import { makeCode } from './utils';
+import { triggerSessionUpdate } from '../../../services/socket';
 
 export const createSession = async (req: ValidatedRequest<CreateSessionSchema>, res: Response) => {
 
@@ -83,6 +84,7 @@ export const createTeam = async (req: ValidatedRequest<CreateTeamSchema>, res: R
 
     const savedSession = await sessionDoc.save();
     res.status(200).json(savedSession);
+    triggerSessionUpdate(sessionDoc.code);
 };
 
 export const putTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Response) => {
@@ -123,6 +125,7 @@ export const putTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Respons
 
     const savedSession = await sessionDoc.save();
     res.status(200).json(savedSession);
+    triggerSessionUpdate(sessionDoc.code);
 };
 
 export const deleteTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Response) => {
@@ -151,6 +154,7 @@ export const deleteTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Resp
 
     const savedSession = await sessionDoc.save();
     res.status(200).json(savedSession);
+    triggerSessionUpdate(sessionDoc.code);
 };
 
 export const postClaimed = async (req: ValidatedRequest<PostClaimedSchema>, res: Response) => {
@@ -175,4 +179,5 @@ export const postClaimed = async (req: ValidatedRequest<PostClaimedSchema>, res:
 
     const savedSession = await sessionDoc.save();
     res.status(200).json(savedSession);
+    triggerSessionUpdate(sessionDoc.code);
 };
