@@ -52,10 +52,11 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
 
     useEffect(() => {
         if (!currentlyPlaying) return;
+
         const foundTrack = tracks.find((track) => track.trackUrl == currentlyPlaying);
         setCurrentTrack(foundTrack ?? null);
         setSelectedTrackStartPosition(foundTrack?.startPosition ?? 0);
-    }, [currentlyPlaying, tracks]);
+    }, [currentlyPlaying]);
 
     useEffect(() => {
         if (sliderFocused) return;
