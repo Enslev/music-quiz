@@ -4,21 +4,21 @@ import { Slide, Fade, Box, styled } from '@mui/material';
 interface Props {
     open: boolean,
     children: JSX.Element | JSX.Element[],
-    handleClose?: () => void;
+    onClose?: () => void;
 }
 
 const RightMenu: React.FC<Props> = (props) => {
 
     const {
         open,
-        handleClose = () => {return;},
+        onClose = () => {return;},
         children,
     } = props;
 
     return (<>
         <Fade in={open}>
             <Box
-                onClick={handleClose}
+                onClick={onClose}
                 sx={{
                     width: '100vw',
                     height: '100vh',

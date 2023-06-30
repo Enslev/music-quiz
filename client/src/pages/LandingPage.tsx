@@ -44,7 +44,7 @@ const LandingPage: React.FC = () => {
         </ul>
         <RightMenu
             open={modalIsOpen}
-            handleClose={() => setModalIsOpen(false)}
+            onClose={() => setModalIsOpen(false)}
         >
             <h1>Create new quiz</h1>
             <FormControl fullWidth>

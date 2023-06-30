@@ -107,7 +107,7 @@ const SearchMenu: React.FC<Props> = ({
 
     return <RightMenu
         open={open}
-        handleClose={handleCloseSearch}
+        onClose={handleCloseSearch}
     >
         <>
             {selectedTrack &&

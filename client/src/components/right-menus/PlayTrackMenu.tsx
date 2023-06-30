@@ -11,15 +11,17 @@ interface Props {
     category?: Category,
     track?: Track,
     open: boolean,
-    handleClose: () => void;
+    onClose: () => void;
 }
 
-const PlayTrackMenu: React.FC<Props> = ({
-    category,
-    track,
-    open,
-    handleClose,
-}) => {
+export const PlayTrackMenu: React.FC<Props> = (props) => {
+
+    const {
+        category,
+        track,
+        open,
+        onClose,
+    } = props;
 
     const { spotifyPlayer } = useAppState();
     const { play, pause } = useActions().spotify;
@@ -40,7 +42,7 @@ const PlayTrackMenu: React.FC<Props> = ({
     return (
         <RightMenu
             open={open}
-            handleClose={handleClose}
+            onClose={onClose}
         >
             <TrackSelectedWrapper>
                 <div>
@@ -110,5 +112,3 @@ const Center = styled('div')(({
     justifyContent: 'center',
     width: '100%',
 }));
-
-export default PlayTrackMenu;
