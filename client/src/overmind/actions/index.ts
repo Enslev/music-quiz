@@ -18,5 +18,6 @@ export const onInitializeOvermind = async ({
 export * as auth from './auth';
 
 export * as quiz from './quizzes';
-export *  as sessions from './sessions';
+export * as sessions from './sessions';
 export * as spotify from './spotify';
+export * as ui from './ui';

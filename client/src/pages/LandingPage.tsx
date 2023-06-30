@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useActions, useAppState } from '../overmind';
 import { Quiz } from '../overmind/effects/api/quizzes/types';
-import { Button, FormControl, TextField } from '@mui/material';
+import { Button, FormControl, TextField, styled } from '@mui/material';
 import { RightMenu } from '../components/RightMenu';
 
 const LandingPage: React.FC = () => {
 
-
     const state = useAppState();
-    const [quizzes, setQuizzes] = useState<Quiz[] | null>(null);
+    const navigate = useNavigate();
+
     const { getAllQuizzes, createQuiz } = useActions().quiz;
+
+    const [quizzes, setQuizzes] = useState<Quiz[] | null>(null);
 
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [newQuizTitle, setNewQuizTitle] = useState<string>('');
@@ -38,7 +40,10 @@ const LandingPage: React.FC = () => {
 
     return <>
         <h1>Landing</h1>
-        <Button variant='contained' onClick={() => setModalIsOpen(!modalIsOpen)}>Open modal</Button>
+        <ButtonWrapper>
+            <Button variant='contained' onClick={() => setModalIsOpen(!modalIsOpen)}>Create quiz</Button>
+            <Button variant='contained' onClick={() => navigate('/session')}>Join session</Button>
+        </ButtonWrapper>
         <ul>
             {quizzes && quizzes.map((quiz) => <li key={quiz._id}><Link to={`/quiz/${quiz._id}/edit`}>{quiz.title}</Link></li>)}
         </ul>
@@ -66,5 +71,11 @@ const LandingPage: React.FC = () => {
         </RightMenu>
     </>;
 };
+
+const ButtonWrapper = styled('div')(({
+    button: {
+        margin: '0px 10px',
+    },
+}));
 
 export default LandingPage;

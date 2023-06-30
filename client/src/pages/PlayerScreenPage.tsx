@@ -7,17 +7,25 @@ const PlayerScreenPage: React.FC = () => {
 
     const { session } = useAppState();
     const navigate = useNavigate();
-    const { loadSession } = useActions().sessions;
+    const { loadSession, clearSession } = useActions().sessions;
     const { sessionCode } = useParams();
 
     useEffect(() => {
-        if (!sessionCode) return navigate('/');
-        loadSession(sessionCode);
+        (async () => {
+            if (!sessionCode) return navigate('/');
+            const validSession = await loadSession(sessionCode);
+
+            if (!validSession) {
+                navigate(-1);
+            }
+        })();
+
+        return () => {
+            clearSession();
+        };
     }, []);
 
     if (!session) return <></>;
-
-    console.log(session);
 
     return <>
         <QuizGrid

@@ -10,6 +10,7 @@ import PlayerScreenPage from './pages/PlayerScreenPage';
 import { useTheme } from '@mui/material';
 import MasterQuizPage from './pages/MasterQuizPage';
 import { useActions, useReaction } from './overmind';
+import { JoinSessionPage } from './pages/JoinSessionPage';
 
 const App: React.FC = () => {
     const theme = useTheme();
@@ -31,6 +32,7 @@ const App: React.FC = () => {
                 <Route path="login" Component={LoginPage} />
                 <Route path="session/:sessionCode/host" Component={MasterQuizPage} />
                 <Route path="quiz/:quizId/edit" Component={EditQuizPage} />
+                <Route path="session" Component={JoinSessionPage} />
                 <Route path="session/:sessionCode" Component={PlayerScreenPage} />
                 <Route path="auth/callback" Component={SpotifyCallbackPage} />
                 <Route path="*" element={<div>Not found</div>} />

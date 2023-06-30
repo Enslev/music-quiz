@@ -2,7 +2,19 @@ import { Context } from '../';
 import { Claimed, Team } from '../effects/api/sessions/types';
 
 export const loadSession = async ({ state, effects }: Context, sessionCode: string) => {
-    state.session = await effects.api.sessions.getSession(sessionCode);
+    try {
+        state.session = await effects.api.sessions.getSession(sessionCode);
+        return true;
+    } catch(e) {
+        if (e == 'Not Found') {
+            return false;
+        }
+    }
+};
+
+
+export const clearSession = async ({ state }: Context) => {
+    state.session = null;
 };
 
 export const createSession = async ({ state, effects }: Context, quizId: string) => {
