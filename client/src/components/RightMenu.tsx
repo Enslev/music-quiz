@@ -23,7 +23,7 @@ export const RightMenu: React.FC<Props> = (props) => {
                     width: '100vw',
                     height: '100vh',
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    position: 'absolute',
+                    position: 'fixed',
                     top: 0,
                     left: 0,
                     zIndex: 99,
@@ -51,7 +51,7 @@ export const RightMenuFooter: React.FC<{children: JSX.Element | JSX.Element[]}> 
 };
 
 const ModalContainer = styled('div')(({ theme }) => ({
-    position: 'absolute',
+    position: 'fixed',
     height: '100vh',
     maxHeight: '100vh',
     overflowY: 'hidden',
