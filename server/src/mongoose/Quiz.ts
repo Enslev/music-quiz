@@ -4,7 +4,7 @@ import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { Types } from 'mongoose';
 
 export class Track {
-    @prop({ required: true, type: Types.ObjectId, default: new Types.ObjectId()  })
+    @prop({ required: true, type: Types.ObjectId })
     public _id!: Types.ObjectId;
 
     @prop()
@@ -26,7 +26,7 @@ export class Track {
     public length!: number;
 }
 export class Category {
-    @prop({ required: true, type: Types.ObjectId, default: new Types.ObjectId() })
+    @prop({ required: true, type: Types.ObjectId })
     public _id!: Types.ObjectId;
 
     @prop()
@@ -37,7 +37,7 @@ export class Category {
 }
 
 export class Quiz extends TimeStamps {
-    @prop({ required: true, type: Types.ObjectId, default: new Types.ObjectId()  })
+    @prop({ required: true, type: Types.ObjectId })
     public _id!: Types.ObjectId;
 
     @prop({ required: true })
