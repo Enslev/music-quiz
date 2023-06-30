@@ -17,6 +17,7 @@ const MasterQuizPage: React.FC = () => {
     const { sessionCode } = useParams();
     const { session } = useAppState();
     const { loadSession, createteam, updateTeam, deleteTeam } = useActions().sessions;
+    const { spotifyPlayer } = useAppState();
 
     const [allTracks, setAllTracks] = useState<Track[]>([]);
     const [addTeamMenuOpen, setAddTeamMenuOpen] = useState<boolean>(false);
@@ -127,7 +128,7 @@ const MasterQuizPage: React.FC = () => {
         />
 
         <SpotifyPlayer
-            hide={Boolean(trackSelected)}
+            hide={spotifyPlayer.currentlyPlaying == trackSelected?.track.trackUrl}
             tracks={allTracks}
             disableKeybaord={editTeamMenuOpen || addTeamMenuOpen}
         />

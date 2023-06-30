@@ -1,6 +1,6 @@
 import { TextField, Button, styled, FormControl } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import RightMenu from '../RightMenu';
+import { RightMenu } from '../RightMenu';
 import { Team } from '../../overmind/effects/api/sessions/types';
 
 export interface EditTeamData {

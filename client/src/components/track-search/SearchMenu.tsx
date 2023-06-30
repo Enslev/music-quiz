@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, Slide, Slider, Stack, styled } from '@mui/material';
-import RightMenu from '../RightMenu';
+import { RightMenu } from '../RightMenu';
 import TrackSearchBar, { TrackSearchBarRefHandler } from '../track-search/TrackSearchBar';
 import { useActions, useAppState } from '../../overmind';
 import TrackPreview from '../track-search/TrackPreview';

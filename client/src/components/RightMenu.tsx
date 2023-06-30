@@ -7,7 +7,7 @@ interface Props {
     onClose?: () => void;
 }
 
-const RightMenu: React.FC<Props> = (props) => {
+export const RightMenu: React.FC<Props> = (props) => {
 
     const {
         open,
@@ -49,6 +49,7 @@ const ModalContainer = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.custom.darkerBackground,
     width: '500px',
     padding: '20px',
+    color: 'white',
     zIndex: '100',
 
     display: 'flex',
@@ -69,5 +70,3 @@ const ModalContainer = styled('div')(({ theme }) => ({
     webkitBoxShadow: '25px 0px 25px 20px #000000',
     boxShadow: '25px 0px 25px 20px #000000',
 }));
-
-export default RightMenu;

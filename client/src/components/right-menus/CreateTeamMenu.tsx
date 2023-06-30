@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import RightMenu from '../RightMenu';
+import { RightMenu } from '../RightMenu';
 import { Button, FormControl, TextField } from '@mui/material';
 
 interface Props {
