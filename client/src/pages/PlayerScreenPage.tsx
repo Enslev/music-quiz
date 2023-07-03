@@ -4,8 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import QuizGrid from '../components/quiz-grid/QuizGrid';
 import { TeamsBanner } from '../components/quiz-grid/TeamsBanner';
 import { styled } from '@mui/material';
-import { ChallengeOverlay } from '../components/Player/action-components/ChallengeOverlay';
-import { useSessionSocket } from '../services/socket.service';
+import { ChallengeOverlay, ChallengeOverlayOptions } from '../components/Player/action-components/ChallengeOverlay';
+import { SessionActionPayload, useSessionSocket } from '../services/socket.service';
 
 const PlayerScreenPage: React.FC = () => {
 
@@ -17,7 +17,8 @@ const PlayerScreenPage: React.FC = () => {
 
     const socket = useSessionSocket(session?.code ?? null);
 
-    const [challengeOpen] = useState<boolean>(false);
+    const [challengeOpen, setChallengeOpen] = useState<boolean>(false);
+    const [challengeOverlayOptions, setChallengeOverlayOptions] = useState<ChallengeOverlayOptions | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -44,12 +45,24 @@ const PlayerScreenPage: React.FC = () => {
             loadSession(sessionCode);
         });
 
-    }, [socket, sessionCode]);
+        socket.on('sessionAction', (data: SessionActionPayload) => {
+            switch (data.action.type) {
+            case 'challengeAction': {
+                if (data.action.show) {
+                    setChallengeOverlayOptions({
+                        categoryTitle: data.action.category,
+                        trackPoints: data.action.points,
+                    });
+                    setChallengeOpen(true);
+                } else  {
 
-    // useEffect(() => {
-    //     setTimeout(() => setChallengeOpen(true), 1000);
-    //     setTimeout(() => setChallengeOpen(false), 6000);
-    // }, []);
+                    setChallengeOpen(false);
+                }
+            }
+            }
+        });
+
+    }, [socket, sessionCode]);
 
     if (!session) return <></>;
 
@@ -66,10 +79,7 @@ const PlayerScreenPage: React.FC = () => {
 
         <ChallengeOverlay
             open={challengeOpen}
-            options={{
-                categoryTitle: 'Straights Out The Fridge',
-                trackPoints: 500,
-            }}
+            options={challengeOverlayOptions}
         />
     </Wrapper>;
 };

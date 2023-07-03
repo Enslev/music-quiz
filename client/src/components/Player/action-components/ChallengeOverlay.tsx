@@ -9,15 +9,15 @@ export interface ChallengeOverlayOptions {
 
 interface Props {
     open: boolean,
-    options: ChallengeOverlayOptions
+    options: ChallengeOverlayOptions | null
 }
 
 export const ChallengeOverlay: React.FC<Props> = (props) => {
 
     const { open, options } = props;
 
-    return <PlayerOverlay open={open}>
-        <Wrapper>
+    return <PlayerOverlay open={open && Boolean(options)}>
+        {options && <Wrapper>
             <div  className='header'>
                 <Category>
                     <span>{options.categoryTitle}</span>
@@ -28,7 +28,7 @@ export const ChallengeOverlay: React.FC<Props> = (props) => {
             </div>
             <div className='footer'>
             </div>
-        </Wrapper>
+        </Wrapper>}
     </PlayerOverlay>;
 };
 

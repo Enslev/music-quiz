@@ -9,7 +9,7 @@ import { Server as IoServer } from 'socket.io';
 import { initMongo } from './mongoose';
 import { routes } from './routes';
 import { initRedis } from './services/redis';
-import { initIo } from './services/socket';
+import { initSocketIo } from './services/socket';
 
 dotenv.config();
 
@@ -53,7 +53,7 @@ const init = () => {
         },
     });
 
-    initIo(io);
+    initSocketIo(io);
 
 
     server.listen(port, () => {

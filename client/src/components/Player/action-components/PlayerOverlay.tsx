@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 interface Props {
     open: boolean,
-    children: JSX.Element | JSX.Element[]
+    children: JSX.Element | JSX.Element[] | null
 }
 
 export const PlayerOverlay: React.FC<Props> = (props) => {

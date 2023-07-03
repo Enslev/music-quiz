@@ -12,6 +12,7 @@ import { Team } from '../overmind/effects/api/sessions/types';
 import { PlayTrackMenu } from '../components/right-menus/PlayTrackMenu';
 import { CreateTeamMenu } from '../components/right-menus/CreateTeamMenu';
 import { EditTeamData, EditTeamMenu } from '../components/right-menus/EditEamMenu';
+import { SessionActionPayload, emitChallengeAction, useSessionSocket } from '../services/socket.service';
 
 export const SessionHostPage: React.FC = () => {
     const { sessionCode } = useParams();
@@ -24,6 +25,9 @@ export const SessionHostPage: React.FC = () => {
     const [editTeamMenuOpen, setEditTeamMenuOpen] = useState<boolean>(false);
     const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
     const [trackSelected, setTrackSelected] = useState<{track: Track, category: Category} | null>(null);
+    const [challengeIsOpen, setChallengeIsOpen] = useState<boolean>(false);
+
+    const socket = useSessionSocket(session?.code ?? null);
 
     useEffect(() => {
         if (!sessionCode) return;
@@ -101,6 +105,21 @@ export const SessionHostPage: React.FC = () => {
         setTrackSelected({ track, category });
     };
 
+    const emitAction = (payload: SessionActionPayload) => {
+        if (!socket) return;
+
+        switch(payload.action.type) {
+        case 'challengeAction': {
+            if (challengeIsOpen && payload.action.show) return;
+            if (!challengeIsOpen && !payload.action.show) return;
+
+            emitChallengeAction(socket, payload);
+            setChallengeIsOpen(payload.action.show);
+        }
+        }
+
+    };
+
     if (!session) return <></>;
 
     return <>
@@ -136,17 +155,22 @@ export const SessionHostPage: React.FC = () => {
         />
 
         <PlayTrackMenu
+            open={trackSelected != null}
             category={trackSelected?.category}
             track={trackSelected?.track}
             teams={session.teams}
+            onClose={() => setTrackSelected(null)}
+            onWinner={onWinner}
             previousClaimed={
                 session.claimed.find((claim) =>
                     claim.trackId == trackSelected?.track._id,
                 ) ?? null
             }
-            open={Boolean(trackSelected)}
-            onClose={() => setTrackSelected(null)}
-            onWinner={onWinner}
+            challengeIsOpen={challengeIsOpen}
+            emitToSession={(action) => emitAction({
+                sessionCode: session.code,
+                action,
+            })}
         />
 
         <SpotifyPlayer

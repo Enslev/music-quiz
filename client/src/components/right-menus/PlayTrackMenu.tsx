@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { RightMenu, RightMenuContent, RightMenuHeader } from '../RightMenu';
+import { RightMenu, RightMenuContent, RightMenuFooter, RightMenuHeader } from '../RightMenu';
 import { Category, Track } from '../../overmind/effects/api/quizzes/types';
 import { Box, Button, Checkbox, FormControlLabel, Slider, Stack, ToggleButton, ToggleButtonGroup, styled } from '@mui/material';
 import { useAppState, useActions } from '../../overmind';
-
 import { formatMs } from '../../services/utils';
 import { Claimed, Team } from '../../overmind/effects/api/sessions/types';
+import { SessionAction } from '../../services/socket.service';
 
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
+import { ReactComponent as MonitorIconRaw } from '../../assets/monitor.svg';
 
 interface Props {
     category?: Category,
@@ -16,6 +17,8 @@ interface Props {
     teams: Team[],
     open: boolean,
     previousClaimed: Claimed | null;
+    challengeIsOpen: boolean,
+    emitToSession: (action: SessionAction) => void,
     onClose: () => void;
     onWinner: (team: Team, track: Track, artistGuessed: boolean) => void;
 }
@@ -28,8 +31,10 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
         teams,
         open,
         previousClaimed,
+        challengeIsOpen,
         onClose,
         onWinner,
+        emitToSession,
     } = props;
 
     const { spotifyPlayer } = useAppState();
@@ -120,7 +125,26 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                             <span>{formatMs(track.length)}</span>
                         </Stack>
                     </SliderWrapper>
-                    <h1>Who won?</h1>
+
+                    <ActionWrapper>
+                        {challengeIsOpen && <MonitorRedIcon
+                            onClick={() => emitToSession({
+                                type: 'challengeAction',
+                                show: false,
+                            })}
+                        />}
+                        {!challengeIsOpen && <MonitorIcon
+                            onClick={() => emitToSession({
+                                type: 'challengeAction',
+                                show: true,
+                                category: category.title,
+                                points: track.points,
+                            })}
+                        />}
+                    </ActionWrapper>
+                </RightMenuContent>
+
+                <RightMenuFooter>
                     <FormControlLabel
                         label="Artist guessed"
                         disabled={Boolean(previousClaimed?.teamId)}
@@ -129,6 +153,7 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                             onChange={() => setArtistGuessed(!artistGuessed)}
                         />}
                     />
+
                     <ToggleButtonGroup
                         orientation="vertical"
                         value={winningTeamId}
@@ -145,6 +170,7 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                                 key={team._id}
                                 value={team._id}
                                 aria-label={team.name}
+                                color='primary'
                                 fullWidth
                             >
                                 {team.name}
@@ -165,12 +191,18 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                     >
                         {previousClaimed ? 'Winner already selected' : 'This is the winner!'}
                     </Button>
-                </RightMenuContent>
+                </RightMenuFooter>
             </>
 
         </RightMenu>
     );
 };
+
+const Center = styled('div')(({
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
+}));
 
 const Artist = styled('div')(({
     fontSize: '20px',
@@ -181,39 +213,66 @@ const Title = styled('div')(({
     fontWeight: '600',
 }));
 
-
-const PlayIcon = styled(PlayIconRaw)(({
-    width: '150px',
-    height: '150px',
-    cursor: 'pointer',
-    transition: '200ms',
-    margin: '30px 0px',
-
-    '&:hover': {
-        scale: '1.05',
-    },
-}));
-
-const PauseIcon = styled(PauseIconRaw)(({
-    width: '150px',
-    height: '150px',
-    cursor: 'pointer',
-    transition: '200ms',
-    margin: '30px 0px',
-
-    '&:hover': {
-        scale: '1.05',
-    },
-}));
-
 const SliderWrapper = styled(Box)(({
     width: '100%',
     marginBottom: '10px',
 }));
 
-
-const Center = styled('div')(({
-    display: 'flex',
-    justifyContent: 'center',
+const ActionWrapper = styled(Box)(({
     width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+}));
+
+const PlayIcon = styled(PlayIconRaw)(({ theme }) =>({
+    width: '150px',
+    height: '150px',
+    cursor: 'pointer',
+    transition: '200ms',
+    margin: '30px 0px',
+
+    '&:hover': {
+        scale: '1.05',
+        color: theme.palette.primary.main,
+    },
+}));
+
+const PauseIcon = styled(PauseIconRaw)(({ theme }) => ({
+    width: '150px',
+    height: '150px',
+    cursor: 'pointer',
+    transition: '200ms',
+    margin: '30px 0px',
+
+    '&:hover': {
+        scale: '1.05',
+        color: theme.palette.primary.main,
+    },
+}));
+
+const MonitorIcon = styled(MonitorIconRaw)(({ theme }) => ({
+    width: '50px',
+    height: '50px',
+    cursor: 'pointer',
+    transition: '200ms',
+    margin: '30px 0px',
+
+    '&:hover': {
+        scale: '1.05',
+        color: theme.palette.primary.main,
+    },
+}));
+
+const MonitorRedIcon = styled(MonitorIconRaw)(({ theme }) => ({
+    width: '50px',
+    height: '50px',
+    cursor: 'pointer',
+    transition: '200ms',
+    margin: '30px 0px',
+    color: theme.palette.primary.main,
+
+    '&:hover': {
+        scale: '1.05',
+        color: theme.palette.error.main,
+    },
 }));
