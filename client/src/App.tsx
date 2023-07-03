@@ -8,7 +8,7 @@ import Header from './components/Header';
 import EditQuizPage from './pages/EditQuizPage';
 import PlayerScreenPage from './pages/PlayerScreenPage';
 import { useTheme } from '@mui/material';
-import MasterQuizPage from './pages/MasterQuizPage';
+import { SessionHostPage } from './pages/SessionHostPage';
 import { useActions, useReaction } from './overmind';
 import { JoinSessionPage } from './pages/JoinSessionPage';
 
@@ -30,7 +30,7 @@ const App: React.FC = () => {
             <Routes>
                 <Route path="/" Component={LandingPage} />
                 <Route path="login" Component={LoginPage} />
-                <Route path="session/:sessionCode/host" Component={MasterQuizPage} />
+                <Route path="session/:sessionCode/host" Component={SessionHostPage} />
                 <Route path="quiz/:quizId/edit" Component={EditQuizPage} />
                 <Route path="session" Component={JoinSessionPage} />
                 <Route path="session/:sessionCode" Component={PlayerScreenPage} />

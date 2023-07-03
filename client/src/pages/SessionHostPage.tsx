@@ -13,7 +13,7 @@ import { PlayTrackMenu } from '../components/right-menus/PlayTrackMenu';
 import { CreateTeamMenu } from '../components/right-menus/CreateTeamMenu';
 import { EditTeamData, EditTeamMenu } from '../components/right-menus/EditEamMenu';
 
-const MasterQuizPage: React.FC = () => {
+export const SessionHostPage: React.FC = () => {
     const { sessionCode } = useParams();
     const { session } = useAppState();
     const { loadSession, createteam, updateTeam, deleteTeam, claimTrack } = useActions().sessions;
@@ -179,6 +179,4 @@ const AddUserButton = styled(SpotifyLogoRaw)(({ theme }) => ({
         color: theme.palette.primary.main,
     },
 }));
-
-export default MasterQuizPage;
 
