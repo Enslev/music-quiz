@@ -1,4 +1,4 @@
-FROM node:14.21-alpine
+FROM node:20-alpine3.17
 
 WORKDIR /srv/app/music-quiz-client
 
