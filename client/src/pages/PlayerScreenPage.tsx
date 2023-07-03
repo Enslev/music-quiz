@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useActions, useAppState } from '../overmind';
 import { useNavigate, useParams } from 'react-router-dom';
 import QuizGrid from '../components/quiz-grid/QuizGrid';
-import { socket } from '../socket';
 import { TeamsBanner } from '../components/quiz-grid/TeamsBanner';
 import { styled } from '@mui/material';
 import { ChallengeOverlay } from '../components/Player/action-components/ChallengeOverlay';
+import { useSessionSocket } from '../services/socket.service';
 
 const PlayerScreenPage: React.FC = () => {
 
@@ -15,7 +15,7 @@ const PlayerScreenPage: React.FC = () => {
     const { hideHeader, showHeader } = useActions().ui;
     const { sessionCode } = useParams();
 
-    const [socketRoomJoined, setSocketRoomJoined] = useState<boolean>(false);
+    const socket = useSessionSocket(session?.code ?? null);
 
     const [challengeOpen] = useState<boolean>(false);
 
@@ -38,33 +38,13 @@ const PlayerScreenPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        socket.connect();
-
-        socket.on('disconnect', () => {
-            setSocketRoomJoined(false);
-        });
-
-        return () => {
-            socket.disconnect();
-        };
-    }, []);
-
-    useEffect(() => {
-        if (!socket.connected || socketRoomJoined || !session) return;
-
-        socket.emit('joinSession', session.code);
-        setSocketRoomJoined(true);
-
-        setUpSocketListeners();
-    }, [socket.connected, socketRoomJoined, session]);
-
-    const setUpSocketListeners = () => {
-        if (!sessionCode) return;
+        if (socket == null || !sessionCode) return;
 
         socket.on('update', () => {
             loadSession(sessionCode);
         });
-    };
+
+    }, [socket, sessionCode]);
 
     // useEffect(() => {
     //     setTimeout(() => setChallengeOpen(true), 1000);
@@ -87,7 +67,7 @@ const PlayerScreenPage: React.FC = () => {
         <ChallengeOverlay
             open={challengeOpen}
             options={{
-                categoryTitle: 'Straight Out The Fridge',
+                categoryTitle: 'Straights Out The Fridge',
                 trackPoints: 500,
             }}
         />
