@@ -5,6 +5,7 @@ import QuizGrid from '../components/quiz-grid/QuizGrid';
 import { socket } from '../socket';
 import { TeamsBanner } from '../components/quiz-grid/TeamsBanner';
 import { styled } from '@mui/material';
+import { ChallengeOverlay } from '../components/Player/action-components/ChallengeOverlay';
 
 const PlayerScreenPage: React.FC = () => {
 
@@ -15,6 +16,8 @@ const PlayerScreenPage: React.FC = () => {
     const { sessionCode } = useParams();
 
     const [socketRoomJoined, setSocketRoomJoined] = useState<boolean>(false);
+
+    const [challengeOpen, setChallengeOpen] = useState<boolean>(false);
 
     useEffect(() => {
         (async () => {
@@ -63,6 +66,11 @@ const PlayerScreenPage: React.FC = () => {
         });
     };
 
+    // useEffect(() => {
+    //     setTimeout(() => setChallengeOpen(true), 1000);
+    //     setTimeout(() => setChallengeOpen(false), 6000);
+    // }, []);
+
     if (!session) return <></>;
 
     return <Wrapper>
@@ -74,6 +82,14 @@ const PlayerScreenPage: React.FC = () => {
             className='quiz'
             categories={session.categories}
             revealed={session.claimed.map((claim) => claim.trackId)}
+        />
+
+        <ChallengeOverlay
+            open={challengeOpen}
+            options={{
+                categoryTitle: 'Straight Out The Fridge',
+                trackPoints: 500,
+            }}
         />
     </Wrapper>;
 };
