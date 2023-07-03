@@ -1,6 +1,6 @@
 import { API_URL } from '../../utils';
 import { ExchangeCodeResponse } from './types';
-import request from '../../../../services/api-service';
+import request from '../../../../services/api.service';
 
 export const auth = (() => {
     let apiToken: string;

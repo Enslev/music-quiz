@@ -1,5 +1,5 @@
 import { API_URL } from '../../utils';
-import request from '../../../../services/api-service';
+import request from '../../../../services/api.service';
 import { Quiz, createQuizRequestBody, putQuizRequestBody } from './types';
 
 export const quiz = (() => {

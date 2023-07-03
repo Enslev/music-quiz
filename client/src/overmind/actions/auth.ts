@@ -1,6 +1,6 @@
 import { Mutex } from 'async-mutex';
 import { Context } from '..';
-import request from '../../services/api-service';
+import request from '../../services/api.service';
 import jwt from 'jwt-decode';
 
 interface ExchangeCodeResponse {

@@ -17,7 +17,7 @@ const PlayerScreenPage: React.FC = () => {
 
     const [socketRoomJoined, setSocketRoomJoined] = useState<boolean>(false);
 
-    const [challengeOpen, setChallengeOpen] = useState<boolean>(false);
+    const [challengeOpen] = useState<boolean>(false);
 
     useEffect(() => {
         (async () => {

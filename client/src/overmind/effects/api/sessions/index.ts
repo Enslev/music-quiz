@@ -1,5 +1,5 @@
 import { API_URL } from '../../utils';
-import request from '../../../../services/api-service';
+import request from '../../../../services/api.service';
 import { Session, CreateSessionRequestBody, CreateTeamRequestBody, PutTeamRequestBody, PostClaimedRequestBody } from './types';
 
 export const sessions = (() => {

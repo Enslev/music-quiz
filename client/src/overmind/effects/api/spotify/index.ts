@@ -1,7 +1,7 @@
 import jwt from 'jwt-decode';
 import { API_URL } from '../../utils';
 import { GetPlaybackStateResponseBody, PlayRequestBody, SearchSpotifyResponseBody, SpotifyTrackObject } from './types';
-import request from '../../../../services/api-service';
+import request from '../../../../services/api.service';
 import { Token } from '../../../actions/auth';
 
 
