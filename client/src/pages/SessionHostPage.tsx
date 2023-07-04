@@ -161,7 +161,7 @@ export const SessionHostPage: React.FC = () => {
         />
 
         <PlayTrackMenu
-            open={trackSelected != null}
+            open={Boolean(trackSelected)}
             category={trackSelected?.category}
             track={trackSelected?.track}
             teams={session.teams}

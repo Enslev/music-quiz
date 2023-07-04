@@ -87,8 +87,6 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
         setCurrentTrackPosition(spotifyPlayer.playpackPosition ?? 0);
     }, [spotifyPlayer.playpackPosition, sliderFocused, track]);
 
-    if (!category || !track) return <></>;
-
     const handleStop = (e: React.MouseEvent) => {
         e.stopPropagation();
         pause();
@@ -96,6 +94,8 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
 
     const handlePlay = (e: React.MouseEvent) => {
         e.stopPropagation();
+        if (!track) return;
+
         play({ trackUri: track.trackUrl, position: track.startPosition });
     };
 
@@ -132,7 +132,7 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
             open={open}
             onClose={onClose}
         >
-            <>
+            {category && track ? <>
                 <RightMenuHeader>
                     <span>{category.title} - {track.points} </span>
                 </RightMenuHeader>
@@ -238,7 +238,7 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                         {previousClaimed ? 'Winner already selected' : 'This is the winner!'}
                     </Button>
                 </RightMenuFooter>
-            </>
+            </> : <></>}
 
         </RightMenu>
     );
