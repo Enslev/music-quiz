@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RightMenu, RightMenuContent, RightMenuFooter, RightMenuHeader } from '../RightMenu';
 import { Category, Track } from '../../overmind/effects/api/quizzes/types';
 import { Box, Button, Checkbox, FormControlLabel, Slider, Stack, ToggleButton, ToggleButtonGroup, styled } from '@mui/material';
@@ -10,6 +10,7 @@ import { SessionAction } from '../../services/socket.service';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
 import { ReactComponent as MonitorIconRaw } from '../../assets/monitor.svg';
+import { useKeyboardShortcut } from '../../services/keyboard.service';
 
 interface Props {
     category?: Category,
@@ -44,6 +45,32 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
     const [artistGuessed, setArtistGuessed] = useState<boolean>(false);
     const [sliderFocused, setSliderFocused] = useState<boolean>(false);
     const [winningTeamId, setWinningTeamId] = useState<string | null>(null);
+
+    const team1ButtonRef = useRef<HTMLButtonElement>(null);
+    const team2ButtonRef = useRef<HTMLButtonElement>(null);
+    const team3ButtonRef = useRef<HTMLButtonElement>(null);
+    const team4ButtonRef = useRef<HTMLButtonElement>(null);
+    const team5ButtonRef = useRef<HTMLButtonElement>(null);
+    const allTeamButtons = [team1ButtonRef, team2ButtonRef, team3ButtonRef, team4ButtonRef, team5ButtonRef];
+
+    useKeyboardShortcut(['1', '2', '3', '4', '5'], async (keyDown) => {
+        switch (keyDown) {
+        case '1': team1ButtonRef.current?.click(); break;
+        case '2': team2ButtonRef.current?.click(); break;
+        case '3': team3ButtonRef.current?.click(); break;
+        case '4': team4ButtonRef.current?.click(); break;
+        case '5': team5ButtonRef.current?.click(); break;
+        }
+
+        // Await 'Mui-selected' class being added to active team button
+        await new Promise((resolve) => setTimeout(resolve));
+
+        const anyTeamSelected = allTeamButtons.some((teamButton) =>
+            teamButton.current?.classList.contains('Mui-selected'),
+        );
+
+        if (spotifyPlayer.isPlaying && anyTeamSelected) pause();
+    });
 
     useEffect(() => {
         if (!open) return;
@@ -165,13 +192,15 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                         }}
                         style={{ marginBottom: '10px' }}
                     >
-                        {teams.map((team) =>
+                        {teams.map((team, idx) =>
                             <ToggleButton
                                 key={team._id}
                                 value={team._id}
                                 aria-label={team.name}
                                 color='primary'
                                 fullWidth
+                                ref={allTeamButtons[idx]}
+                                className='mummi'
                             >
                                 {team.name}
                             </ToggleButton>,
