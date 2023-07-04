@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { styled, Slider, Stack, Slide } from '@mui/material';
 import { useActions, useAppState } from '../../overmind';
 import { Track } from '../../overmind/effects/api/quizzes/types';
+import { TextWithScroll } from './TextWithScroll';
+import { formatMs } from '../../services/utils';
+import { useKeyboardShortcut } from '../../services/keyboard.service';
+
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
 import { ReactComponent as StopIconRaw } from '../../assets/stop-circle.svg';
-import { formatMs } from '../../services/utils';
-import { TextWithScroll } from './TextWithScroll';
-import { useThrottledCallback } from 'use-debounce';
 
 interface Props {
     hide?: boolean;
@@ -29,26 +30,14 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
     const [selectedTrackStartPosition, setSelectedTrackStartPosition] = useState<number>(playpackPosition ?? 0);
     const [sliderFocused, setSliderFocused] = useState<boolean>(false);
 
-    let keyDownAllowed = true;
+    useKeyboardShortcut(' ', () => {
+        if (disableKeybaord) return;
+        isPlaying ? pause() : resume();
+    });
 
     useEffect(() => {
         updatePlaybackState();
     }, []);
-
-    useEffect(() => {
-        if (currentlyPlaying) {
-            document.addEventListener('keydown', keyDownHandler);
-            document.addEventListener('keyup', keyUpHandler);
-        } else {
-            document.removeEventListener('keydown', keyDownHandler);
-            document.removeEventListener('keyup', keyUpHandler);
-        }
-
-        return () => {
-            document.removeEventListener('keydown', keyDownHandler);
-            document.removeEventListener('keyup', keyUpHandler);
-        };
-    }, [currentlyPlaying]);
 
     useEffect(() => {
         if (!currentlyPlaying) return;
@@ -72,27 +61,6 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
         if (Array.isArray(newPosition)) return;
         seek(newPosition);
     };
-
-    const keyDownHandler = (event: KeyboardEvent) => {
-        if (!keyDownAllowed) return;
-
-        if (event.key == ' ') {
-            keyDownAllowed = false;
-            handleSpaceDown();
-        }
-    };
-
-    const keyUpHandler = (event: KeyboardEvent) => {
-        if (event.key == ' ') {
-            keyDownAllowed = true;
-        }
-    };
-
-    const handleSpaceDown = useThrottledCallback(() => {
-        if (disableKeybaord) return;
-
-        isPlaying ? pause() : resume();
-    }, 200, { leading: true, trailing: false });
 
     return <Slide
         direction='up'
