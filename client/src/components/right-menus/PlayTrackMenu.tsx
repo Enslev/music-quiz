@@ -127,10 +127,21 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
         }
     };
 
+    const handleMenuClose = () => {
+        emitToSession({
+            type: 'challengeAction:teamUpdate',
+        });
+        emitToSession({
+            type: 'challengeAction:show',
+            show: false,
+        });
+        onClose();
+    };
+
     return (
         <RightMenu
             open={open}
-            onClose={onClose}
+            onClose={handleMenuClose}
         >
             {category && track ? <>
                 <RightMenuHeader>
