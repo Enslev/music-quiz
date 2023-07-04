@@ -161,7 +161,6 @@ export const postClaimed = async (req: ValidatedRequest<PostClaimedSchema>, res:
     const sessionDoc = await SessionModel.findOne({ _id: req.params.sessionId });
 
     if (!sessionDoc) {
-        console.log('asdasd');
         res.status(404).send({
             message: 'Session not Found',
         });

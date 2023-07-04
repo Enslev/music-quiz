@@ -38,7 +38,6 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     try {
         decodedToken = JWT.verify(bearerToken, secret) as JWTContent;
     } catch(e) {
-        console.log('catch', e, secret);
         res.status(401).send();
         return;
     }

@@ -163,7 +163,6 @@ const spotifyWrapper = async <T>(context: Context, request: () => T): Promise<T 
             const httpError = err as ErrorResponse;
 
             if (httpError.status == 401 && httpError.message == 'The access token expired') {
-                console.log('Need to refresh');
                 await actions.auth.refreshAccessToken();
                 return await spotifyWrapper<T>(context, request);
             }

@@ -29,13 +29,11 @@ export const refreshAccessToken = async ({ state, effects, actions }: Context) =
     if (!state.token) return;
 
     if (refreshTokenMutex.isLocked()) {
-        console.log('Refresh is already in progress');
         await refreshTokenMutex.waitForUnlock();
         return;
     }
 
     await refreshTokenMutex.acquire();
-    console.log('Refresh mutex aquired - Refreshing token');
 
     const { refreshToken } = jwt<Token>(state.token);
     const newToken = await effects.api.auth.refreshSpotifyToken(refreshToken);

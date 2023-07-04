@@ -24,7 +24,6 @@ export const useSessionSocket = (sessionCode: string | null) => {
 };
 
 export const emitChallengeAction = (socket: Socket, action: SessionActionPayload) => {
-    console.log(action);
     socket.emit('sessionAction', action);
 };
 
