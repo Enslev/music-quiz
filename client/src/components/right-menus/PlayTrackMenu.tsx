@@ -70,7 +70,7 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
         );
 
         if (spotifyPlayer.isPlaying && anyTeamSelected) pause();
-    });
+    }, 500);
 
     useEffect(() => {
         if (!open) return;
