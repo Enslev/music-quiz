@@ -3,12 +3,14 @@ import { ThemeOptions, createTheme } from '@mui/material';
 declare module '@mui/material/styles/createPalette' {
     export interface PaletteOptions {
         custom: {
-            darkerBackground: string,
+            darkerBackground: string;
+            highlight: string;
         }
     }
     export interface Palette {
         custom: {
-            darkerBackground: string,
+            darkerBackground: string;
+            highlight: string;
         }
     }
 }
@@ -30,6 +32,7 @@ export const themeOptions: ThemeOptions = {
         },
         custom: {
             darkerBackground: '#282c34',
+            highlight: '#F9F871',
         },
     },
     typography: {
