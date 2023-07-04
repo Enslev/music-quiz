@@ -54,7 +54,7 @@ const ModalContainer = styled('div')(({ theme }) => ({
     position: 'fixed',
     height: '100vh',
     maxHeight: '100vh',
-    overflowY: 'hidden',
+    overflow: 'hidden',
     boxSizing: 'border-box',
     top: '0px',
     right: '0px',

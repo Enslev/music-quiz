@@ -34,6 +34,7 @@ const SearchMenu: React.FC<Props> = ({
     const [selectedTrack, setSelectedTrack] = useState<SpotifyTrackObject | null>(null);
     const [searchValue, setSearchValue] = useState<string>('');
     const [manualSearch, setManualSearch] = useState<boolean>(false);
+    const [openOverride, setOpenOverride] = useState<boolean>(true);
     const [selectedTrackStartPosition, setSelectedTrackStartPosition] = useState<number>(track.startPosition);
 
     const [selectedTrackMeta, setSelectedTrackMeta] = useState<Required<SelectedTrackMeta>>({
@@ -44,6 +45,7 @@ const SearchMenu: React.FC<Props> = ({
     const searchBarRef = useRef<TrackSearchBarRefHandler>(null);
 
     useEffect(() => {
+        console.log(openOverride);
         if (open) {
             searchBarRef.current?.focusSearch();
         }
@@ -96,9 +98,13 @@ const SearchMenu: React.FC<Props> = ({
     useEffect(() => {
         if (!open) return;
         if (!manualSearch && !selectedTrack && track.trackUrl) {
-            fetchSelectedTrack(track.trackUrl);
+            setOpenOverride(false);
+            fetchSelectedTrack(track.trackUrl).then(async () => {
+                await new Promise((resolve) => setTimeout(resolve, 100));
+                setOpenOverride(true);
+            });
         }
-    });
+    }, [open]);
 
     useEffect(() => {
         if (spotifyPlayer.playpackPosition == null || spotifyPlayer.currentlyPlaying != selectedTrack?.uri) return;
@@ -106,7 +112,7 @@ const SearchMenu: React.FC<Props> = ({
     }, [spotifyPlayer.playpackPosition]);
 
     return <RightMenu
-        open={open}
+        open={open && openOverride}
         onClose={handleCloseSearch}
     >
         <>
@@ -138,8 +144,8 @@ const SearchMenu: React.FC<Props> = ({
                                 value={selectedTrackStartPosition}
                                 min={0}
                                 max={selectedTrack.duration_ms}
-                                onChange={(e, newValue) => handlePositionChange(newValue)}
-                                onChangeCommitted={(e, newValue) => handlePositionChangeCommit(newValue)}
+                                onChange={(_, newValue) => handlePositionChange(newValue)}
+                                onChangeCommitted={(_, newValue) => handlePositionChangeCommit(newValue)}
                             />
                             <span>{formatMs(selectedTrack.duration_ms)}</span>
                         </Stack>
@@ -156,6 +162,8 @@ const SearchMenu: React.FC<Props> = ({
                     Current start position: {formatMs(selectedTrackMeta.startPosition)}
                 </TrackSelectedWrapper>
             </Slide>}
+
+            {!selectedTrack &&
             <Slide direction='right' in={Boolean(!selectedTrack)}>
                 <div>
                     <TrackSearchBar
@@ -173,7 +181,7 @@ const SearchMenu: React.FC<Props> = ({
                         />)}
                     </TrackWrapper>
                 </div>
-            </Slide>
+            </Slide>}
         </>
     </RightMenu>;
 
