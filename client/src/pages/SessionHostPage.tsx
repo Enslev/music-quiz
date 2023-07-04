@@ -11,7 +11,7 @@ import { ReactComponent as SpotifyLogoRaw } from '../assets/user-plus.svg';
 import { Team } from '../overmind/effects/api/sessions/types';
 import { PlayTrackMenu } from '../components/right-menus/PlayTrackMenu';
 import { CreateTeamMenu } from '../components/right-menus/CreateTeamMenu';
-import { EditTeamData, EditTeamMenu } from '../components/right-menus/EditEamMenu';
+import { EditTeamData, EditTeamMenu } from '../components/right-menus/EditTeamMenu';
 import { SessionActionPayload, emitChallengeAction, useSessionSocket } from '../services/socket.service';
 
 export const SessionHostPage: React.FC = () => {
