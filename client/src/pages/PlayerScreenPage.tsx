@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import QuizGrid from '../components/quiz-grid/QuizGrid';
 import { TeamsBanner } from '../components/quiz-grid/TeamsBanner';
 import { styled } from '@mui/material';
-import { ChallengeOverlay, ChallengeOverlayOptions } from '../components/Player/action-components/ChallengeOverlay';
+import { ChallengeOverlay, ChallengeOverlayOptions } from '../components/action-components/ChallengeOverlay';
 import { SessionActionPayload, useSessionSocket } from '../services/socket.service';
 
 const PlayerScreenPage: React.FC = () => {
