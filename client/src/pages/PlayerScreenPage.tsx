@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import QuizGrid from '../components/quiz-grid/QuizGrid';
 import { TeamsBanner } from '../components/quiz-grid/TeamsBanner';
 import { styled } from '@mui/material';
-import { ChallengeOverlay, ChallengeOverlayOptions } from '../components/action-components/ChallengeOverlay';
+import { ChallengeOverlay } from '../components/action-components/ChallengeOverlay';
 import { SessionActionPayload, useSessionSocket } from '../services/socket.service';
 
 const PlayerScreenPage: React.FC = () => {
@@ -18,7 +18,9 @@ const PlayerScreenPage: React.FC = () => {
     const socket = useSessionSocket(session?.code ?? null);
 
     const [challengeOpen, setChallengeOpen] = useState<boolean>(false);
-    const [challengeOverlayOptions, setChallengeOverlayOptions] = useState<ChallengeOverlayOptions | null>(null);
+    const [challengeCategory, setChallengeCategory] = useState<string | null>(null);
+    const [challengePoints, setChallengePoints] = useState<number | null>(null);
+    const [challengeTeamName, setChallengeTeamName] = useState<string | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -47,17 +49,20 @@ const PlayerScreenPage: React.FC = () => {
 
         socket.on('sessionAction', (data: SessionActionPayload) => {
             switch (data.action.type) {
-            case 'challengeAction': {
+            case 'challengeAction:show': {
                 if (data.action.show) {
-                    setChallengeOverlayOptions({
-                        categoryTitle: data.action.category,
-                        trackPoints: data.action.points,
-                    });
+                    setChallengeCategory(data.action.categoryTitle);
+                    setChallengePoints(data.action.points);
                     setChallengeOpen(true);
                 } else  {
-
                     setChallengeOpen(false);
                 }
+                break;
+            }
+
+            case 'challengeAction:teamUpdate': {
+                setChallengeTeamName(data.action.teamName ?? null);
+                break;
             }
             }
         });
@@ -79,7 +84,9 @@ const PlayerScreenPage: React.FC = () => {
 
         <ChallengeOverlay
             open={challengeOpen}
-            options={challengeOverlayOptions}
+            categoryTitle={challengeCategory ?? ''}
+            trackPoints={challengePoints ?? 0}
+            teamName={challengeTeamName}
         />
     </Wrapper>;
 };

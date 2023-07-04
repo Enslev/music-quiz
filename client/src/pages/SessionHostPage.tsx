@@ -109,12 +109,18 @@ export const SessionHostPage: React.FC = () => {
         if (!socket) return;
 
         switch(payload.action.type) {
-        case 'challengeAction': {
+        case 'challengeAction:show': {
             if (challengeIsOpen && payload.action.show) return;
             if (!challengeIsOpen && !payload.action.show) return;
 
             emitChallengeAction(socket, payload);
             setChallengeIsOpen(payload.action.show);
+            break;
+        }
+        case 'challengeAction:teamUpdate': {
+            if (!challengeIsOpen) return;
+            emitChallengeAction(socket, payload);
+            break;
         }
         }
 

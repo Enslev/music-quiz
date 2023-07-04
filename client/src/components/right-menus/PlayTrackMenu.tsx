@@ -110,6 +110,23 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
         setSliderFocused(false);
     };
 
+    const handleTeamClick = async (team: Team, teamIdx: number) => {
+        // Await class update from mui
+        await new Promise((resolve) => setTimeout(resolve));
+        const isActive = allTeamButtons[teamIdx].current?.classList.contains('Mui-selected');
+
+        if (isActive) {
+            emitToSession({
+                type: 'challengeAction:teamUpdate',
+                teamName: team.name,
+            });
+        } else {
+            emitToSession({
+                type: 'challengeAction:teamUpdate',
+            });
+        }
+    };
+
     return (
         <RightMenu
             open={open}
@@ -156,15 +173,15 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                     <ActionWrapper>
                         {challengeIsOpen && <MonitorRedIcon
                             onClick={() => emitToSession({
-                                type: 'challengeAction',
+                                type: 'challengeAction:show',
                                 show: false,
                             })}
                         />}
                         {!challengeIsOpen && <MonitorIcon
                             onClick={() => emitToSession({
-                                type: 'challengeAction',
+                                type: 'challengeAction:show',
                                 show: true,
-                                category: category.title,
+                                categoryTitle: category.title,
                                 points: track.points,
                             })}
                         />}
@@ -200,7 +217,7 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                                 color='primary'
                                 fullWidth
                                 ref={allTeamButtons[idx]}
-                                className='mummi'
+                                onClick={() => handleTeamClick(team, idx)}
                             >
                                 {team.name}
                             </ToggleButton>,

@@ -29,19 +29,23 @@ export const emitChallengeAction = (socket: Socket, action: SessionActionPayload
 };
 
 export type ChallengeShowAction = {
-    type: 'challengeAction',
+    type: 'challengeAction:show',
     show: true,
-    category: string,
+    categoryTitle: string,
     points: number,
 }
 export type ChallengeHideAction = {
-    type: 'challengeAction',
+    type: 'challengeAction:show',
     show: false,
+}
+export type ChallengeTeamAction = {
+    type: 'challengeAction:teamUpdate',
+    teamName?: string,
 }
 
 export interface SessionActionPayload {
     sessionCode: string;
-    action: ChallengeShowAction | ChallengeHideAction
+    action: ChallengeShowAction | ChallengeHideAction | ChallengeTeamAction
 }
 
 export type SessionAction = SessionActionPayload['action'];

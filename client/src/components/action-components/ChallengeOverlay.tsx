@@ -1,34 +1,57 @@
-import React, {  } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PlayerOverlay } from './PlayerOverlay';
-import { styled } from '@mui/material';
-
-export interface ChallengeOverlayOptions {
-    categoryTitle: string,
-    trackPoints: number,
-}
+import { Fade, styled } from '@mui/material';
 
 interface Props {
     open: boolean,
-    options: ChallengeOverlayOptions | null
+    categoryTitle: string,
+    trackPoints: number,
+    teamName: string | null,
 }
 
 export const ChallengeOverlay: React.FC<Props> = (props) => {
 
-    const { open, options } = props;
+    const { open, categoryTitle,trackPoints,teamName } = props;
 
-    return <PlayerOverlay open={open && Boolean(options)}>
-        {options && <Wrapper>
+    const [teamToShow, setTeamToShow] = useState<string | null>(null);
+    const [showTeam, setShowTeam] = useState<boolean>(false);
+
+    useEffect(() => {
+        (async () => {
+            // Async IIFE to await animation
+            if (teamName) {
+                if (teamToShow) {
+                    setShowTeam(false);
+                    await new Promise((resolve) => setTimeout(resolve, 500));
+                }
+
+                setShowTeam(true);
+                setTeamToShow(teamName);
+            }
+
+            if (!teamName) {
+                setShowTeam(false);
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                setTeamToShow(null);
+            }
+        })();
+    }, [teamName]);
+
+    return <PlayerOverlay open={open}>
+        <Wrapper>
             <div  className='header'>
-                <Category>
-                    <span>{options.categoryTitle}</span>
-                </Category>
-                <Points>
-                    <span>{options.trackPoints}</span>
-                </Points>
+                <Category>{categoryTitle}</Category>
+                <Points>{trackPoints}</Points>
             </div>
             <div className='footer'>
+                <Fade in={showTeam} timeout={500}>
+                    <TeamWrapper>
+                        <span>Turn to guess:</span>
+                        <TeamName>{teamToShow}</TeamName>
+                    </TeamWrapper>
+                </Fade>
             </div>
-        </Wrapper>}
+        </Wrapper>
     </PlayerOverlay>;
 };
 
@@ -47,8 +70,6 @@ const Wrapper = styled('div')(({
 
     '.footer': {
         flex: '0 1 30%',
-        display: 'flex',
-        justifyContent: 'center',
     },
 }));
 
@@ -59,4 +80,20 @@ const Category = styled('div')(({
 const Points = styled('div')(({
     fontSize: '130px',
     fontWeight: 'bold',
+}));
+
+const TeamName = styled('div')(({
+    fontSize: '100px',
+    fontWeight: 'bold',
+}));
+
+const TeamWrapper = styled('div')(({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+
+    span: {
+        fontSize: '40px',
+        fontWeight: 'bold',
+    },
 }));
