@@ -39,7 +39,7 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
     } = props;
 
     const { spotifyPlayer } = useAppState();
-    const { play, pause, seek } = useActions().spotify;
+    const { play, resume, pause, seek } = useActions().spotify;
 
     const [currentTrackPosition, setCurrentTrackPosition] = useState<number>(track?.startPosition ?? 0);
     const [artistGuessed, setArtistGuessed] = useState<boolean>(false);
@@ -69,7 +69,17 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
             teamButton.current?.classList.contains('Mui-selected'),
         );
 
-        if (spotifyPlayer.isPlaying && anyTeamSelected) pause();
+        allTeamButtons.filter(x => x.current != null).forEach(button => {
+            console.log(button.current?.classList.contains('Mui-selected'));
+        });
+
+        if (!spotifyPlayer.isPlaying && !anyTeamSelected) {
+            resume();
+        }
+
+        if (spotifyPlayer.isPlaying && anyTeamSelected) {
+            pause();
+        }
     }, 500);
 
     useEffect(() => {
