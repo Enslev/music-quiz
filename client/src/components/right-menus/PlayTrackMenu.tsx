@@ -82,6 +82,8 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
         }
     }, 500);
 
+    useKeyboardShortcut('Enter', () => handleWinnerSubmit());
+
     useEffect(() => {
         if (!open) return;
 
@@ -137,7 +139,7 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
         }
     };
 
-    const handleMenuClose = () => {
+    const clearOverlay = () => {
         emitToSession({
             type: 'challengeAction:teamUpdate',
         });
@@ -145,13 +147,23 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
             type: 'challengeAction:show',
             show: false,
         });
-        onClose();
+    };
+
+    const handleWinnerSubmit = () => {
+        const winningTeam = teams.find((team) => team._id == winningTeamId);
+        if (!track || !winningTeam) return;
+
+        clearOverlay();
+        onWinner(winningTeam, track, artistGuessed);
     };
 
     return (
         <RightMenu
             open={open}
-            onClose={handleMenuClose}
+            onClose={() => {
+                clearOverlay();
+                onClose();
+            }}
         >
             {category && track ? <>
                 <RightMenuHeader>
@@ -250,11 +262,7 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                         variant="contained"
                         color="primary"
                         disabled={Boolean(previousClaimed?.teamId)}
-                        onClick={() => {
-                            const winningTeam = teams.find((team) => team._id == winningTeamId);
-                            if (!winningTeam) return;
-                            onWinner(winningTeam, track, artistGuessed);
-                        }}
+                        onClick={handleWinnerSubmit}
                     >
                         {previousClaimed ? 'Winner already selected' : 'This is the winner!'}
                     </Button>
