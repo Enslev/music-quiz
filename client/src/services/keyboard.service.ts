@@ -1,11 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { useThrottledCallback } from 'use-debounce';
 
-export const useKeyboardShortcut = <T extends string>(
+export function useKeyboardShortcut<T extends string>(
+    keysToListenOn: T[],
+    callback: (keysPressed?: T) => void,
+    throttleTime?: number,
+): void
+export function useKeyboardShortcut<T extends string>(
+    keysToListenOn: T,
+    callback: () => void,
+    throttleTime?: number,
+): void
+export function useKeyboardShortcut<T extends string>(
     keysToListenOn: T | T[],
     callback: (keysPressed?: T) => void,
     throttleTime = 200,
-) => {
+): void {
     const ref = useRef<{ [key in T]: boolean; } | null>(null);
     const keysArr = Array.isArray(keysToListenOn) ? keysToListenOn : [ keysToListenOn ];
     const initial = Object.fromEntries(keysArr.map((key) => [ key, false ])) as {[key in T]: boolean};
@@ -58,7 +68,7 @@ export const useKeyboardShortcut = <T extends string>(
         if (latestKey == null) return;
         throttledCallback(latestKey);
     }, [ latestKey ]);
-};
+}
 
 const keydownAreEqual = (obj1: {[key: string]: unknown}, obj2: {[key: string]: unknown}) => {
     const obj1Keys = Object.keys(obj1);
