@@ -8,11 +8,11 @@ export const JoinSessionPage: React.FC = () => {
     const { hideHeader, showHeader } = useActions().ui;
     const navigate = useNavigate();
 
-    const [inputValue1, setInputValue1] = useState<string>('');
-    const [inputValue2, setInputValue2] = useState<string>('');
-    const [inputValue3, setInputValue3] = useState<string>('');
-    const [inputValue4, setInputValue4] = useState<string>('');
-    const [inputValue5, setInputValue5] = useState<string>('');
+    const [ inputValue1, setInputValue1 ] = useState<string>('');
+    const [ inputValue2, setInputValue2 ] = useState<string>('');
+    const [ inputValue3, setInputValue3 ] = useState<string>('');
+    const [ inputValue4, setInputValue4 ] = useState<string>('');
+    const [ inputValue5, setInputValue5 ] = useState<string>('');
 
     const input1Ref = useRef<HTMLInputElement>(null);
     const input2Ref = useRef<HTMLInputElement>(null);
@@ -32,7 +32,7 @@ export const JoinSessionPage: React.FC = () => {
         if (sessionCode.length == 5) {
             navigate(`/session/${sessionCode}`);
         }
-    }, [inputValue1, inputValue2, inputValue3, inputValue4, inputValue5]);
+    }, [ inputValue1, inputValue2, inputValue3, inputValue4, inputValue5 ]);
 
     const sanitizeValue = (value: string): string | null => {
         if (value.length > 1 || !value.match(/[a-zA-Z0-9]/)) return null;

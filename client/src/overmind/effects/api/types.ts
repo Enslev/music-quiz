@@ -4,4 +4,3 @@ export interface MongoDoc {
     updatedAt: Date;
     __v: number;
   }
-

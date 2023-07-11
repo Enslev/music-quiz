@@ -14,7 +14,7 @@ const CategoryBox: React.FC<Props> = ({
     saveTrigger,
 }) => {
 
-    const [categoryTitle, setCategoryTitle] = useState<string>(category.title);
+    const [ categoryTitle, setCategoryTitle ] = useState<string>(category.title);
 
     function handleChange(value: string): void {
         setCategoryTitle(value);

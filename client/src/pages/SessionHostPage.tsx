@@ -20,12 +20,12 @@ export const SessionHostPage: React.FC = () => {
     const { loadSession, createteam, updateTeam, deleteTeam, claimTrack } = useActions().sessions;
     const { spotifyPlayer } = useAppState();
 
-    const [allTracks, setAllTracks] = useState<Track[]>([]);
-    const [addTeamMenuOpen, setAddTeamMenuOpen] = useState<boolean>(false);
-    const [editTeamMenuOpen, setEditTeamMenuOpen] = useState<boolean>(false);
-    const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
-    const [trackSelected, setTrackSelected] = useState<{track: Track, category: Category} | null>(null);
-    const [challengeIsOpen, setChallengeIsOpen] = useState<boolean>(false);
+    const [ allTracks, setAllTracks ] = useState<Track[]>([]);
+    const [ addTeamMenuOpen, setAddTeamMenuOpen ] = useState<boolean>(false);
+    const [ editTeamMenuOpen, setEditTeamMenuOpen ] = useState<boolean>(false);
+    const [ selectedTeam, setSelectedTeam ] = useState<Team | null>(null);
+    const [ trackSelected, setTrackSelected ] = useState<{track: Track, category: Category} | null>(null);
+    const [ challengeIsOpen, setChallengeIsOpen ] = useState<boolean>(false);
 
     const socket = useSessionSocket(session?.code ?? null);
 
@@ -38,7 +38,7 @@ export const SessionHostPage: React.FC = () => {
         const allTracks = session?.categories.map((category) => category.tracks).flat(1);
         if (!allTracks) return;
         setAllTracks(allTracks);
-    }, [session]);
+    }, [ session ]);
 
     const onCreateTeamSubmit = async (createTeamName: string) => {
         await createteam(createTeamName);
@@ -70,7 +70,7 @@ export const SessionHostPage: React.FC = () => {
     };
 
     const handleUpdateTeam = async (team: Team, data: EditTeamData) => {
-        const newPointsHistory = [...team.pointsHistory];
+        const newPointsHistory = [ ...team.pointsHistory ];
         if (data.newPoints && data.newPoints != 0) {
             newPointsHistory.push(data.newPoints);
         }

@@ -9,8 +9,8 @@ interface Props {
 export const PlayerOverlay: React.FC<Props> = (props) => {
 
     const { open, children } = props;
-    const [direction, setDirection] = useState<'up' | 'down'>('up');
-    const [fadeOpen, setFadeOpen] = useState<boolean>(open);
+    const [ direction, setDirection ] = useState<'up' | 'down'>('up');
+    const [ fadeOpen, setFadeOpen ] = useState<boolean>(open);
 
     useEffect(() => {
         if (open) {
@@ -18,7 +18,7 @@ export const PlayerOverlay: React.FC<Props> = (props) => {
         } else {
             setTimeout(() => setFadeOpen(false), 1000 * 0.5);
         }
-    }, [open]);
+    }, [ open ]);
 
     return <>
         <Slide

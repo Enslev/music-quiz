@@ -85,7 +85,7 @@ const handleResponse = <T>(response: Response) => {
 
 type QueryObject = {[key: string]: string | number | boolean | (string | number | boolean)[]}
 const queryBuilder = (queryObject: QueryObject) => {
-    const keyValuePairs = Object.entries(queryObject).map(([key, value]) => {
+    const keyValuePairs = Object.entries(queryObject).map(([ key, value ]) => {
         if (Array.isArray(value)) {
             const paresArrayValue = value.map((value) => {
                 return `${encodeURIComponent(key)}[]=${encodeURIComponent(value)}`;

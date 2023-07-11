@@ -52,7 +52,7 @@ const EditQuizPage: React.FC = () => {
             categories={quizCopy.categories}
             editMode
             saveTrigger={debouncedSave}
-            revealed={['6446c846ef3d95b10c5182ad']}
+            revealed={[ '6446c846ef3d95b10c5182ad' ]}
         />
     </>;
 };

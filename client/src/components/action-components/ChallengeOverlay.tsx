@@ -11,10 +11,10 @@ interface Props {
 
 export const ChallengeOverlay: React.FC<Props> = (props) => {
 
-    const { open, categoryTitle,trackPoints,teamName } = props;
+    const { open, categoryTitle, trackPoints, teamName } = props;
 
-    const [teamToShow, setTeamToShow] = useState<string | null>(null);
-    const [showTeam, setShowTeam] = useState<boolean>(false);
+    const [ teamToShow, setTeamToShow ] = useState<string | null>(null);
+    const [ showTeam, setShowTeam ] = useState<boolean>(false);
 
     useEffect(() => {
         (async () => {
@@ -35,7 +35,7 @@ export const ChallengeOverlay: React.FC<Props> = (props) => {
                 setTeamToShow(null);
             }
         })();
-    }, [teamName]);
+    }, [ teamName ]);
 
     return <PlayerOverlay open={open}>
         <Wrapper>

@@ -17,10 +17,10 @@ const PlayerScreenPage: React.FC = () => {
 
     const socket = useSessionSocket(session?.code ?? null);
 
-    const [challengeOpen, setChallengeOpen] = useState<boolean>(false);
-    const [challengeCategory, setChallengeCategory] = useState<string | null>(null);
-    const [challengePoints, setChallengePoints] = useState<number | null>(null);
-    const [challengeTeamName, setChallengeTeamName] = useState<string | null>(null);
+    const [ challengeOpen, setChallengeOpen ] = useState<boolean>(false);
+    const [ challengeCategory, setChallengeCategory ] = useState<string | null>(null);
+    const [ challengePoints, setChallengePoints ] = useState<number | null>(null);
+    const [ challengeTeamName, setChallengeTeamName ] = useState<string | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -67,7 +67,7 @@ const PlayerScreenPage: React.FC = () => {
             }
         });
 
-    }, [socket, sessionCode]);
+    }, [ socket, sessionCode ]);
 
     if (!session) return <></>;
 

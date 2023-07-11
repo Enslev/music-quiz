@@ -21,7 +21,7 @@ const TrackBox: React.FC<Props> = ({
     saveTrigger,
 }) => {
 
-    const [searchMenuIsOpen, setSearchMenuIsOpen] = useState<boolean>(false);
+    const [ searchMenuIsOpen, setSearchMenuIsOpen ] = useState<boolean>(false);
 
 
     const handleClose = (selectedTrack: SpotifyTrackObject | null, meta: SelectedTrackMeta) => {

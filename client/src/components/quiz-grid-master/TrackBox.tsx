@@ -17,7 +17,7 @@ const TrackBox: React.FC<Props> = ({
     selectTrack,
 }) => {
 
-    const [hasHovered, setHasHovered] = useState<boolean>(false);
+    const [ hasHovered, setHasHovered ] = useState<boolean>(false);
 
     return (<>
         <BoxWrapper

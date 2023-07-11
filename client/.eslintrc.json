@@ -52,6 +52,11 @@
             "error",
             "always"
         ],
-        "no-trailing-spaces": "error"
+        "array-bracket-spacing": [
+            "error",
+            "always"
+        ],
+        "no-trailing-spaces": "error",
+        "comma-spacing": ["error", { "before": false, "after": true }]
     }
 }

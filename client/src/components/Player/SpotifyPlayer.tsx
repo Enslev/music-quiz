@@ -26,9 +26,9 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
 
     const { resume, pause, stop, seek, updatePlaybackState } = useActions().spotify;
     const { currentlyPlaying, isPlaying, playpackPosition } = useAppState().spotifyPlayer;
-    const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
-    const [selectedTrackStartPosition, setSelectedTrackStartPosition] = useState<number>(playpackPosition ?? 0);
-    const [sliderFocused, setSliderFocused] = useState<boolean>(false);
+    const [ currentTrack, setCurrentTrack ] = useState<Track | null>(null);
+    const [ selectedTrackStartPosition, setSelectedTrackStartPosition ] = useState<number>(playpackPosition ?? 0);
+    const [ sliderFocused, setSliderFocused ] = useState<boolean>(false);
 
     useKeyboardShortcut(' ', () => {
         if (disableKeybaord) return;
@@ -45,12 +45,12 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
         const foundTrack = tracks.find((track) => track.trackUrl == currentlyPlaying);
         setCurrentTrack(foundTrack ?? null);
         setSelectedTrackStartPosition(foundTrack?.startPosition ?? 0);
-    }, [currentlyPlaying]);
+    }, [ currentlyPlaying ]);
 
     useEffect(() => {
         if (sliderFocused) return;
         setSelectedTrackStartPosition(playpackPosition ?? 0);
-    }, [playpackPosition]);
+    }, [ playpackPosition ]);
 
     const handlePositionChange = async (newPosition: number | number[]) => {
         if (Array.isArray(newPosition)) return;

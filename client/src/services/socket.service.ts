@@ -3,7 +3,7 @@ import { Socket } from 'socket.io-client';
 import { socket } from '../socket';
 
 export const useSessionSocket = (sessionCode: string | null) => {
-    const [localSocket, setLocalSocket] = useState<typeof socket | null>(null);
+    const [ localSocket, setLocalSocket ] = useState<typeof socket | null>(null);
 
     useEffect(() => {
         if (socket.connected || sessionCode == null) return;
@@ -18,7 +18,7 @@ export const useSessionSocket = (sessionCode: string | null) => {
             setLocalSocket(null);
             socket.disconnect();
         };
-    }, [sessionCode]);
+    }, [ sessionCode ]);
 
     return localSocket;
 };

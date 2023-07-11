@@ -30,14 +30,14 @@ const SearchMenu: React.FC<Props> = ({
     const { spotifyPlayer } = useAppState();
     const { spotify } = useActions();
 
-    const [searchResult, setSearchResult] = useState<SpotifyTrackObject[]>([]);
-    const [selectedTrack, setSelectedTrack] = useState<SpotifyTrackObject | null>(null);
-    const [searchValue, setSearchValue] = useState<string>('');
-    const [manualSearch, setManualSearch] = useState<boolean>(false);
-    const [openOverride, setOpenOverride] = useState<boolean>(true);
-    const [selectedTrackStartPosition, setSelectedTrackStartPosition] = useState<number>(track.startPosition);
+    const [ searchResult, setSearchResult ] = useState<SpotifyTrackObject[]>([]);
+    const [ selectedTrack, setSelectedTrack ] = useState<SpotifyTrackObject | null>(null);
+    const [ searchValue, setSearchValue ] = useState<string>('');
+    const [ manualSearch, setManualSearch ] = useState<boolean>(false);
+    const [ openOverride, setOpenOverride ] = useState<boolean>(true);
+    const [ selectedTrackStartPosition, setSelectedTrackStartPosition ] = useState<number>(track.startPosition);
 
-    const [selectedTrackMeta, setSelectedTrackMeta] = useState<Required<SelectedTrackMeta>>({
+    const [ selectedTrackMeta, setSelectedTrackMeta ] = useState<Required<SelectedTrackMeta>>({
         startPosition: track.startPosition,
         highlightLocation: 0,
     });
@@ -49,7 +49,7 @@ const SearchMenu: React.FC<Props> = ({
         if (open) {
             searchBarRef.current?.focusSearch();
         }
-    }, [open]);
+    }, [ open ]);
 
     const onSearch = async (searchValue: string) => {
         const searchResponse = await spotify.search(searchValue);
@@ -104,12 +104,12 @@ const SearchMenu: React.FC<Props> = ({
                 setOpenOverride(true);
             });
         }
-    }, [open]);
+    }, [ open ]);
 
     useEffect(() => {
         if (spotifyPlayer.playpackPosition == null || spotifyPlayer.currentlyPlaying != selectedTrack?.uri) return;
         setSelectedTrackStartPosition(spotifyPlayer.playpackPosition);
-    }, [spotifyPlayer.playpackPosition]);
+    }, [ spotifyPlayer.playpackPosition ]);
 
     return <RightMenu
         open={open && openOverride}

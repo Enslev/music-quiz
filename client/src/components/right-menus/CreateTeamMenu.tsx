@@ -16,7 +16,7 @@ export const CreateTeamMenu: React.FC<Props> = (props) => {
         onSubmit,
     } = props;
 
-    const [teamName, setTeamName] = useState<string>('');
+    const [ teamName, setTeamName ] = useState<string>('');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -26,7 +26,7 @@ export const CreateTeamMenu: React.FC<Props> = (props) => {
     useEffect(() => {
         if (!open) return;
         setTeamName('');
-    }, [open]);
+    }, [ open ]);
 
     return <RightMenu
         open={open}

@@ -59,7 +59,7 @@ export const play = async (context: Context, options: playOptions) => {
 
     await spotifyWrapper(context,
         () => effects.api.spotify.play(deviceId, {
-            uris: [trackUri],
+            uris: [ trackUri ],
             position_ms: position,
         }),
     );

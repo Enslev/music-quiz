@@ -13,10 +13,10 @@ const LandingPage: React.FC = () => {
 
     const { getAllQuizzes, createQuiz } = useActions().quiz;
 
-    const [quizzes, setQuizzes] = useState<Quiz[] | null>(null);
+    const [ quizzes, setQuizzes ] = useState<Quiz[] | null>(null);
 
-    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const [newQuizTitle, setNewQuizTitle] = useState<string>('');
+    const [ modalIsOpen, setModalIsOpen ] = useState<boolean>(false);
+    const [ newQuizTitle, setNewQuizTitle ] = useState<string>('');
 
     useEffect(() => {
         (async () => {

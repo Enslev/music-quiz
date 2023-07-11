@@ -41,19 +41,19 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
     const { spotifyPlayer } = useAppState();
     const { play, resume, pause, seek } = useActions().spotify;
 
-    const [currentTrackPosition, setCurrentTrackPosition] = useState<number>(track?.startPosition ?? 0);
-    const [artistGuessed, setArtistGuessed] = useState<boolean>(false);
-    const [sliderFocused, setSliderFocused] = useState<boolean>(false);
-    const [winningTeamId, setWinningTeamId] = useState<string | null>(null);
+    const [ currentTrackPosition, setCurrentTrackPosition ] = useState<number>(track?.startPosition ?? 0);
+    const [ artistGuessed, setArtistGuessed ] = useState<boolean>(false);
+    const [ sliderFocused, setSliderFocused ] = useState<boolean>(false);
+    const [ winningTeamId, setWinningTeamId ] = useState<string | null>(null);
 
     const team1ButtonRef = useRef<HTMLButtonElement>(null);
     const team2ButtonRef = useRef<HTMLButtonElement>(null);
     const team3ButtonRef = useRef<HTMLButtonElement>(null);
     const team4ButtonRef = useRef<HTMLButtonElement>(null);
     const team5ButtonRef = useRef<HTMLButtonElement>(null);
-    const allTeamButtons = [team1ButtonRef, team2ButtonRef, team3ButtonRef, team4ButtonRef, team5ButtonRef];
+    const allTeamButtons = [ team1ButtonRef, team2ButtonRef, team3ButtonRef, team4ButtonRef, team5ButtonRef ];
 
-    useKeyboardShortcut(['1', '2', '3', '4', '5'], async (keyDown) => {
+    useKeyboardShortcut([ '1', '2', '3', '4', '5' ], async (keyDown) => {
         switch (keyDown) {
         case '1': team1ButtonRef.current?.click(); break;
         case '2': team2ButtonRef.current?.click(); break;
@@ -90,14 +90,14 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
         setArtistGuessed(previousClaimed?.artistGuessed ?? false);
         setCurrentTrackPosition(track?.startPosition ?? 0);
         setWinningTeamId(previousClaimed?.teamId || null);
-    }, [open]);
+    }, [ open ]);
 
     useEffect(() => {
         if (spotifyPlayer.currentlyPlaying != track?.trackUrl) return;
         if (sliderFocused) return;
 
         setCurrentTrackPosition(spotifyPlayer.playpackPosition ?? 0);
-    }, [spotifyPlayer.playpackPosition, sliderFocused, track]);
+    }, [ spotifyPlayer.playpackPosition, sliderFocused, track ]);
 
     const handleStop = (e: React.MouseEvent) => {
         e.stopPropagation();

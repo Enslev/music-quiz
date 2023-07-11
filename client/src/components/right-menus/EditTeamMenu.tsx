@@ -25,15 +25,15 @@ export const EditTeamMenu: React.FC<Props> = (props) => {
         team,
     } = props;
 
-    const [teamName, setTeamName] = useState<string>('');
-    const [newPoints, setNewPoints] = useState<string>('');
+    const [ teamName, setTeamName ] = useState<string>('');
+    const [ newPoints, setNewPoints ] = useState<string>('');
 
     useEffect(() => {
         if (!open || !team) return;
 
         setTeamName(team?.name);
         setNewPoints('0');
-    }, [open]);
+    }, [ open ]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -78,7 +78,7 @@ export const EditTeamMenu: React.FC<Props> = (props) => {
                         variant="filled"
                         onChange={(e) => {
                             let newValue = e.target.value;
-                            newValue = newValue.replace(/,/g , '.');
+                            newValue = newValue.replace(/,/g, '.');
 
                             if (newValue == '') newValue = '0';
 

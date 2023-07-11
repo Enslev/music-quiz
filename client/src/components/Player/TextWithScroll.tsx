@@ -10,9 +10,9 @@ export const TextWithScroll: React.FC<Props> = (props) => {
 
     const { text, className } = props;
 
-    const [titleHovered, setTitleHovered] = useState<boolean>(false);
-    const [scrollInterval, setScrollInterval] = useState<NodeJS.Timer | null>(null);
-    const [scrollOffset, setScrollOffset] = useState<number>(0);
+    const [ titleHovered, setTitleHovered ] = useState<boolean>(false);
+    const [ scrollInterval, setScrollInterval ] = useState<NodeJS.Timer | null>(null);
+    const [ scrollOffset, setScrollOffset ] = useState<number>(0);
 
     const divRef = useRef<HTMLDivElement>(null);
     let offset = 0;
@@ -35,7 +35,7 @@ export const TextWithScroll: React.FC<Props> = (props) => {
             if (scrollInterval) clearInterval(scrollInterval);
         };
 
-    }, [titleHovered]);
+    }, [ titleHovered ]);
 
     useEffect(() =>{
         const overflowWidth = getOverFlowWidth();
@@ -44,7 +44,7 @@ export const TextWithScroll: React.FC<Props> = (props) => {
             setScrollInterval(null);
             return;
         }
-    }, [scrollOffset]);
+    }, [ scrollOffset ]);
 
     const getOverFlowWidth = () =>{
         const divScrollWidth = (divRef.current?.scrollWidth) ?? 0;

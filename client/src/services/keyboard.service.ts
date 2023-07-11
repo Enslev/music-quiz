@@ -7,10 +7,10 @@ export const useKeyboardShortcut = <T extends string>(
     throttleTime = 200,
 ) => {
     const ref = useRef<{ [key in T]: boolean; } | null>(null);
-    const keysArr = Array.isArray(keysToListenOn) ? keysToListenOn : [keysToListenOn];
-    const initial = Object.fromEntries(keysArr.map((key) => [key, false])) as {[key in T]: boolean};
-    const [keysDown, setKeyIsDown] = useState<{[key in T]: boolean}>(initial);
-    const [latestKey, setLatestKey] = useState<T | null>(null);
+    const keysArr = Array.isArray(keysToListenOn) ? keysToListenOn : [ keysToListenOn ];
+    const initial = Object.fromEntries(keysArr.map((key) => [ key, false ])) as {[key in T]: boolean};
+    const [ keysDown, setKeyIsDown ] = useState<{[key in T]: boolean}>(initial);
+    const [ latestKey, setLatestKey ] = useState<T | null>(null);
     const throttledCallback = useThrottledCallback(callback, throttleTime, { leading: true, trailing: false });
 
     const keyDownHandler = (event: KeyboardEvent) => {
@@ -52,12 +52,12 @@ export const useKeyboardShortcut = <T extends string>(
     useEffect(() => {
         if (keydownAreEqual(keysDown, ref.current ?? {})) return;
         ref.current = keysDown;
-    }, [keysDown]);
+    }, [ keysDown ]);
 
     useEffect(() => {
         if (latestKey == null) return;
         throttledCallback(latestKey);
-    }, [latestKey]);
+    }, [ latestKey ]);
 };
 
 const keydownAreEqual = (obj1: {[key: string]: unknown}, obj2: {[key: string]: unknown}) => {
