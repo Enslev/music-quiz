@@ -69,10 +69,6 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
             teamButton.current?.classList.contains('Mui-selected'),
         );
 
-        allTeamButtons.filter(x => x.current != null).forEach(button => {
-            console.log(button.current?.classList.contains('Mui-selected'));
-        });
-
         if (!spotifyPlayer.isPlaying && !anyTeamSelected) {
             resume();
         }

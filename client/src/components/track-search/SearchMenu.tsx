@@ -45,7 +45,6 @@ const SearchMenu: React.FC<Props> = ({
     const searchBarRef = useRef<TrackSearchBarRefHandler>(null);
 
     useEffect(() => {
-        console.log(openOverride);
         if (open) {
             searchBarRef.current?.focusSearch();
         }
