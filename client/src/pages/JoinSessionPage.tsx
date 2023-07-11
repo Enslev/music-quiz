@@ -2,6 +2,7 @@ import { FormControl, TextField, styled } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useActions } from '../overmind';
 import { useNavigate } from 'react-router-dom';
+import { useKeyboardShortcut } from '../services/keyboard.service';
 
 export const JoinSessionPage: React.FC = () => {
 
@@ -13,12 +14,20 @@ export const JoinSessionPage: React.FC = () => {
     const [ inputValue3, setInputValue3 ] = useState<string>('');
     const [ inputValue4, setInputValue4 ] = useState<string>('');
     const [ inputValue5, setInputValue5 ] = useState<string>('');
+    const allValuesSetters = [
+        setInputValue1,
+        setInputValue2,
+        setInputValue3,
+        setInputValue4,
+        setInputValue5,
+    ];
 
     const input1Ref = useRef<HTMLInputElement>(null);
     const input2Ref = useRef<HTMLInputElement>(null);
     const input3Ref = useRef<HTMLInputElement>(null);
     const input4Ref = useRef<HTMLInputElement>(null);
     const input5Ref = useRef<HTMLInputElement>(null);
+    const allRefs = [ input1Ref, input2Ref, input3Ref, input4Ref, input5Ref ];
 
     useEffect(() => {
         input1Ref.current?.focus();
@@ -34,9 +43,25 @@ export const JoinSessionPage: React.FC = () => {
         }
     }, [ inputValue1, inputValue2, inputValue3, inputValue4, inputValue5 ]);
 
+    useKeyboardShortcut('Backspace', () => {
+        const activeRefIdx = getActiveInput();
+        if (!activeRefIdx) return;
+        const prevRef = allRefs[activeRefIdx - 1];
+        if (!prevRef) return;
+
+        const prevValue = allValuesSetters[activeRefIdx - 1];
+        prevValue('');
+        prevRef.current?.focus();
+    }, 0);
+
     const sanitizeValue = (value: string): string | null => {
         if (value.length > 1 || !value.match(/[a-zA-Z0-9]/)) return null;
         return value.toUpperCase();
+    };
+
+    const getActiveInput = () => {
+        const refIdx = allRefs.findIndex((ref) => ref.current == document.activeElement);
+        return refIdx >= 0 ? refIdx : null;
     };
 
     return <Wrapper>
