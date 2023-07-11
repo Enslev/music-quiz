@@ -107,7 +107,12 @@ const SearchMenu: React.FC<Props> = ({
     }, [ open ]);
 
     useEffect(() => {
-        if (spotifyPlayer.playpackPosition == null || spotifyPlayer.currentlyPlaying != selectedTrack?.uri) return;
+        if (spotifyPlayer.playpackPosition == null) return;
+        if (spotifyPlayer.currentlyPlaying != selectedTrack?.uri) {
+            setSelectedTrackStartPosition(0);
+            return;
+        }
+
         setSelectedTrackStartPosition(spotifyPlayer.playpackPosition);
     }, [ spotifyPlayer.playpackPosition ]);
 
@@ -129,7 +134,7 @@ const SearchMenu: React.FC<Props> = ({
                     </span>
                     <Center>
 
-                        { !spotifyPlayer.isPlaying &&
+                        { (!spotifyPlayer.isPlaying || spotifyPlayer.currentlyPlaying != selectedTrack.uri) &&
                             <PlayIcon onClick={handlePlay}/>
                         }
 
@@ -146,6 +151,7 @@ const SearchMenu: React.FC<Props> = ({
                                 max={selectedTrack.duration_ms}
                                 onChange={(_, newValue) => handlePositionChange(newValue)}
                                 onChangeCommitted={(_, newValue) => handlePositionChangeCommit(newValue)}
+                                disabled={Boolean(spotifyPlayer.currentlyPlaying) && spotifyPlayer.currentlyPlaying != selectedTrack?.uri}
                             />
                             <span>{formatMs(selectedTrack.duration_ms)}</span>
                         </Stack>
