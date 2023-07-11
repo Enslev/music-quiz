@@ -9,6 +9,9 @@ import { useKeyboardShortcut } from '../../services/keyboard.service';
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
 import { ReactComponent as StopIconRaw } from '../../assets/stop-circle.svg';
+import { ReactComponent as ChevronDownIconRaw } from '../../assets/chevron-down.svg';
+import { ReactComponent as ChevronUpIconRaw } from '../../assets/chevron-up.svg';
+import { ReactComponent as XIconRaw } from '../../assets/x.svg';
 
 interface Props {
     hide?: boolean;
@@ -29,6 +32,8 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
     const [ currentTrack, setCurrentTrack ] = useState<Track | null>(null);
     const [ selectedTrackStartPosition, setSelectedTrackStartPosition ] = useState<number>(playpackPosition ?? 0);
     const [ sliderFocused, setSliderFocused ] = useState<boolean>(false);
+    const [ playerHovered, setPlayerHovered ] = useState<boolean>(false);
+    const [ minimized, setMinimized ] = useState<boolean>(false);
 
     useKeyboardShortcut(' ', () => {
         if (disableKeybaord) return;
@@ -68,37 +73,49 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
     >
         <PlayerWrapper>
             {currentTrack && <>
-                <Player>
-                    <Artist text={currentTrack.artist}/>
+                <Player
+                    onMouseEnter={() => setPlayerHovered(true)}
+                    onMouseLeave={() => setPlayerHovered(false)}
+                    className={minimized && !playerHovered ? 'minimized' : ''}
+                >
+                    <div>
+                        <Title text={currentTrack.title}/>
+                        <Artist text={currentTrack.artist}/>
 
-                    <Title text={currentTrack.title}/>
-
-                    <ButtonsWrapper>
-                        {isPlaying ?
-                            <PauseIcon onClick={() => {
-                                pause();
-                            }}/> :
-                            <PlayIcon onClick={() => {
-                                resume();
+                        <ButtonsWrapper>
+                            {isPlaying ?
+                                <PauseIcon onClick={() => {
+                                    pause();
+                                }}/> :
+                                <PlayIcon onClick={() => {
+                                    resume();
+                                }}/>
+                            }
+                            <StopIcon onClick={() => {
+                                stop();
                             }}/>
-                        }
-                        <StopIcon onClick={() => {
+                        </ButtonsWrapper>
+                        <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+                            <span>{formatMs(selectedTrackStartPosition ?? 0)}</span>
+                            <Slider
+                                value={selectedTrackStartPosition ?? 0}
+                                min={0}
+                                max={currentTrack.length}
+                                onChange={(e, newValue) => handlePositionChange(newValue)}
+                                onChangeCommitted={(e, newValue) => handlePositionChangeCommit(newValue)}
+                                onMouseDown={() => setSliderFocused(true)}
+                                onMouseUp={() => setSliderFocused(false)}
+                            />
+                            <span>{formatMs(currentTrack.length)}</span>
+                        </Stack>
+                    </div>
+                    <TopRow className={playerHovered ? 'show' : ''}>
+                        <XIcon onClick={() => {
                             stop();
                         }}/>
-                    </ButtonsWrapper>
-                    <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                        <span>{formatMs(selectedTrackStartPosition ?? 0)}</span>
-                        <Slider
-                            value={selectedTrackStartPosition ?? 0}
-                            min={0}
-                            max={currentTrack.length}
-                            onChange={(e, newValue) => handlePositionChange(newValue)}
-                            onChangeCommitted={(e, newValue) => handlePositionChangeCommit(newValue)}
-                            onMouseDown={() => setSliderFocused(true)}
-                            onMouseUp={() => setSliderFocused(false)}
-                        />
-                        <span>{formatMs(currentTrack.length)}</span>
-                    </Stack>
+                        {minimized && <ChevronUpIcon onClick={() => setMinimized(false)}/>}
+                        {!minimized && <ChevronDownIcon onClick={() => setMinimized(true)}/>}
+                    </TopRow>
                 </Player>
             </>}
         </PlayerWrapper>
@@ -116,15 +133,37 @@ const PlayerWrapper = styled('div')(({
 const Player = styled('div')(({ theme }) =>({
     color: 'white',
     width: '400px',
-    height: '140px',
     borderRadius: '15px 15px 0px 0px',
     padding: '5px 10px',
     border: '1px black solid',
     boxSizing: 'border-box',
     backgroundColor: theme.palette.custom.darkerBackground,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column-reverse',
     boxShadow: '0px 0px 15px -3px rgba(0,0,0,0.5)',
+    transition: '300ms',
+
+    '&.minimized': {
+        transform: 'translateY(95px)',
+    },
+}));
+
+const TopRow = styled('div')(({
+    width: '100%',
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    overflow: 'hidden',
+    height: '0',
+    transition: '200ms',
+
+    '&.show': {
+        height: '15px',
+    },
+
+    '>*': {
+        marginLeft: '5px',
+    },
 }));
 
 const Artist = styled(TextWithScroll)(({
@@ -173,5 +212,41 @@ const StopIcon = styled(StopIconRaw)(({
 
     '&:hover': {
         scale: '1.05',
+    },
+}));
+
+const ChevronDownIcon = styled(ChevronDownIconRaw)(({ theme }) => ({
+    width: '15px',
+    height: '15px',
+    cursor: 'pointer',
+    transition: '200ms',
+
+    '&:hover': {
+        scale: '1.05',
+        color : theme.palette.primary.main,
+    },
+}));
+
+const ChevronUpIcon = styled(ChevronUpIconRaw)(({ theme }) => ({
+    width: '15px',
+    height: '15px',
+    cursor: 'pointer',
+    transition: '200ms',
+
+    '&:hover': {
+        scale: '1.05',
+        color : theme.palette.primary.main,
+    },
+}));
+
+const XIcon = styled(XIconRaw)(({ theme }) => ({
+    width: '15px',
+    height: '15px',
+    cursor: 'pointer',
+    transition: '200ms',
+
+    '&:hover': {
+        scale: '1.05',
+        color : theme.palette.primary.main,
     },
 }));
