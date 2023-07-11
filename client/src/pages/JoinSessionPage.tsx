@@ -55,7 +55,8 @@ export const JoinSessionPage: React.FC = () => {
     }, 0);
 
     const sanitizeValue = (value: string): string | null => {
-        if (value.length > 1 || !value.match(/[a-zA-Z0-9]/)) return null;
+        if (value.length > 1) value = value.slice(1, 2);
+        if (!value.match(/^[a-zA-Z0-9]$/)) return null;
         return value.toUpperCase();
     };
 
