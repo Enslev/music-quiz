@@ -8,7 +8,6 @@ import { useKeyboardShortcut } from '../../services/keyboard.service';
 
 import { ReactComponent as PlayIconRaw } from '../../assets/play-circle.svg';
 import { ReactComponent as PauseIconRaw } from '../../assets/pause-circle.svg';
-import { ReactComponent as StopIconRaw } from '../../assets/stop-circle.svg';
 import { ReactComponent as ChevronDownIconRaw } from '../../assets/chevron-down.svg';
 import { ReactComponent as ChevronUpIconRaw } from '../../assets/chevron-up.svg';
 import { ReactComponent as XIconRaw } from '../../assets/x.svg';
@@ -33,10 +32,10 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
     const [ selectedTrackStartPosition, setSelectedTrackStartPosition ] = useState<number>(playpackPosition ?? 0);
     const [ sliderFocused, setSliderFocused ] = useState<boolean>(false);
     const [ playerHovered, setPlayerHovered ] = useState<boolean>(false);
-    const [ minimized, setMinimized ] = useState<boolean>(false);
+    const [ minimized, setMinimized ] = useState<boolean>(true);
 
     useKeyboardShortcut(' ', () => {
-        if (disableKeybaord) return;
+        if (disableKeybaord || !currentlyPlaying) return;
         isPlaying ? pause() : resume();
     });
 
@@ -91,9 +90,6 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
                                     resume();
                                 }}/>
                             }
-                            <StopIcon onClick={() => {
-                                stop();
-                            }}/>
                         </ButtonsWrapper>
                         <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
                             <span>{formatMs(selectedTrackStartPosition ?? 0)}</span>
@@ -109,7 +105,7 @@ export const SpotifyPlayer: React.FC<Props> = (props) => {
                             <span>{formatMs(currentTrack.length)}</span>
                         </Stack>
                     </div>
-                    <TopRow className={playerHovered ? 'show' : ''}>
+                    <TopRow className={playerHovered || !minimized ? 'show' : ''}>
                         <XIcon onClick={() => {
                             stop();
                         }}/>
@@ -136,6 +132,7 @@ const Player = styled('div')(({ theme }) =>({
     borderRadius: '15px 15px 0px 0px',
     padding: '5px 10px',
     border: '1px black solid',
+    borderBottom: '0px',
     boxSizing: 'border-box',
     backgroundColor: theme.palette.custom.darkerBackground,
     display: 'flex',
@@ -182,7 +179,7 @@ const ButtonsWrapper = styled('div')(({
     marginTop: '5px',
 }));
 
-const PlayIcon = styled(PlayIconRaw)(({
+const PlayIcon = styled(PlayIconRaw)(({ theme }) => ({
     width: '50px',
     height: '50px',
     cursor: 'pointer',
@@ -190,10 +187,11 @@ const PlayIcon = styled(PlayIconRaw)(({
 
     '&:hover': {
         scale: '1.05',
+        color : theme.palette.primary.main,
     },
 }));
 
-const PauseIcon = styled(PauseIconRaw)(({
+const PauseIcon = styled(PauseIconRaw)(({ theme }) => ({
     width: '50px',
     height: '50px',
     cursor: 'pointer',
@@ -201,17 +199,7 @@ const PauseIcon = styled(PauseIconRaw)(({
 
     '&:hover': {
         scale: '1.05',
-    },
-}));
-
-const StopIcon = styled(StopIconRaw)(({
-    width: '50px',
-    height: '50px',
-    cursor: 'pointer',
-    transition: '200ms',
-
-    '&:hover': {
-        scale: '1.05',
+        color : theme.palette.primary.main,
     },
 }));
 

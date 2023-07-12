@@ -2,7 +2,7 @@ import { Context } from '..';
 import { ErrorResponse } from '../../services/api.service';
 import { hasProp } from '../../services/utils';
 
-const deviceId = 'df29db6cb8652085b5395dae088370700b12aff0'; // TODO Make this not hardcoded
+const deviceId = 'a2fbc6475d5078c9725986d4804dfff78b3f30da'; // TODO Make this not hardcoded
 let playbackUpdateInterval: NodeJS.Timer | null = null;
 const PLAYBACK_UPDATE_INTERVAL_MS = 900 as const;
 

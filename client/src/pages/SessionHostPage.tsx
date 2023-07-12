@@ -180,7 +180,7 @@ export const SessionHostPage: React.FC = () => {
         />
 
         <SpotifyPlayer
-            hide={spotifyPlayer.currentlyPlaying == trackSelected?.track.trackUrl}
+            hide={Boolean(!spotifyPlayer.currentlyPlaying)}
             tracks={allTracks}
             disableKeybaord={editTeamMenuOpen || addTeamMenuOpen}
         />
