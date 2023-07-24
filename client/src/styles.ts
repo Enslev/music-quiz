@@ -24,11 +24,17 @@ export const themeOptions: ThemeOptions = {
         secondary: {
             main: '#009cd9',
         },
-        error: {
-            main: '#C43B37',
-        },
         background: {
             default: '#326670',
+        },
+        success: {
+            main: '#00c853',
+        },
+        warning: {
+            main: '#f1c40f',
+        },
+        error: {
+            main: '#e74c3c',
         },
         custom: {
             darkerBackground: '#282c34',
