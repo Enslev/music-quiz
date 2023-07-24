@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SpotifyCallbackPage from './pages/SpotifyCallbackPage';
-import Header from './components/Header';
+import { Header } from './components/Header';
 import EditQuizPage from './pages/EditQuizPage';
 import PlayerScreenPage from './pages/PlayerScreenPage';
 import { useTheme } from '@mui/material';
