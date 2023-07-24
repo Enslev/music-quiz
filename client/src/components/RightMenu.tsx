@@ -16,7 +16,7 @@ export const RightMenu: React.FC<Props> = (props) => {
     } = props;
 
     return (<>
-        <Fade in={open}>
+        <Fade in={open} mountOnEnter unmountOnExit>
             <Box
                 onClick={onClose}
                 sx={{
@@ -67,18 +67,22 @@ const ModalContainer = styled('div')(({ theme }) => ({
     display: 'flex',
     flexFlow: 'column',
 
+    webkitBoxShadow: '25px 0px 25px 20px #000000',
+    boxShadow: '25px 0px 25px 20px #000000',
+
     '.header': {
         flex: '0 1 auto',
     },
 
-    '.content ': {
+    '.content': {
         flex: '1 1 auto',
     },
 
-    '.footer  ': {
+    '.footer': {
         flex: '0 1 auto',
     },
 
-    webkitBoxShadow: '25px 0px 25px 20px #000000',
-    boxShadow: '25px 0px 25px 20px #000000',
+    'h1': {
+        marginTop: '0',
+    },
 }));

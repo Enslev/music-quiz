@@ -7,7 +7,7 @@ import { styled } from '@mui/material';
 import { SpotifyPlayer } from '../components/Player/SpotifyPlayer';
 import { Category, Track } from '../overmind/effects/api/quizzes/types';
 
-import { ReactComponent as SpotifyLogoRaw } from '../assets/user-plus.svg';
+import { ReactComponent as AddUserButtonRaw } from '../assets/user-plus.svg';
 import { Team } from '../overmind/effects/api/sessions/types';
 import { PlayTrackMenu } from '../components/right-menus/PlayTrackMenu';
 import { CreateTeamMenu } from '../components/right-menus/CreateTeamMenu';
@@ -197,7 +197,7 @@ const TeamsWrapper = styled('div')(({
     },
 }));
 
-const AddUserButton = styled(SpotifyLogoRaw)(({ theme }) => ({
+const AddUserButton = styled(AddUserButtonRaw)(({ theme }) => ({
     width: '50px',
     height: '50px',
     cursor: 'pointer',

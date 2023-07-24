@@ -40,6 +40,12 @@ const EditQuizPage: React.FC = () => {
     };
 
     return <>
+        <QuizGrid
+            categories={quizCopy.categories}
+            editMode
+            saveTrigger={debouncedSave}
+            revealed={[ '6446c846ef3d95b10c5182ad' ]}
+        />
         <ButtonWrapper>
             <Button
                 variant='contained'
@@ -48,12 +54,6 @@ const EditQuizPage: React.FC = () => {
                     Start session
             </Button>
         </ButtonWrapper>
-        <QuizGrid
-            categories={quizCopy.categories}
-            editMode
-            saveTrigger={debouncedSave}
-            revealed={[ '6446c846ef3d95b10c5182ad' ]}
-        />
     </>;
 };
 

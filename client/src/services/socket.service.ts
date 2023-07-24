@@ -33,10 +33,12 @@ export type ChallengeShowAction = {
     categoryTitle: string,
     points: number,
 }
+
 export type ChallengeHideAction = {
     type: 'challengeAction:show',
     show: false,
 }
+
 export type ChallengeTeamAction = {
     type: 'challengeAction:teamUpdate',
     teamName?: string,
