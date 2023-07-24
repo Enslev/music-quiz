@@ -5,15 +5,17 @@ import { useActions } from '../overmind';
 
 const SpotifyCallbackPage: React.FC = () => {
     const navigate = useNavigate();
-    const { auth } = useActions();
+    const { auth, spotify } = useActions();
 
     const [ searchParams ] = useSearchParams();
     const code = searchParams.get('code');
 
     useEffect(() => {
-        auth.loginWithCode(code ?? '').then(() => {
+        (async () => {
+            await auth.loginWithCode(code ?? '');
+            await spotify.initSpotifyValues();
             navigate('/');
-        });
+        })();
     }, [ auth, code, navigate ]);
 
     return <></>;

@@ -1,6 +1,6 @@
 import jwt from 'jwt-decode';
 import { API_URL } from '../../utils';
-import { GetPlaybackStateResponseBody, PlayRequestBody, SearchSpotifyResponseBody, SpotifyTrackObject } from './types';
+import { GetAvailableDevicesResponseBody, GetPlaybackStateResponseBody, PlayRequestBody, SearchSpotifyResponseBody, SpotifyTrackObject } from './types';
 import request from '../../../../services/api.service';
 import { Token } from '../../../actions/auth';
 
@@ -68,5 +68,10 @@ export const spotify = (() => {
             });
         },
 
+        getAvailableDevices: async () => {
+            return await request.get<GetAvailableDevicesResponseBody>('https://api.spotify.com/v1/me/player/devices', {
+                headers: { authorization: `Bearer ${spotifyAccessToken}` },
+            });
+        },
     };
 })();
