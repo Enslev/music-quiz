@@ -8,6 +8,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --toastify-color-dark: #282c34;
+
+  --toastify-color-progress-info: #2DC4B5;
+  --toastify-icon-color-info: #2DC4B5;
+
+  --toastify-color-progress-success: #00c853;
+  --toastify-icon-color-success: #00c853;
+
+  --toastify-color-progress-warning: #f1c40f;
+  --toastify-icon-color-warning: #f1c40f;
+
+  --toastify-color-progress-error: #e74c3c;
+  --toastify-icon-color-error: #e74c3c;
 }
 
 h1 {
