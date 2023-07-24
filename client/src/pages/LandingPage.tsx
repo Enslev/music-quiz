@@ -6,7 +6,7 @@ import { Quiz } from '../overmind/effects/api/quizzes/types';
 import { Button, FormControl, TextField, styled } from '@mui/material';
 import { RightMenu } from '../components/RightMenu';
 
-const LandingPage: React.FC = () => {
+export const LandingPage: React.FC = () => {
 
     const state = useAppState();
     const navigate = useNavigate();
@@ -14,8 +14,7 @@ const LandingPage: React.FC = () => {
     const { getAllQuizzes, createQuiz } = useActions().quiz;
 
     const [ quizzes, setQuizzes ] = useState<Quiz[] | null>(null);
-
-    const [ modalIsOpen, setModalIsOpen ] = useState<boolean>(false);
+    const [ createQuizIsOpen, setCreateQuizIsOpen ] = useState<boolean>(false);
     const [ newQuizTitle, setNewQuizTitle ] = useState<string>('');
 
     useEffect(() => {
@@ -27,7 +26,6 @@ const LandingPage: React.FC = () => {
         })();
     }, []);
 
-
     const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         await createQuiz(newQuizTitle);
@@ -35,21 +33,21 @@ const LandingPage: React.FC = () => {
         const quizzes = await getAllQuizzes();
         setQuizzes(quizzes);
 
-        setModalIsOpen(false);
+        setCreateQuizIsOpen(false);
     };
 
     return <>
         <h1>Landing</h1>
         <ButtonWrapper>
-            <Button variant='contained' onClick={() => setModalIsOpen(!modalIsOpen)}>Create quiz</Button>
+            <Button variant='contained' onClick={() => setCreateQuizIsOpen(!createQuizIsOpen)}>Create quiz</Button>
             <Button variant='contained' onClick={() => navigate('/session')}>Join session</Button>
         </ButtonWrapper>
         <ul>
             {quizzes && quizzes.map((quiz) => <li key={quiz._id}><Link to={`/quiz/${quiz._id}/edit`}>{quiz.title}</Link></li>)}
         </ul>
         <RightMenu
-            open={modalIsOpen}
-            onClose={() => setModalIsOpen(false)}
+            open={createQuizIsOpen}
+            onClose={() => setCreateQuizIsOpen(false)}
         >
             <h1>Create new quiz</h1>
             <FormControl fullWidth>
@@ -77,5 +75,3 @@ const ButtonWrapper = styled('div')(({
         margin: '0px 10px',
     },
 }));
-
-export default LandingPage;
