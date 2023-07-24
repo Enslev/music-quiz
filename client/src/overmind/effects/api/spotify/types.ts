@@ -110,3 +110,7 @@ export interface PlayRequestBody {
     uris: string[],
     position_ms?: number,
 }
+
+export interface GetAvailableDevicesResponseBody {
+    devices: SpotiyDeviceObject[]
+}

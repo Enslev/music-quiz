@@ -1,6 +1,7 @@
 import { derived } from 'overmind';
 import { Quiz } from './effects/api/quizzes/types';
 import { Session } from './effects/api/sessions/types';
+import { SpotiyDeviceObject } from './effects/api/spotify/types';
 
 type State = {
   apiUrl: string,
@@ -15,6 +16,7 @@ type State = {
   showHeader: boolean,
   quiz: Quiz | null,
   session: Session | null,
+  selectedDevice: SpotiyDeviceObject | null,
 }
 
 export const state: State = {
@@ -30,4 +32,5 @@ export const state: State = {
     showHeader: true,
     quiz: null,
     session: null,
+    selectedDevice: null,
 };

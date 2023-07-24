@@ -13,6 +13,9 @@ export const onInitializeOvermind = async ({
     state.spotifyPlayer.currentlyPlaying = localStorage.getItem('currentlyPlaying');
 
     actions.auth.updateEffectsApiKey();
+    if (state.isLoggedIn) {
+        await actions.spotify.initSpotifyValues();
+    }
 };
 
 export * as auth from './auth';
