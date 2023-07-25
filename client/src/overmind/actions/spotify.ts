@@ -1,7 +1,10 @@
+import { toast } from 'react-toastify';
+
 import { Context } from '..';
 import { ErrorResponse } from '../../services/api.service';
 import { hasProp } from '../../services/utils';
 import { SpotiyDeviceObject } from '../effects/api/spotify/types';
+import { NoDeviceToast } from '../../components/toasts/NoDeviceToast';
 
 let playbackUpdateInterval: NodeJS.Timer | null = null;
 const PLAYBACK_UPDATE_INTERVAL_MS = 900 as const;
@@ -60,7 +63,12 @@ export const play = async (context: Context, options: playOptions) => {
     const { state, effects } = context;
 
     const selectedDevice = state.selectedDevice;
-    if (!selectedDevice) return;
+    if (!selectedDevice) {
+        toast.warn(NoDeviceToast, {
+            toastId: 'no-device',
+        });
+        return;
+    }
 
     if (state.spotifyPlayer.currentlyPlaying == trackUri) {
         return resume(context);
@@ -85,7 +93,12 @@ export const resume = async (context: Context) => {
     const { effects, state } = context;
 
     const selectedDevice = state.selectedDevice;
-    if (!selectedDevice) return;
+    if (!selectedDevice) {
+        toast.warn(NoDeviceToast, {
+            toastId: 'no-device',
+        });
+        return;
+    }
 
     // Update state
     startPlaybackUpdates(context);
@@ -100,7 +113,12 @@ export const seek = async (context: Context, newPosition: number) => {
     const { effects, state } = context;
 
     const selectedDevice = state.selectedDevice;
-    if (!selectedDevice) return;
+    if (!selectedDevice) {
+        toast.warn(NoDeviceToast, {
+            toastId: 'no-device',
+        });
+        return;
+    }
 
     return spotifyWrapper(context,
         () => effects.api.spotify.seek(selectedDevice.id, newPosition),
@@ -110,8 +128,15 @@ export const seek = async (context: Context, newPosition: number) => {
 export const pause = async (context: Context) => {
     const { effects, state } = context;
 
+    if (!state.spotifyPlayer.isPlaying) return;
+
     const selectedDevice = state.selectedDevice;
-    if (!selectedDevice) return;
+    if (!selectedDevice) {
+        toast.warn(NoDeviceToast, {
+            toastId: 'no-device',
+        });
+        return;
+    }
 
     const spotifyState = state.spotifyPlayer;
     const isPlayingBeforeUpdate = state.spotifyPlayer.isPlaying;
@@ -131,8 +156,15 @@ export const pause = async (context: Context) => {
 export const stop = async (context: Context) => {
     const { effects, state, actions } = context;
 
+    if (!state.spotifyPlayer.isPlaying) return;
+
     const selectedDevice = state.selectedDevice;
-    if (!selectedDevice) return;
+    if (!selectedDevice) {
+        toast.warn(NoDeviceToast, {
+            toastId: 'no-device',
+        });
+        return;
+    }
 
     const spotifyState = state.spotifyPlayer;
     const isPlayingBeforeUpdate = spotifyState.isPlaying;
