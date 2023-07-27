@@ -29,7 +29,7 @@ export const spotify = (() => {
         },
 
         play: async (deviceId: string, payload?: PlayRequestBody) => {
-            return await request.put<unknown>('https://api.spotify.com/v1/me/player/play', {
+            return await request.put<void>('https://api.spotify.com/v1/me/player/play', {
                 headers: { authorization: `Bearer ${spotifyAccessToken}` },
                 query: { device_id: deviceId },
                 body: payload ?? {},
@@ -37,14 +37,14 @@ export const spotify = (() => {
         },
 
         pause: async (deviceId: string) => {
-            return await request.put<unknown>('https://api.spotify.com/v1/me/player/pause', {
+            return await request.put<void>('https://api.spotify.com/v1/me/player/pause', {
                 headers: { authorization: `Bearer ${spotifyAccessToken}` },
                 query: { device_id: deviceId },
             });
         },
 
         seek: async (deviceId: string, newPositionMs: number) => {
-            return await request.put<unknown>('https://api.spotify.com/v1/me/player/seek', {
+            return await request.put<void>('https://api.spotify.com/v1/me/player/seek', {
                 headers: { authorization: `Bearer ${spotifyAccessToken}` },
                 query: {
                     device_id: deviceId,
@@ -62,7 +62,7 @@ export const spotify = (() => {
 
         getTrack: async (trackUri: string) => {
             // Notice that this uses our own api, to put a cache between us and spotify
-            // This is done because this endpoint is deterministic so are thinking about the rate limit
+            // This is done because this endpoint is deterministic so we are thinking about the rate limit
             return await request.get<SpotifyTrackObject>(`${baseUrl}/tracks/${trackUri}`, {
                 headers: { authorization: `Bearer ${apiToken}` },
             });
