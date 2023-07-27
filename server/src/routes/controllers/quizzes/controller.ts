@@ -7,15 +7,14 @@ import { Types } from 'mongoose';
 
 export const getQuizzes = async (req: ValidatedRequest<GetQuizzesSchema>, res: Response) => {
 
-    let quizzesPromise = QuizModel.find({ user: req.user._id });
-
+    let quizzesQuery = QuizModel.find({ user: req.user._id });
     if (req.query.populate) {
         req.query.populate.forEach((populateProp) => {
-            quizzesPromise = quizzesPromise.populate(populateProp);
+            quizzesQuery = quizzesQuery.populate(populateProp);
         });
     }
 
-    const quizzes = await quizzesPromise;
+    const quizzes = await quizzesQuery;
 
     res.status(200).send(quizzes);
 };
@@ -28,18 +27,18 @@ export const getQuiz = async (req: ValidatedRequest<GetQuizSchema>, res: Respons
         return;
     }
 
-    let quizzesPromise = QuizModel.findOne({
+    let quizzesQuery = QuizModel.findOne({
         user: req.user._id,
         _id: req.params.quizId,
     });
 
     if (req.query.populate) {
         req.query.populate.forEach((populateProp) => {
-            quizzesPromise = quizzesPromise.populate(populateProp);
+            quizzesQuery = quizzesQuery.populate(populateProp);
         });
     }
 
-    const quizzes = await quizzesPromise;
+    const quizzes = await quizzesQuery;
 
     if (quizzes == null) {
         res.status(404).send();
@@ -62,7 +61,8 @@ export const putQuiz = async (req: ValidatedRequest<PutQuizSchema>, res: Respons
 
     const quizFromDB = await QuizModel.findById(req.body._id);
 
-    if (!quizFromDB) return res.status(404).send();
+    if (!quizFromDB) return res.sendStatus(404);
+    if (quizFromDB.user != req.user.id) return res.sendStatus(403);
 
     const updatedQuiz = await QuizModel.findByIdAndUpdate(req.body._id, req.body);
     res.status(200).send(updatedQuiz);

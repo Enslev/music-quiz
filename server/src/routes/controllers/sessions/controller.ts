@@ -18,12 +18,8 @@ export const createSession = async (req: ValidatedRequest<CreateSessionSchema>, 
 
     const quiz = await QuizModel.findById(req.body.quizId);
 
-    if (!quiz) {
-        res.status(404).send({
-            message: 'Quiz not found',
-        });
-        return;
-    }
+    if (!quiz) return res.status(404).send({ message: 'Quiz not found' });
+    if (quiz.user != req.user.id) return res.sendStatus(403);
 
     // We allow 10 attempts at creating a unique code, which should be more than enough
     let code = '';
@@ -42,7 +38,6 @@ export const createSession = async (req: ValidatedRequest<CreateSessionSchema>, 
         return;
     }
 
-
     const sessionDoc = await SessionModel.create({
         _id: new Types.ObjectId(),
         title: quiz.title,
@@ -57,12 +52,7 @@ export const createSession = async (req: ValidatedRequest<CreateSessionSchema>, 
 export const getSessions = async (req: ValidatedRequest<GetSessionSchema>, res: Response) => {
     const sessionDoc = await SessionModel.findOne({ code: req.params.sessionCode });
 
-    if (!sessionDoc) {
-        res.status(404).send({
-            message: 'Session not Found',
-        });
-        return;
-    }
+    if (!sessionDoc) return res.status(404).send({ message: 'Session not Found' });
 
     res.status(200).send(sessionDoc);
 };
@@ -70,12 +60,8 @@ export const getSessions = async (req: ValidatedRequest<GetSessionSchema>, res: 
 export const createTeam = async (req: ValidatedRequest<CreateTeamSchema>, res: Response) => {
     const sessionDoc = await SessionModel.findOne({ _id: req.params.sessionId });
 
-    if (!sessionDoc) {
-        res.status(404).send({
-            message: 'Session not Found',
-        });
-        return;
-    }
+    if (!sessionDoc) return res.status(404).send({ message: 'Session not Found' });
+    if (sessionDoc.user != req.user.id) return res.sendStatus(403);
 
     sessionDoc.teams.push({
         _id: new Types.ObjectId(),
@@ -89,32 +75,18 @@ export const createTeam = async (req: ValidatedRequest<CreateTeamSchema>, res: R
 
 export const putTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Response) => {
 
-    if (req.body._id != req.params.teamId) {
-        res.status(400).send({
-            message: 'Team ID mismatch',
-        });
-        return;
-    }
+    if (req.body._id != req.params.teamId) return res.status(404).send({ message: 'Team ID mismatch' });
 
     const sessionDoc = await SessionModel.findOne({ _id: req.params.sessionId });
 
-    if (!sessionDoc) {
-        res.status(404).send({
-            message: 'Session not Found',
-        });
-        return;
-    }
+    if (!sessionDoc) return res.status(404).send({ message: 'Session not Found' });
+    if (sessionDoc.user != req.user.id) return res.sendStatus(403);
 
     const teamFromDb = sessionDoc.teams.find((team) =>
         team._id.equals(req.params.teamId),
     );
 
-    if (!teamFromDb) {
-        res.status(404).send({
-            message: 'Team not Found',
-        });
-        return;
-    }
+    if (!teamFromDb) return res.status(404).send({ message: 'Team not Found' });
 
     const teamIdx = sessionDoc.teams.indexOf(teamFromDb);
     sessionDoc.teams[teamIdx] = {
@@ -131,23 +103,14 @@ export const putTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Respons
 export const deleteTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Response) => {
     const sessionDoc = await SessionModel.findOne({ _id: req.params.sessionId });
 
-    if (!sessionDoc) {
-        res.status(404).send({
-            message: 'Session not Found',
-        });
-        return;
-    }
+    if (!sessionDoc) return res.status(404).send({ message: 'Session not Found' });
+    if (sessionDoc.user != req.user.id) return res.sendStatus(403);
 
     const teamFromDb = sessionDoc.teams.find((team) =>
         team._id.equals(req.params.teamId),
     );
 
-    if (!teamFromDb) {
-        res.status(404).send({
-            message: 'Team not Found',
-        });
-        return;
-    }
+    if (!teamFromDb) return res.status(404).send({ message: 'Team not Found' });
 
     const teamIdx = sessionDoc.teams.indexOf(teamFromDb);
     sessionDoc.teams.splice(teamIdx, 1);
@@ -160,12 +123,7 @@ export const deleteTeam = async (req: ValidatedRequest<PutTeamSchema>, res: Resp
 export const postClaimed = async (req: ValidatedRequest<PostClaimedSchema>, res: Response) => {
     const sessionDoc = await SessionModel.findOne({ _id: req.params.sessionId });
 
-    if (!sessionDoc) {
-        res.status(404).send({
-            message: 'Session not Found',
-        });
-        return;
-    }
+    if (!sessionDoc) return res.status(404).send({ message: 'Session not Found' });
 
     const claim = await ClaimedModel.create({
         _id: new Types.ObjectId(),
