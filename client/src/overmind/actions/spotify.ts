@@ -5,6 +5,7 @@ import { ErrorResponse } from '../../services/api.service';
 import { hasProp } from '../../services/utils';
 import { SpotiyDeviceObject } from '../effects/api/spotify/types';
 import { NoDeviceToast } from '../../components/toasts/NoDeviceToast';
+import { InvalidDeviceToast } from '../../components/toasts/InvalidDeviceToast';
 
 let playbackUpdateInterval: NodeJS.Timer | null = null;
 const PLAYBACK_UPDATE_INTERVAL_MS = 900 as const;
@@ -73,13 +74,15 @@ export const play = async (context: Context, options: playOptions) => {
     if (state.spotifyPlayer.currentlyPlaying == trackUri) {
         return resume(context);
     }
-
-    await spotifyWrapper(context,
+    const spotifyResponse = await spotifyWrapper(context,
         () => effects.api.spotify.play(selectedDevice.id, {
             uris: [ trackUri ],
             position_ms: position,
         }),
     );
+
+    // If null response, do not update state
+    if (spotifyResponse == null) return;
 
     // Update state
     startPlaybackUpdates(context);
@@ -100,13 +103,16 @@ export const resume = async (context: Context) => {
         return;
     }
 
+    const spotifyResponse = await spotifyWrapper(context,
+        () => effects.api.spotify.play(selectedDevice.id),
+    );
+
+    // If null response, do not update state
+    if (!spotifyResponse) return;
+
     // Update state
     startPlaybackUpdates(context);
     context.state.spotifyPlayer.isPlaying = true;
-
-    return spotifyWrapper(context,
-        () => effects.api.spotify.play(selectedDevice.id),
-    );
 };
 
 export const seek = async (context: Context, newPosition: number) => {
@@ -120,13 +126,13 @@ export const seek = async (context: Context, newPosition: number) => {
         return;
     }
 
-    return spotifyWrapper(context,
+    await spotifyWrapper(context,
         () => effects.api.spotify.seek(selectedDevice.id, newPosition),
     );
 };
 
 export const pause = async (context: Context) => {
-    const { effects, state } = context;
+    const { effects, state, actions } = context;
 
     if (!state.spotifyPlayer.isPlaying) return;
 
@@ -148,9 +154,13 @@ export const pause = async (context: Context) => {
     // Don't notify spotify if there is no song playing
     if (!isPlayingBeforeUpdate) return;
 
-    return spotifyWrapper(context,
+    const spotifyResponse = await spotifyWrapper(context,
         () => effects.api.spotify.pause(selectedDevice.id),
     );
+
+    if (spotifyResponse == null) {
+        actions.spotify.clearState();
+    }
 };
 
 export const stop = async (context: Context) => {
@@ -169,6 +179,8 @@ export const stop = async (context: Context) => {
     const spotifyState = state.spotifyPlayer;
     const isPlayingBeforeUpdate = spotifyState.isPlaying;
 
+    // We do not check for null response before clear
+    // since if device is not valid we want to clear state anyway
     actions.spotify.clearState();
 
     // Don't notify spotify if there is no song playing
@@ -221,7 +233,7 @@ export const setSelectedDevice = async ({ state }: Context, device: SpotiyDevice
 };
 
 const spotifyWrapper = async <T>(context: Context, request: () => T): Promise<T | null> => {
-    const { actions } = context;
+    const { actions, state } = context;
 
     try {
         return await request();
@@ -233,6 +245,17 @@ const spotifyWrapper = async <T>(context: Context, request: () => T): Promise<T 
                 await actions.auth.refreshAccessToken();
                 return await spotifyWrapper<T>(context, request);
             }
+
+            if (httpError.status == 404 && httpError.message == 'Device not found') {
+                toast.error(InvalidDeviceToast, {
+                    toastId: 'invalid-device',
+                    autoClose: 10000,
+                });
+                state.selectedDevice = null;
+                return null;
+            }
+
+            throw err;
         }
         console.log('Something went really wrong with request', err);
         return null;
