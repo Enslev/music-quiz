@@ -108,7 +108,7 @@ export const resume = async (context: Context) => {
     );
 
     // If null response, do not update state
-    if (!spotifyResponse) return;
+    if (spotifyResponse == null) return;
 
     // Update state
     startPlaybackUpdates(context);
