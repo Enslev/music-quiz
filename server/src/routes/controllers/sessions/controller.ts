@@ -3,7 +3,7 @@ import { ValidatedRequest } from 'express-joi-validation';
 import { CreateSessionSchema, CreateTeamSchema, GetSessionSchema, PostClaimedSchema, PutTeamSchema } from './schema';
 import { Types } from 'mongoose';
 import { QuizModel } from '../../../mongoose/Quiz';
-import { SessionDocument, SessionModel, ClaimedModel } from '../../../mongoose/Session';
+import { SessionDocument, SessionModel } from '../../../mongoose/Session';
 import { makeCode } from './utils';
 import { triggerSessionUpdate } from '../../../services/socket';
 
@@ -125,14 +125,12 @@ export const postClaimed = async (req: ValidatedRequest<PostClaimedSchema>, res:
 
     if (!sessionDoc) return res.status(404).send({ message: 'Session not Found' });
 
-    const claim = await ClaimedModel.create({
+    sessionDoc.claimed.push({
         _id: new Types.ObjectId(),
         teamId: new Types.ObjectId(req.body.teamId),
         trackId: new Types.ObjectId(req.body.trackId),
         artistGuessed: req.body.artistGuessed,
     });
-
-    sessionDoc.claimed.push(claim);
 
     const savedSession = await sessionDoc.save();
     res.status(200).json(savedSession);
