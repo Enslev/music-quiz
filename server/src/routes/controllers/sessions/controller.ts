@@ -127,7 +127,7 @@ export const postClaimed = async (req: ValidatedRequest<PostClaimedSchema>, res:
 
     sessionDoc.claimed.push({
         _id: new Types.ObjectId(),
-        teamId: new Types.ObjectId(req.body.teamId),
+        teamId: req.body.teamId == null ? new Types.ObjectId(req.body.teamId) : null,
         trackId: new Types.ObjectId(req.body.trackId),
         artistGuessed: req.body.artistGuessed,
     });

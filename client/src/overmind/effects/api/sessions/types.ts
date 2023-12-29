@@ -9,7 +9,7 @@ export interface Team {
 
 export interface Claimed {
     trackId: string;
-    teamId: string;
+    teamId: string | null;
     artistGuessed: boolean;
 }
 
@@ -38,6 +38,6 @@ export interface PutTeamRequestBody {
 }
 
 export interface PostClaimedRequestBody {
-    teamId: string;
+    teamId: string | null;
     trackId: string;
 }

@@ -8,7 +8,7 @@ import SpotifyCallbackPage from './pages/SpotifyCallbackPage';
 import { Header } from './components/Header';
 import EditQuizPage from './pages/EditQuizPage';
 import PlayerScreenPage from './pages/PlayerScreenPage';
-import { styled, useTheme, withStyles } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { SessionHostPage } from './pages/SessionHostPage';
 import { useActions, useReaction } from './overmind';
 import { JoinSessionPage } from './pages/JoinSessionPage';

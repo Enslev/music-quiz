@@ -21,7 +21,7 @@ interface Props {
     challengeIsOpen: boolean,
     emitToSession: (action: SessionAction) => void,
     onClose: () => void;
-    onWinner: (team: Team, track: Track, artistGuessed: boolean) => void;
+    onWinner: (track: Track, artistGuessed: boolean, team?: Team) => void;
 }
 
 export const PlayTrackMenu: React.FC<Props> = (props) => {
@@ -147,10 +147,10 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
 
     const handleWinnerSubmit = () => {
         const winningTeam = teams.find((team) => team._id == winningTeamId);
-        if (!track || !winningTeam) return;
+        if (!track) return;
 
         clearOverlay();
-        onWinner(winningTeam, track, artistGuessed);
+        onWinner(track, artistGuessed, winningTeam);
     };
 
     return (
@@ -170,12 +170,12 @@ export const PlayTrackMenu: React.FC<Props> = (props) => {
                     <Artist className='artist'>{track.artist}</Artist>
 
                     <Center>
-                        { (!spotifyPlayer.isPlaying || spotifyPlayer.currentlyPlaying != track.trackUrl) &&
-                            <PlayIcon onClick={handlePlay}/>
+                        {(!spotifyPlayer.isPlaying || spotifyPlayer.currentlyPlaying != track.trackUrl) &&
+                            <PlayIcon onClick={handlePlay} />
                         }
 
-                        { (spotifyPlayer.isPlaying && spotifyPlayer.currentlyPlaying == track.trackUrl) &&
-                            <PauseIcon onClick={handleStop}/>
+                        {(spotifyPlayer.isPlaying && spotifyPlayer.currentlyPlaying == track.trackUrl) &&
+                            <PauseIcon onClick={handleStop} />
                         }
                     </Center>
                     <SliderWrapper>
@@ -295,7 +295,7 @@ const ActionWrapper = styled(Box)(({
     justifyContent: 'flex-end',
 }));
 
-const PlayIcon = styled(PlayIconRaw)(({ theme }) =>({
+const PlayIcon = styled(PlayIconRaw)(({ theme }) => ({
     width: '150px',
     height: '150px',
     cursor: 'pointer',

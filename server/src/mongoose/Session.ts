@@ -23,7 +23,7 @@ class Claimed {
     public trackId!: Types.ObjectId;
 
     @prop({ required: true, type: Types.ObjectId })
-    public teamId!: Types.ObjectId;
+    public teamId!: Types.ObjectId | null;
 
     @prop({ required: true, default: false })
     public artistGuessed!: boolean;

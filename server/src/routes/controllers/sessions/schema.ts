@@ -87,7 +87,7 @@ export const postClaimedSchema = {
     }),
     body: Joi.object({
         trackId: Joi.string().required(),
-        teamId: Joi.string().required(),
+        teamId: Joi.string().required().allow(null),
         artistGuessed: Joi.boolean().required(),
     }),
 };

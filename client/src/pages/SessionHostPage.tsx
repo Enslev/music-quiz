@@ -24,7 +24,7 @@ export const SessionHostPage: React.FC = () => {
     const [ addTeamMenuOpen, setAddTeamMenuOpen ] = useState<boolean>(false);
     const [ editTeamMenuOpen, setEditTeamMenuOpen ] = useState<boolean>(false);
     const [ selectedTeam, setSelectedTeam ] = useState<Team | null>(null);
-    const [ trackSelected, setTrackSelected ] = useState<{track: Track, category: Category} | null>(null);
+    const [ trackSelected, setTrackSelected ] = useState<{ track: Track, category: Category } | null>(null);
     const [ challengeIsOpen, setChallengeIsOpen ] = useState<boolean>(false);
 
     const socket = useSessionSocket(session?.code ?? null);
@@ -54,15 +54,18 @@ export const SessionHostPage: React.FC = () => {
         }
     };
 
-    const onWinner = async (winningTeam: Team, track: Track, artistGuessed: boolean) => {
+    const onWinner = async (track: Track, artistGuessed: boolean, winningTeam?: Team) => {
         setTrackSelected(null);
-        await handleUpdateTeam(winningTeam, {
-            type: 'update',
-            newPoints: track.points + (artistGuessed ? 100 : 0),
-        });
+
+        if (winningTeam) {
+            await handleUpdateTeam(winningTeam, {
+                type: 'update',
+                newPoints: track.points + (artistGuessed ? 100 : 0),
+            });
+        }
 
         await claimTrack({
-            teamId: winningTeam._id,
+            teamId: winningTeam?._id ?? null,
             trackId: track._id,
             artistGuessed,
         });
@@ -108,7 +111,7 @@ export const SessionHostPage: React.FC = () => {
     const emitAction = (payload: SessionActionPayload) => {
         if (!socket) return;
 
-        switch(payload.action.type) {
+        switch (payload.action.type) {
         case 'challengeAction:show': {
             if (challengeIsOpen && payload.action.show) return;
             if (!challengeIsOpen && !payload.action.show) return;
