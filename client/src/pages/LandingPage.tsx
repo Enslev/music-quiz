@@ -43,7 +43,14 @@ export const LandingPage: React.FC = () => {
             <Button variant='contained' onClick={() => navigate('/session')}>Join session</Button>
         </ButtonWrapper>
         <ul>
-            {quizzes && quizzes.map((quiz) => <li key={quiz._id}><Link to={`/quiz/${quiz._id}/edit`}>{quiz.title}</Link></li>)}
+            {quizzes && quizzes.map((quiz) =>
+                <li key={quiz._id}>
+                    <StyledLink style={{
+                    }}
+                    to={`/quiz/${quiz._id}/edit`}>
+                        {quiz.title}
+                    </StyledLink>
+                </li>)}
         </ul>
         <RightMenu
             open={createQuizIsOpen}
@@ -73,5 +80,13 @@ export const LandingPage: React.FC = () => {
 const ButtonWrapper = styled('div')(({
     button: {
         margin: '0px 10px',
+    },
+}));
+
+const StyledLink = styled(Link)(({ theme }) => ({
+    color: 'black',
+    'text-decoration': 'none',
+    '&:hover': {
+        color: theme.palette.primary.main,
     },
 }));
