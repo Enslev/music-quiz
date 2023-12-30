@@ -30,7 +30,7 @@ const TrackPreview: React.FC<Props> = ({
 
     return <PreviewWrapper onClick={() => onSelect(spotifyTrack)}>
         <TrackWrapper>
-            <AlbumImage src={spotifyTrack.album.images[2].url}></AlbumImage>
+            <AlbumImage src={spotifyTrack.album.images[2]?.url}></AlbumImage>
             <TrackDetails>
                 <span>{spotifyTrack.name}</span>
                 <span className='artist'>{spotifyTrack.artists.map((artist) => artist.name).join(', ')}</span>
