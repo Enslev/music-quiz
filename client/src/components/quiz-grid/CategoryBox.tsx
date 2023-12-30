@@ -36,12 +36,12 @@ const CategoryBox: React.FC<Props> = ({
                 placeholder='Set Title'
                 multiline={true}
                 inputProps={{ min: 0, style: { textAlign: 'center' } }}
-                onBlur={() => handleBlur()}
+                onBlur={handleBlur}
                 fullWidth
             />
         </BoxWrapper>}
         {!editMode && <BoxWrapper>
-            <h3>{category.title}</h3>
+            <CategoryTitle>{category.title}</CategoryTitle>
         </BoxWrapper>}
     </>);
 };
@@ -53,5 +53,10 @@ const BoxWrapper = styled('div')(({ theme }) => ({
     alignItems: 'center',
     padding: '10px',
 }));
+
+const CategoryTitle = styled('h3')({
+    'text-align': 'center',
+    'text-wrap': 'balance',
+});
 
 export default CategoryBox;

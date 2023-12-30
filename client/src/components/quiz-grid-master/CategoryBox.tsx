@@ -12,7 +12,7 @@ const CategoryBox: React.FC<Props> = ({
 
     return (
         <BoxWrapper>
-            <h3>{category.title}</h3>
+            <CategoryTitle>{category.title}</CategoryTitle>
         </BoxWrapper>
     );
 };
@@ -25,5 +25,10 @@ const BoxWrapper = styled('div')(({ theme }) => ({
     padding: '10px',
     textAlign: 'center',
 }));
+
+const CategoryTitle = styled('h3')({
+    'text-align': 'center',
+    'text-wrap': 'balance',
+});
 
 export default CategoryBox;
